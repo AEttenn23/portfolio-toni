@@ -432,6 +432,11 @@
 </div>
 
 <script>
+  // coming back to the home (browser back or the "back" link) always starts at the top, unless a section was linked
+  history.scrollRestoration = 'manual';
+  const toTop = () => { if (!location.hash) scrollTo(0, 0); };
+  toTop();
+  addEventListener('pageshow', e => { if (e.persisted) toTop(); });
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
