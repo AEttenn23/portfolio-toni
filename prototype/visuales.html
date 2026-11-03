@@ -131,48 +131,19 @@
 <div class="case-hero">
   <h1 lang="es">Visuales</h1><h1 lang="en">Visuals</h1>
   <p class="sub">
-    <span lang="es">Loops para VJ en VirtualDJ y pieza audiovisual con música propia · After Effects y Premiere</span>
-    <span lang="en">VJ loops for VirtualDJ and an audiovisual piece with my own music · After Effects and Premiere</span>
+    <span lang="es">Pieza estilo videoclip con música propia y pack de loops para VJ · After Effects y TouchDesigner</span>
+    <span lang="en">Music-video style piece with my own music and a pack of VJ loops · After Effects and TouchDesigner</span>
   </p>
-  <div class="labels" lang="es"><span>Composición</span><span>Edición</span><span>Música</span><span>Programación web</span></div>
-  <div class="labels" lang="en"><span>Compositing</span><span>Editing</span><span>Music</span><span>Web programming</span></div>
+  <div class="labels" lang="es"><span>Composición</span><span>Edición</span><span>Música</span></div>
+  <div class="labels" lang="en"><span>Compositing</span><span>Editing</span><span>Music</span></div>
 </div>
 
 <figure class="hero-media torn">
   <span class="tape tl"></span><span class="pin tr b"></span>
   <video id="pieza" controls loop preload="auto" playsinline poster="../assets/visuales/video/poster_pieza.jpg" data-light="../assets/visuales/video/visuales_pieza_movil.mp4" src="../assets/visuales/video/visuales_pieza.mp4"></video>
   <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
-  <figcaption class="cap"><span lang="es">la pieza · última versión del montaje en Premiere · música mía</span><span lang="en">the piece · latest Premiere edit · music by me</span></figcaption>
+  <figcaption class="cap"><span lang="es">la pieza · estilo videoclip · música mía</span><span lang="en">the piece · music-video style · music by me</span></figcaption>
 </figure>
-
-<div class="intro">
-  <div class="lead">
-    <div lang="es">
-      <p>Visuales en bucle pensados para proyectarse en directo mientras suena música: caras, peces, playa y texturas de vídeo analógico, todo con un tratamiento de señal degradada en azules.</p>
-      <p>Compuse el material en After Effects, hice la música de la pieza y preparé los visuales como loops que se pueden lanzar desde VirtualDJ. Para enseñarlo hice además un mezclador web que imita una sesión de VJ: corta entre clips al azar y deja fijar cualquiera de ellos.</p>
-    </div>
-    <div lang="en">
-      <p>Looping visuals designed to be projected live over music: faces, fish, a beach and analogue video textures, all with a degraded blue signal look.</p>
-      <p>I composited the footage in After Effects, made the music for the piece and prepared the visuals as loops that can be triggered from VirtualDJ. To show it I also built a web mixer that imitates a VJ set: it cuts between clips at random and lets you pin any of them.</p>
-    </div>
-  </div>
-  <aside class="facts torn">
-    <span class="binder tc"></span>
-    <h3 lang="es">en cifras</h3><h3 lang="en">at a glance</h3>
-    <ul lang="es">
-      <li>8 loops listos para VJ</li>
-      <li>1 pieza de 21,6 s con música propia</li>
-      <li>mezclador web propio</li>
-      <li>cortes de 0,15 a 4 s</li>
-    </ul>
-    <ul lang="en">
-      <li>8 VJ-ready loops</li>
-      <li>1 piece, 21.6 s, with my own music</li>
-      <li>custom web mixer</li>
-      <li>cuts from 0.15 to 4 s</li>
-    </ul>
-  </aside>
-</div>
 
 <!-- 1 -->
 <section class="chapter">
@@ -180,8 +151,8 @@
     <span class="aside" lang="es">toca un clip para fijarlo</span><span class="aside" lang="en">tap a clip to pin it</span></header>
   <div class="mixer-head">
     <div class="text">
-      <p lang="es">Cinco loops independientes con cortes de 0,5 a 4 s. Cada corte salta a otro clip, que sigue desde donde se quedó. Solo se reproduce el visible, para no saturar el navegador.</p>
-      <p lang="en">Five independent loops with cuts from 0.5 to 4 s. Each cut jumps to another clip, which resumes where it left off. Only the visible one plays, so the browser isn't overloaded.</p>
+      <p lang="es">Cinco loops independientes con cortes de 0,5 a 4 s. Cada corte salta a otro clip, que sigue desde donde se quedó.</p>
+      <p lang="en">Five independent loops with cuts from 0.5 to 4 s. Each cut jumps to another clip, which resumes where it left off.</p>
     </div>
   </div>
   <figure class="monitor"><span class="pin tl"></span><span class="pin tr y"></span>
@@ -206,27 +177,6 @@
   <p class="keys" lang="en">Shortcuts: <kbd>1</kbd>–<kbd>5</kbd> pin clip · <kbd>0</kbd> random · <kbd>F</kbd> fullscreen</p>
 </section>
 
-<section class="chapter">
-  <header><h2 lang="es">Cómo funciona</h2><h2 lang="en">How it works</h2><span class="aside">HTML · CSS · JS · ffmpeg</span></header>
-  <div class="text">
-    <div lang="es">
-      <ul>
-        <li><b>Clips ligeros:</b> un script en Python recodifica cada loop en dos versiones, una para ordenador y otra para móvil, con un tope de tasa de bits para que varios vídeos puedan sonar a la vez sin congelarse.</li>
-        <li><b>Descarga completa antes de usar:</b> cada clip se baja entero, de uno en uno y empezando por el mezclador que está en pantalla, así nunca se para a mitad de un corte. Las miniaturas se van llenando con el progreso.</li>
-        <li><b>Sincronía sin saltos:</b> en el mezclador de filtros, las versiones siguen a la primera ajustando un poco su velocidad; solo saltan si se desvían más de un segundo.</li>
-        <li><b>Pantalla completa en cualquier móvil:</b> si el teléfono está en vertical, la pantalla se gira para verse en horizontal.</li>
-      </ul>
-    </div>
-    <div lang="en">
-      <ul>
-        <li><b>Light clips:</b> a Python script re-encodes each loop in two versions, desktop and mobile, with a bitrate cap so several videos can play at once without freezing.</li>
-        <li><b>Full download before use:</b> each clip downloads completely, one at a time and starting with the mixer on screen, so it never stalls mid-cut. The thumbnails fill up with the progress.</li>
-        <li><b>Seamless sync:</b> in the looks mixer, the versions follow the first one by nudging their speed; they only jump if they drift more than a second.</li>
-        <li><b>Fullscreen on any phone:</b> if the phone is upright, the screen rotates to play in landscape.</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
 <a class="next torn-top" href="leafblade.html">
   <span class="k"><span lang="es">siguiente proyecto →</span><span lang="en">next project →</span></span>

@@ -330,6 +330,7 @@
   animación 2D ✶ VFX ✶ technical art ✶ Unity ✶ animación 3D ✶ shaders ✶ rigging ✶ C# ✶&nbsp;
 </span></div>
 
+<!-- demo reel: hidden for now, uncomment to bring it back
 <div class="reel-sec">
   <a class="reel paper torn" href="#reel" id="reelBtn" aria-label="Ver el demo reel con sonido">
     <span class="tape tl"></span><span class="tape tr"></span>
@@ -337,13 +338,14 @@
     <span class="cap" data-i18n="reel_cap">demo reel · 1:47</span>
   </a>
 </div>
+-->
 
 <section id="trabajo">
   <div class="head"><span class="kicker" data-i18n="k1">Sección 01 · Reportajes</span><h2 class="torn-h" data-i18n="work">Trabajo</h2><span class="aside" data-i18n="work_aside">pasa por encima para verlos moverse →</span></div>
   <div class="desk">
     <a class="card paper torn" href="leafblade.html" data-video="../assets/reel/hover_leafblade.mp4">
       <span class="tape masking tl"></span>
-      <div class="shot"><img src="../assets/monsterfarm/video/poster_mf_trailer_1080.jpg" alt="Leafblade" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <div class="shot"><img src="../assets/mixed/cover_leafblade.jpg" alt="Leafblade" loading="lazy" style="object-position:50% 42%"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg">Leafblade</h3>
       <span class="burst">Bosses</span>
       <div class="meta"><span class="label">Anim 2D · VFX · Bosses</span><span>Wayward Games · 2026</span></div>
@@ -356,19 +358,19 @@
       <div class="meta"><span class="label">Art dir · Anim · Código</span><span>Fizh Studio · 2026</span></div>
       <img class="sticker" src="../assets/mixed/zombie_sticker.png" alt="" style="left:-44px; top:-36px; width:110px; rotate:-10deg">
     </a>
-    <a class="card paper torn" href="webi.html" data-video="../assets/webi/video/webi_turn_sculpt.mp4">
+    <a class="card paper torn" href="webi.html" data-video="../assets/webi/video/webi_bboy_vertical.mp4">
       <span class="clip red tl"></span>
-      <div class="shot"><img src="../assets/webi/img/sculpt_front.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <div class="shot"><img src="../assets/mixed/cover_webi.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none" style="object-position:50% 72%"></video></div>
       <h3 class="misreg">Webi</h3>
       <span class="burst pink">3D</span>
       <div class="meta"><span class="label">Concept → Rig → Anim</span><span><span data-i18n="personal">Proyecto personal</span> · 2025</span></div>
     </a>
-    <a class="card paper torn" href="visuales.html" data-video="../assets/visuales/loops/movil/caras.mp4">
+    <a class="card paper torn" href="visuales.html" data-video="../assets/visuales/loops/movil/cara%20video.mp4">
       <span class="staple tc"></span>
-      <div class="shot"><img src="../assets/visuales/loops/portada/caras.jpg" alt="" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <div class="shot"><img src="../assets/visuales/loops/portada/cara%20video.jpg" alt="" loading="lazy"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg" data-i18n="vis">Visuales</h3>
       <span class="burst" data-i18n="b_vis">Música propia</span>
-      <div class="meta"><span class="label">VJ loops · VirtualDJ</span><span data-i18n="personal">Proyecto personal</span></div>
+      <div class="meta"><span class="label">Videoclip · VJ loops</span><span data-i18n="personal">Proyecto personal</span></div>
     </a>
   </div>
 </section>
@@ -609,11 +611,12 @@
     c.addEventListener('pointerleave', () => { c.classList.remove('playing'); v.pause(); });
   });
 
+  // the demo reel is hidden for now; this only runs when its markup is on the page
   const loopV = document.getElementById('reelLoop');
-  new IntersectionObserver(([e]) => e.isIntersecting ? loopV.play().catch(() => {}) : loopV.pause()).observe(loopV);
-
   const modal = document.getElementById('modal'), full = document.getElementById('fullReel');
   const reelBtn = document.getElementById('reelBtn'), closeBtn = document.getElementById('closeModal');
+  if (reelBtn) {
+  new IntersectionObserver(([e]) => e.isIntersecting ? loopV.play().catch(() => {}) : loopV.pause()).observe(loopV);
   reelBtn.addEventListener('click', e => { e.preventDefault(); modal.classList.add('on'); loopV.pause(); full.play(); closeBtn.focus(); });
   const close = () => {
     if (!modal.classList.contains('on')) return;
@@ -622,6 +625,7 @@
   closeBtn.addEventListener('click', close);
   modal.addEventListener('click', e => { if (e.target === modal) close(); });
   addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  }
 
   const en = {
     personal: 'Personal project',
