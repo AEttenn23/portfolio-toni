@@ -191,6 +191,10 @@
   .card h3 { margin-top: 14px; font: 900 clamp(34px, 4.4vw, 64px)/.9 var(--display); font-stretch: 62%; text-transform: uppercase; }
   .card .meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; }
   .card .label { display: inline-block; background: var(--ink); color: var(--paper-2); padding: 2px 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+  /* projects still being written up: not clickable yet, rubber-stamped */
+  .card.wip { cursor: default; }
+  .card .stamp { position: absolute; z-index: 2; top: 50%; left: 50%; translate: -50% -50%; rotate: -12deg; padding: 6px 16px 4px; border: 4px solid currentColor; border-radius: 6px; color: var(--red); background: rgba(244,236,220,.82); font: 900 clamp(26px, 3.2vw, 44px)/1 var(--display); font-stretch: 62%; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; mix-blend-mode: normal; pointer-events: none; transition: opacity 250ms ease; }
+  .card.wip.playing .stamp { opacity: .9; }
   .card .sticker { z-index: 4; transition: transform 350ms var(--ease-out); }
 
   /* awards: printed like the ads in a magazine */
@@ -343,24 +347,24 @@
 <section id="trabajo">
   <div class="head"><span class="kicker" data-i18n="k1">Sección 01 · Reportajes</span><h2 class="torn-h" data-i18n="work">Trabajo</h2><span class="aside" data-i18n="work_aside">pasa por encima para verlos moverse →</span></div>
   <div class="desk">
-    <a class="card paper torn" href="leafblade.html" data-video="../assets/reel/hover_leafblade.mp4">
+    <a class="card paper torn wip" aria-disabled="true" data-video="../assets/reel/hover_leafblade.mp4">
       <span class="tape masking tl"></span>
-      <div class="shot"><img src="../assets/mixed/cover_leafblade.jpg" alt="Leafblade" loading="lazy" style="object-position:50% 42%"><video muted loop playsinline preload="none"></video></div>
+      <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/mixed/cover_leafblade.jpg" alt="Leafblade" loading="lazy" style="object-position:50% 42%"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg">Leafblade</h3>
       <span class="burst">Bosses</span>
       <div class="meta"><span class="label">Anim 2D · VFX · Bosses</span><span>Wayward Games · 2026</span></div>
     </a>
-    <a class="card paper torn" href="twd.html" data-video="../assets/reel/hover_twd.mp4">
+    <a class="card paper torn wip" aria-disabled="true" data-video="../assets/reel/hover_twd.mp4">
       <span class="pin tc"></span>
-      <div class="shot"><img src="../assets/twd/cutout/portada_cinematica.jpg" alt="TheWorkingDead" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/twd/cutout/portada_cinematica.jpg" alt="TheWorkingDead" loading="lazy"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg">TheWorkingDead</h3>
       <span class="burst" data-i18n="b_twd">×2 premios</span>
       <div class="meta"><span class="label">Art dir · Anim · Código</span><span>Fizh Studio · 2026</span></div>
       <img class="sticker" src="../assets/mixed/zombie_sticker.png" alt="" style="left:-44px; top:-36px; width:110px; rotate:-10deg">
     </a>
-    <a class="card paper torn" href="webi.html" data-video="../assets/webi/video/webi_bboy_vertical.mp4">
+    <a class="card paper torn wip" aria-disabled="true" data-video="../assets/webi/video/webi_bboy_vertical.mp4">
       <span class="clip red tl"></span>
-      <div class="shot"><img src="../assets/mixed/cover_webi.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none" style="object-position:50% 72%"></video></div>
+      <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/mixed/cover_webi.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none" style="object-position:50% 72%"></video></div>
       <h3 class="misreg">Webi</h3>
       <span class="burst pink">3D</span>
       <div class="meta"><span class="label">Concept → Rig → Anim</span><span><span data-i18n="personal">Proyecto personal</span> · 2025</span></div>
@@ -636,7 +640,7 @@
     personal: 'Personal project',
     issue_no: 'No. 01', issue_date: 'Portfolio · November 2026', issue_ed: 'ES / EN edition',
     k1: 'Section 01 · Features', k2: 'Section 02 · Honours', k3: 'Section 03 · Track record', k4: 'Section 04 · Contact',
-    b_twd: '×2 awards', b_vis: 'Own music',
+    b_twd: '×2 awards', b_vis: 'Own music', wip: 'In progress',
     nav_work: 'work', nav_awards: 'awards', nav_career: 'career', nav_contact: 'contact',
     roles: '<p>I&rsquo;ve always loved art. I started out drawing and producing music, and while studying the Higher Diploma in 3D Animation, Games and Interactive Environments I realised I could actually make a living from it. It stopped being a distant dream and became my goal.</p><p>My profile is generalist: 2D and 3D animation, VFX, tech art and Unity programming. I do my best work in <mark>small teams</mark>, where I move between the technical and the artistic side depending on what the project and its deadlines need.</p>',
     rig_note: 'my cutout rig of Greg ↑<br>(TheWorkingDead)', reel_cap: 'demo reel · 1:47',
