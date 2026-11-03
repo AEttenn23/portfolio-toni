@@ -26,6 +26,11 @@
     layer.style.clipPath = `polygon(${[...jag(36, 'top'), ...jag(20, 'right'), ...jag(36, 'bottom'), ...jag(20, 'left')].join(',')})`;
     el.prepend(layer);
   });
+  // YouTube: the player only loads (and starts) when the thumbnail is clicked
+  document.querySelectorAll('.yt').forEach(b => b.addEventListener('click', () => {
+    b.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0" title="${b.getAttribute('aria-label')}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  }, { once: true }));
+
   // small photos carry their caption on a post-it
   const markSmall = () => document.querySelectorAll('.fig').forEach(f =>
     f.classList.toggle('small', f.offsetWidth < 330 && !!f.querySelector(':scope > .cap')));

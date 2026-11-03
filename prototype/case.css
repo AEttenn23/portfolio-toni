@@ -164,6 +164,21 @@ html[lang="en"] .chapter > header::before { content: 'Chapter ' counter(ch, deci
 .fig { padding: 10px 10px 40px; }
 .fig img, .fig video { width: 100%; background: var(--ink); }
 .fig .cap { position: absolute; left: 14px; bottom: 8px; right: 14px; }
+/* YouTube videos load only when clicked (case.js swaps the thumbnail for the player) */
+.yt-fig { max-width: 820px; margin: 56px auto 0; }
+.yt { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; padding: 0; border: 0; background: var(--ink) center / cover; cursor: pointer; }
+.yt span { position: absolute; inset: 0; margin: auto; width: 84px; height: 58px; display: grid; place-items: center; background: var(--red); color: #fff; font-size: 26px; rotate: -3deg; box-shadow: 0 8px 16px -6px rgba(0,0,0,.6); transition: transform 160ms var(--ease-out); }
+.yt:hover span { transform: scale(1.06); }
+.yt:active span { transform: scale(.97); }
+.yt-fig.tall { width: 100%; max-width: 400px; margin-top: 0; }
+.yt-fig.tall .yt { aspect-ratio: 9 / 16; }
+/* hero: a square still next to a vertical video, the same height */
+.hero-pair { display: grid; grid-template-columns: 1fr .585fr; gap: 28px; align-items: start; max-width: 1100px; margin: 40px auto 0; padding: 0 24px; }
+.hero-pair .hero-media { margin: 0; }
+.hero-pair .hero-media + .hero-media { rotate: .8deg; }
+.hero-pair img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
+.hero-pair video { aspect-ratio: 9 / 16; }
+.yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 /* small photos: the caption is written on a post-it stuck over the corner (case.js adds .small) */
 .fig.small { padding-bottom: 10px; }
 .fig.small .cap { --note: #FFE83D; left: auto; right: -12px; bottom: -18px; z-index: 4; max-width: 80%; padding: 7px 11px 10px; font-size: 20px; color: var(--ink); rotate: 3deg;
@@ -231,7 +246,8 @@ html[lang="en"] .chapter > header::before { content: 'Chapter ' counter(ch, deci
   .intro, .split { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .case-hero h1 { font-size: 13.5vw; max-width: 100%; }
   .split.flip > :first-child { order: 0; }
-  .pair, .row-3 { grid-template-columns: 1fr; }
+  .pair, .row-3, .hero-pair { grid-template-columns: 1fr; }
+  .hero-pair .hero-media + .hero-media { max-width: 360px; justify-self: center; }
   .verticals { grid-template-columns: repeat(2, 1fr); }
   .slides { grid-template-columns: repeat(3, 1fr); }
   .facts { padding-left: 52px; } .facts::before { left: 36px; }
