@@ -84,10 +84,11 @@
   .binder { position: absolute; z-index: 4; width: 124px; height: 124px; top: -65px; background: url('../assets/mixed/binder.png') center / contain no-repeat; pointer-events: none; }
   .binder.tc { left: 50%; margin-left: -62px; } .binder.tl { left: 6px; } .binder.tr { right: 6px; }
   /* sale-style starburst sticker */
-  .burst { position: absolute; z-index: 5; top: -34px; right: -24px; width: 108px; aspect-ratio: 1; display: grid; place-items: center; padding: 22px; text-align: center;
+  .burst { position: absolute; z-index: 5; top: -34px; right: -24px; width: 108px; aspect-ratio: 1; display: grid; place-items: center; padding: 22px 14px; text-align: center;
     background: var(--neon); color: var(--ink); font: 900 17px/.95 var(--display); font-stretch: 75%; text-transform: uppercase; rotate: 12deg;
     clip-path: polygon(50.0% 0.0%, 58.7% 12.0%, 71.7% 5.0%, 74.3% 19.5%, 89.1% 18.8%, 85.1% 33.1%, 98.7% 38.9%, 89.0% 50.0%, 98.7% 61.1%, 85.1% 66.9%, 89.1% 81.2%, 74.3% 80.5%, 71.7% 95.0%, 58.7% 88.0%, 50.0% 100.0%, 41.3% 88.0%, 28.3% 95.0%, 25.7% 80.5%, 10.9% 81.2%, 14.9% 66.9%, 1.3% 61.1%, 11.0% 50.0%, 1.3% 38.9%, 14.9% 33.1%, 10.9% 18.8%, 25.7% 19.5%, 28.3% 5.0%, 41.3% 12.0%); }
   .burst.pink { background: var(--pink); }
+  .burst.long { font-size: 14px; padding-inline: 10px; }
   /* misregistered print: a red plate that didn't line up */
   .misreg { text-shadow: .035em .025em 0 rgba(229,54,31,.8); }
   /* magazine kicker above a heading */
@@ -130,15 +131,17 @@
   .rig img { position: absolute; user-select: none; -webkit-user-drag: none; }
   .rig .body { left: 14.286%; top: 0; width: 71.587%; }
   .rig .stache { left: 39.812%; top: 44.46%; width: 24.762%; z-index: 4; transform-origin: 50% 20%; }
-  .rig .arm-l { left: 0.154%; top: 49.761%; width: 39.841%; transform-origin: 83.67% 16.32%; rotate: -30deg; z-index: 3; }
-  .rig .arm-r { left: 60.744%; top: 50.441%; width: 37.619%; transform-origin: 15.19% 15.87%; rotate: 30deg; z-index: 3; }
+  .rig .arm-l { left: 0.154%; top: 49.761%; width: 39.841%; transform-origin: 83.67% 16.32%; rotate: -30deg; z-index: 5; }
+  .rig .arm-r { left: 60.744%; top: 50.441%; width: 37.619%; transform-origin: 15.19% 15.87%; rotate: 30deg; z-index: 5; }
   /* the "GRRG" sign from the game menu, shown on click */
-  .rig .grr { left: 54%; top: 36%; width: 48%; z-index: 5; opacity: 0; pointer-events: none; }
+  .rig .grr { left: 54%; top: 36%; width: 48%; z-index: 6; opacity: 0; pointer-events: none; }
   .rig { cursor: pointer; }
   .note { position: absolute; font: 700 26px/1.05 var(--hand); color: var(--red); white-space: nowrap; }
   .note svg { display: block; }
   .note path { fill: none; stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
   .rig-wrap .note { right: -10px; bottom: -64px; rotate: -4deg; text-align: right; }
+  /* the invitation to click only makes sense with a mouse */
+  @media (hover: none), (pointer: coarse) { .rig-wrap .note { display: none; } }
 
   .sticker { position: absolute; filter: var(--sticker); pointer-events: none; }
 
@@ -324,7 +327,7 @@
       <img class="arm-r" src="../assets/mixed/greg_arm_r.png" alt="">
       <img class="grr" src="../assets/mixed/greg_grr.png" alt="">
     </div>
-    <p class="note" data-i18n="rig_note">mi rig cutout de Greg ↑<br>(TheWorkingDead)</p>
+    <p class="note" data-i18n="rig_note">¡clica en mí! ↑<br>(Greg · TheWorkingDead)</p>
   </div>
 
 </div>
@@ -351,14 +354,14 @@
       <span class="tape masking tl"></span>
       <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/mixed/cover_leafblade.jpg" alt="Leafblade" loading="lazy" style="object-position:50% 42%"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg">Leafblade</h3>
-      <span class="burst">Bosses</span>
+      <span class="burst long" data-i18n="b_game">Videojuego</span>
       <div class="meta"><span class="label">Anim 2D · VFX · Bosses</span><span>Wayward Games · 2026</span></div>
     </a>
     <a class="card paper torn wip" aria-disabled="true" data-video="../assets/reel/hover_twd.mp4">
       <span class="pin tc"></span>
       <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/twd/cutout/portada_cinematica.jpg" alt="TheWorkingDead" loading="lazy"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg">TheWorkingDead</h3>
-      <span class="burst" data-i18n="b_twd">×2 premios</span>
+      <span class="burst long" data-i18n="b_game">Videojuego</span>
       <div class="meta"><span class="label">Art dir · Anim · Código</span><span>Fizh Studio · 2026</span></div>
       <img class="sticker" src="../assets/mixed/zombie_sticker.png" alt="" style="left:-44px; top:-36px; width:110px; rotate:-10deg">
     </a>
@@ -366,14 +369,14 @@
       <span class="clip red tl"></span>
       <div class="shot"><span class="stamp" data-i18n="wip">En proceso</span><img src="../assets/mixed/cover_webi.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none" style="object-position:50% 72%"></video></div>
       <h3 class="misreg">Webi</h3>
-      <span class="burst pink">3D</span>
+      <span class="burst pink" data-i18n="b_webi">3D y visuales</span>
       <div class="meta"><span class="label">Concept → Rig → Anim</span><span><span data-i18n="personal">Proyecto personal</span> · 2025</span></div>
     </a>
     <a class="card paper torn" href="visuales.html" data-video="../assets/visuales/loops/movil/cara%20video.mp4">
       <span class="staple tc"></span>
       <div class="shot"><img src="../assets/visuales/loops/portada/cara%20video.jpg" alt="" loading="lazy"><video muted loop playsinline preload="none"></video></div>
       <h3 class="misreg" data-i18n="vis">Visuales</h3>
-      <span class="burst" data-i18n="b_vis">Música propia</span>
+      <span class="burst" data-i18n="b_vis">Visuales</span>
       <div class="meta"><span class="label">Videoclip · VJ loops</span><span data-i18n="personal">Proyecto personal</span></div>
     </a>
   </div>
@@ -517,19 +520,37 @@
     });
   }
   if (!reduce && !editing) {
-    let target = 0, cur = 0, t0 = performance.now();
+    let target = 0, cur = 0, t0 = performance.now(), mouse = null;
     addEventListener('pointermove', e => {
       const r = rig.getBoundingClientRect();
       target = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2)));
+      if (fine) mouse = [e.clientX, e.clientY];
     });
+    document.documentElement.addEventListener('pointerleave', () => { mouse = null; });
+    // with a mouse, each hand points at the cursor: `hand` is the angle (deg, clockwise from +x) from the shoulder pin to the hand in the unrotated cutout
+    parts.armL.hand = 134.5; parts.armR.hand = 46.5;
+    parts.armL.aim = parts.armL.r1; parts.armR.aim = parts.armR.r1;
+    const aimAt = p => {
+      if (!mouse) return p.r1;
+      const r = rig.getBoundingClientRect(), o = getComputedStyle(p.el).transformOrigin.split(' ').map(parseFloat);
+      const sx = r.left + p.el.offsetLeft + o[0], sy = r.top + p.el.offsetTop + o[1];
+      // the hand never rises above the shoulder: aiming up pins it to horizontal on that side
+      let a = Math.atan2(mouse[1] - sy, mouse[0] - sx) * 180 / Math.PI;
+      if (a < 0) a = a < -90 ? 180 : 0;
+      return a - p.hand;
+    };
+    // the allowed range is one half turn, so easing straight towards the target never takes the long way round
+    const ease = (p, to) => (p.aim += (to - p.aim) * .12);
     (function loop(now) {
       cur += (target - cur) * .08;
       if (swing) {
         // the swing fades in over a second and starts at zero, so the arms leave the rest pose smoothly
         const t = now - swingAt, k = Math.min(1, t / 1200) ** 2;
         const idle = Math.sin(t / 900) * 2.5;
-        parts.armL.el.style.rotate = `${parts.armL.r1 + k * (cur * 6 + idle)}deg`;
-        parts.armR.el.style.rotate = `${parts.armR.r1 + k * (cur * 6 - idle)}deg`;
+        const aL = ease(parts.armL, mouse ? aimAt(parts.armL) : parts.armL.r1 + cur * 6);
+        const aR = ease(parts.armR, mouse ? aimAt(parts.armR) : parts.armR.r1 + cur * 6);
+        parts.armL.el.style.rotate = `${parts.armL.r1 + k * (aL - parts.armL.r1 + idle)}deg`;
+        parts.armR.el.style.rotate = `${parts.armR.r1 + k * (aR - parts.armR.r1 - idle)}deg`;
         parts.stache.el.style.rotate = `${parts.stache.r1 + k * Math.sin(t / 650) * 3}deg`;
       }
       requestAnimationFrame(loop);
@@ -582,6 +603,7 @@
     const raise = (p, d) => {
       const rest = parseFloat(p.el.style.rotate) || p.r1;
       p.el.getAnimations().forEach(a => a.cancel());
+      // the aim is kept within half a turn that includes this pose, so the arm opens the short way from wherever it points
       p.el.animate([
         { rotate: `${rest}deg`, easing: 'cubic-bezier(0.34, 1.4, 0.64, 1)' },
         { rotate: `${p.r1 + d}deg`, offset: .25 },
@@ -640,10 +662,10 @@
     personal: 'Personal project',
     issue_no: 'No. 01', issue_date: 'Portfolio · November 2026', issue_ed: 'ES / EN edition',
     k1: 'Section 01 · Features', k2: 'Section 02 · Honours', k3: 'Section 03 · Track record', k4: 'Section 04 · Contact',
-    b_twd: '×2 awards', b_vis: 'Own music', wip: 'In progress',
+    b_game: 'Videogame', b_webi: '3D and visuals', b_vis: 'Visuals', wip: 'In progress',
     nav_work: 'work', nav_awards: 'awards', nav_career: 'career', nav_contact: 'contact',
     roles: '<p>I&rsquo;ve always loved art. I started out drawing and producing music, and while studying the Higher Diploma in 3D Animation, Games and Interactive Environments I realised I could actually make a living from it. It stopped being a distant dream and became my goal.</p><p>My profile is generalist: 2D and 3D animation, VFX, tech art and Unity programming. I do my best work in <mark>small teams</mark>, where I move between the technical and the artistic side depending on what the project and its deadlines need.</p>',
-    rig_note: 'my cutout rig of Greg ↑<br>(TheWorkingDead)', reel_cap: 'demo reel · 1:47',
+    rig_note: 'click me! ↑<br>(Greg · TheWorkingDead)', reel_cap: 'demo reel · 1:47',
     work: 'Work', work_aside: 'hover to see them move →', char3d: '3D character', vis: 'Visuals',
     awards: 'Awards', awards_aside: 'advertising space', ad_tag: 'Advertisement', ad_tag2: 'Advertisement', ad_tag3: 'Advertisement',
     ad1: 'Best project awards', ad2: 'Best academic record', ad3big: 'Award',
