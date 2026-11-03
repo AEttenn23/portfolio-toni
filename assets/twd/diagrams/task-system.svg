@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="'Space Grotesk', Arial, sans-serif" role="img">
+  <title>Sistema de tareas de TheWorkingDead</title>
+  <desc>TareasAleatorias genera la lista de tareas de cada partida a partir de tareas obligatorias, tareas aleatorias y NPCs. Cada minijuego hereda de la clase abstracta TaskBase, que gestiona interacción, outline, exclamación, victoria y derrota.</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#111"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#FFF4D6"/>
+
+  <!-- manager -->
+  <g transform="translate(330 28)">
+    <rect x="6" y="6" width="300" height="104" fill="#111"/>
+    <rect width="300" height="104" fill="#5CE1E6" stroke="#111" stroke-width="3"/>
+    <text x="150" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#111">TareasAleatorias</text>
+    <text x="150" y="60" text-anchor="middle" font-size="14" fill="#111">obligatorias + Uwe (20 %)</text>
+    <text x="150" y="80" text-anchor="middle" font-size="14" fill="#111">+ aleatorias + hasta 3 NPCs</text>
+    <text x="150" y="98" text-anchor="middle" font-size="12" fill="#111">→ lista de la partida</text>
+  </g>
+
+  <!-- base class -->
+  <g transform="translate(300 196)">
+    <rect x="6" y="6" width="360" height="132" fill="#111"/>
+    <rect width="360" height="132" fill="#FF5C8A" stroke="#111" stroke-width="3"/>
+    <text x="180" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#111">TaskBase  «abstract»</text>
+    <text x="20" y="60" font-size="14" fill="#111">Interactuar() · CompletarTarea()</text>
+    <text x="20" y="80" font-size="14" fill="#111">outline al acercarse · exclamación</text>
+    <text x="20" y="100" font-size="14" fill="#111">Win() / Loose() + feedback y sonido</text>
+    <text x="20" y="122" font-size="14" font-weight="700" fill="#111">abstract IniciarTarea() / CancelarTarea()</text>
+  </g>
+
+  <path d="M480 138 V 190" stroke="#111" stroke-width="3" marker-end="url(#arr)"/>
+  <text x="492" y="170" font-size="13" fill="#111">CompletarTarea(tarea)</text>
+
+  <!-- subclasses -->
+  <g font-size="14" fill="#111" text-anchor="middle">
+    <g transform="translate(24 420)"><rect x="5" y="5" width="140" height="64" fill="#111"/><rect width="140" height="64" fill="#C6F432" stroke="#111" stroke-width="3"/><text x="70" y="28" font-weight="700">PCTextTask</text><text x="70" y="48" font-size="12">escribir en el PC</text></g>
+    <g transform="translate(180 420)"><rect x="5" y="5" width="140" height="64" fill="#111"/><rect width="140" height="64" fill="#C6F432" stroke="#111" stroke-width="3"/><text x="70" y="28" font-weight="700">ImpresoraTask</text><text x="70" y="48" font-size="12">arreglar impresora</text></g>
+    <g transform="translate(336 420)"><rect x="5" y="5" width="140" height="64" fill="#111"/><rect width="140" height="64" fill="#C6F432" stroke="#111" stroke-width="3"/><text x="70" y="28" font-weight="700">OrdenadorTask</text><text x="70" y="48" font-size="12">ordenador</text></g>
+    <g transform="translate(492 420)"><rect x="5" y="5" width="140" height="64" fill="#111"/><rect width="140" height="64" fill="#C6F432" stroke="#111" stroke-width="3"/><text x="70" y="28" font-weight="700">NPCConversation</text><text x="70" y="48" font-size="12">diálogo con NPCs</text></g>
+    <g transform="translate(648 420)"><rect x="5" y="5" width="140" height="64" fill="#111"/><rect width="140" height="64" fill="#C6F432" stroke="#111" stroke-width="3"/><text x="70" y="28" font-weight="700">PlantaTask</text><text x="70" y="48" font-size="12">regar la planta</text></g>
+    <g transform="translate(804 420)"><rect x="5" y="5" width="132" height="64" fill="#111"/><rect width="132" height="64" fill="#fff" stroke="#111" stroke-width="3"/><text x="66" y="28" font-weight="700">+5 más</text><text x="66" y="48" font-size="12">Simón dice, ordenar…</text></g>
+  </g>
+  <g stroke="#111" stroke-width="3" fill="none">
+    <path d="M480 334 V 380 M94 380 H 870 M94 380 V 414 M250 380 V 414 M406 380 V 414 M562 380 V 414 M718 380 V 414 M870 380 V 414"/>
+  </g>
+  <path d="M470 344 L480 330 L490 344 Z" fill="#fff" stroke="#111" stroke-width="3"/>
+  <text x="480" y="530" text-anchor="middle" font-size="13" fill="#111">Verde: escritas en gran parte por Toni · Blanco: tareas de otros compañeros</text>
+</svg>

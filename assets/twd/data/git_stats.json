@@ -1,0 +1,152 @@
+{
+  "project": "TheWorkingDead",
+  "commitsByAuthor": {
+    "Santi": 149,
+    "Toni": 232,
+    "Raquel": 10,
+    "MetalClanker": 30,
+    "Biroro": 9,
+    "Sara": 12,
+    "Fran": 32
+  },
+  "commitsByAuthorNoMerges": {
+    "Santi": 135,
+    "Toni": 181,
+    "Raquel": 10,
+    "MetalClanker": 28,
+    "Biroro": 8,
+    "Sara": 12,
+    "Fran": 31
+  },
+  "linesOfCodeByAuthor": {
+    "Toni": 5145,
+    "Santi": 3022,
+    "Sara": 747,
+    "Biroro": 394,
+    "MetalClanker": 381
+  },
+  "linesNote": "git blame sobre los scripts de Assets/_TheWorkingDead_ROOT (sin plugins). Total 9689 líneas.",
+  "toni": {
+    "commits": 232,
+    "first": "2025-10-27",
+    "last": "2026-02-10",
+    "codeShare": 53.1
+  },
+  "weeks": [
+    {
+      "week": "2025-09-15",
+      "toni": 0,
+      "team": 4
+    },
+    {
+      "week": "2025-09-29",
+      "toni": 0,
+      "team": 1
+    },
+    {
+      "week": "2025-10-06",
+      "toni": 0,
+      "team": 2
+    },
+    {
+      "week": "2025-10-13",
+      "toni": 0,
+      "team": 5
+    },
+    {
+      "week": "2025-10-20",
+      "toni": 0,
+      "team": 5
+    },
+    {
+      "week": "2025-10-27",
+      "toni": 4,
+      "team": 3
+    },
+    {
+      "week": "2025-11-03",
+      "toni": 18,
+      "team": 0
+    },
+    {
+      "week": "2025-11-10",
+      "toni": 12,
+      "team": 7
+    },
+    {
+      "week": "2025-11-17",
+      "toni": 1,
+      "team": 0
+    },
+    {
+      "week": "2025-11-24",
+      "toni": 11,
+      "team": 12
+    },
+    {
+      "week": "2025-12-01",
+      "toni": 13,
+      "team": 19
+    },
+    {
+      "week": "2025-12-08",
+      "toni": 22,
+      "team": 10
+    },
+    {
+      "week": "2025-12-15",
+      "toni": 17,
+      "team": 13
+    },
+    {
+      "week": "2025-12-22",
+      "toni": 1,
+      "team": 14
+    },
+    {
+      "week": "2025-12-29",
+      "toni": 2,
+      "team": 2
+    },
+    {
+      "week": "2026-01-05",
+      "toni": 14,
+      "team": 12
+    },
+    {
+      "week": "2026-01-12",
+      "toni": 38,
+      "team": 16
+    },
+    {
+      "week": "2026-01-19",
+      "toni": 34,
+      "team": 25
+    },
+    {
+      "week": "2026-01-26",
+      "toni": 20,
+      "team": 35
+    },
+    {
+      "week": "2026-02-02",
+      "toni": 24,
+      "team": 50
+    },
+    {
+      "week": "2026-02-09",
+      "toni": 1,
+      "team": 0
+    },
+    {
+      "week": "2026-02-16",
+      "toni": 0,
+      "team": 6
+    },
+    {
+      "week": "2026-02-23",
+      "toni": 0,
+      "team": 1
+    }
+  ]
+}

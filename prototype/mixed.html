@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toni Díaz Plaza — Collage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Caveat:wght@500;700&family=Courier+Prime:wght@400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EEE6D3;
+    /* the desk under the paper: dark grey, with light text on it */
+    --bg: #2A2928;
+    --on-bg: #ECE5D3;
+    --paper-2: #F7F1E3;
+    /* paper sheets: crease shading (soft-light) over cream paper fibres; scrolls with the sheet */
+    --paper-tex: url('../assets/mixed/crumple.jpg') 0 0 / 700px 700px, url('../assets/mixed/paper.svg') 0 0 / 480px 480px, var(--paper-2);
+    --kraft: #C9A27A;
+    --ink: #0F0E0D;
+    --red: #E5361F;
+    --neon: #FFE83D;
+    --pink: #FF5FA8;
+    /* duct tape: grey cloth weave with a soft sheen */
+    --tape: linear-gradient(100deg, rgba(255,255,255,.18), transparent 40%, rgba(255,255,255,.1) 70%, transparent),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 1px, transparent 1px 4px), #8E8B85;
+    --display: 'Archivo', sans-serif;
+    --hand: 'Caveat', cursive;
+    --type: 'Courier Prime', monospace;
+    --serif: 'DM Serif Display', serif;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --sticker: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 8px 10px rgba(28,26,23,.28));
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); overflow-x: clip; scrollbar-color: var(--on-bg) var(--bg); }
+  /* crumpled paper: crease shading (soft-light) over the paper fibres */
+  body { background: url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px fixed, var(--bg) url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px fixed; background-blend-mode: soft-light, normal; color: var(--on-bg); font-family: var(--type); overflow-x: clip; caret-color: var(--red); }
+  a, button { color: inherit; }
+  img { display: block; max-width: 100%; }
+  ::selection { background: var(--neon); color: var(--ink); }
+  :focus-visible { outline: 2px dashed var(--red); outline-offset: 4px; }
+
+  /* paper grain over everything */
+  body::after { content: ''; position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .32; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .press { transition: transform 160ms var(--ease-out); }
+  .press:active { transform: scale(0.97); }
+
+  /* torn paper: JS writes a jagged clip-path; without JS the paper is just square */
+  .paper { color: var(--ink); background: var(--paper-tex); background-blend-mode: soft-light, normal; box-shadow: 0 1px 0 rgba(28,26,23,.08), 0 10px 24px -14px rgba(28,26,23,.5); }
+  /* tape strips: corner strips cross the corner diagonally, centre strips straddle the top edge */
+  .tape { --tw: clamp(120px, 13vw, 170px); --th: clamp(32px, 3.2vw, 42px); position: absolute; width: var(--tw); height: var(--th); background: url('../assets/mixed/tape.png') center / 100% 100% no-repeat; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.25)); z-index: 3; }
+  .tape.tl, .tape.tr { top: calc(var(--th) * -.5); }
+  .tape.tl { left: 6%; rotate: -5deg; }
+  .tape.tr { right: 6%; rotate: 4deg; }
+  .tape.tc { top: calc(var(--th) * -.5); left: 50%; margin-left: calc(var(--tw) * -.5); rotate: -2deg; }
+  /* other ways to hold a sheet: push pins, staples, paper clips */
+  /* push pins are renders; the needle enters the paper at 50% 57% of the image */
+  .pin { position: absolute; z-index: 4; width: 100px; height: 100px; margin: -57px 0 0 -50px; background: url('../assets/mixed/pin_red.png') center / contain no-repeat; pointer-events: none; }
+  .pin.y { background-image: url('../assets/mixed/pin_yellow.png'); }
+  .pin.b { background-image: url('../assets/mixed/pin_blue.png'); }
+  .pin.brass { background-image: url('../assets/mixed/pin_brass.png'); }
+  .pin.tl { top: 32px; left: 32px; } .pin.tr { top: 32px; left: calc(100% - 32px); } .pin.tc { top: 28px; left: 50%; }
+  .staple { position: absolute; z-index: 4; width: 48px; height: 6px; border-radius: 2px; background: linear-gradient(#FFFFFF, #B5B2AC 40%, #6A6762); box-shadow: 0 2px 3px rgba(0,0,0,.55), 0 0 0 .5px rgba(0,0,0,.35); }
+  .staple::before, .staple::after { content: ''; position: absolute; top: 1px; width: 4px; height: 4px; border-radius: 1px; background: rgba(0,0,0,.6); }
+  .staple::before { left: -3px; } .staple::after { right: -3px; }
+  .staple.tl { top: 12px; left: 18px; rotate: -8deg; } .staple.tr { top: 12px; right: 18px; rotate: 7deg; } .staple.tc { top: 10px; left: 50%; margin-left: -24px; rotate: -3deg; }
+  /* paper clip: the outer loop sits behind the sheet, the inner loop in front (no z-index here, so each half stacks with the paper) */
+  .clip { position: absolute; width: 26px; height: 74px; top: -30px; pointer-events: none; }
+  .clip::before, .clip::after { content: ''; position: absolute; inset: 0; background: center / contain no-repeat; rotate: var(--r, 0deg); }
+  .clip::before { z-index: -2; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%2377746E'/%3E%3Cstop offset='.45' stop-color='%23F4F2EC'/%3E%3Cstop offset='1' stop-color='%238E8B85'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 10 V53 a8 8 0 0 0 16 0 V20' fill='none' stroke='url%28%23m%29' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E"); filter: brightness(.8) drop-shadow(1px 2px 1px rgba(0,0,0,.4)); }
+  .clip::after { z-index: 4; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%2377746E'/%3E%3Cstop offset='.45' stop-color='%23F4F2EC'/%3E%3Cstop offset='1' stop-color='%238E8B85'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7 22 V50 a4 4 0 0 0 8 0 V10 a6 6 0 0 0 -12 0' fill='none' stroke='url%28%23m%29' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E"); filter: drop-shadow(1px 2px 1.5px rgba(0,0,0,.45)); }
+  .clip.tl { left: 26px; --r: -4deg; } .clip.tr { right: 26px; --r: 5deg; } .clip.tc { left: 50%; margin-left: -13px; --r: 2deg; }
+  /* coloured plastic paper clips */
+  .clip.red::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%238E1A0F'/%3E%3Cstop offset='0.45' stop-color='%23F25A43'/%3E%3Cstop offset='1' stop-color='%23A8240F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 10 V53 a8 8 0 0 0 16 0 V20' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .clip.red::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%238E1A0F'/%3E%3Cstop offset='0.45' stop-color='%23F25A43'/%3E%3Cstop offset='1' stop-color='%23A8240F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7 22 V50 a4 4 0 0 0 8 0 V10 a6 6 0 0 0 -12 0' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .clip.y::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23A87C00'/%3E%3Cstop offset='0.45' stop-color='%23FFE45C'/%3E%3Cstop offset='1' stop-color='%23BF9200'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 10 V53 a8 8 0 0 0 16 0 V20' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .clip.y::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23A87C00'/%3E%3Cstop offset='0.45' stop-color='%23FFE45C'/%3E%3Cstop offset='1' stop-color='%23BF9200'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7 22 V50 a4 4 0 0 0 8 0 V10 a6 6 0 0 0 -12 0' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  /* masking tape: opaque crepe paper, torn by hand */
+  .tape.masking { background-image: url('../assets/mixed/masking.png'); filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.3)); }
+  /* binder clip (a render): the sheet's top edge meets the image at 52% of its height */
+  .binder { position: absolute; z-index: 4; width: 124px; height: 124px; top: -65px; background: url('../assets/mixed/binder.png') center / contain no-repeat; pointer-events: none; }
+  .binder.tc { left: 50%; margin-left: -62px; } .binder.tl { left: 6px; } .binder.tr { right: 6px; }
+  /* sale-style starburst sticker */
+  .burst { position: absolute; z-index: 5; top: -34px; right: -24px; width: 108px; aspect-ratio: 1; display: grid; place-items: center; padding: 22px; text-align: center;
+    background: var(--neon); color: var(--ink); font: 900 17px/.95 var(--display); font-stretch: 75%; text-transform: uppercase; rotate: 12deg;
+    clip-path: polygon(50.0% 0.0%, 58.7% 12.0%, 71.7% 5.0%, 74.3% 19.5%, 89.1% 18.8%, 85.1% 33.1%, 98.7% 38.9%, 89.0% 50.0%, 98.7% 61.1%, 85.1% 66.9%, 89.1% 81.2%, 74.3% 80.5%, 71.7% 95.0%, 58.7% 88.0%, 50.0% 100.0%, 41.3% 88.0%, 28.3% 95.0%, 25.7% 80.5%, 10.9% 81.2%, 14.9% 66.9%, 1.3% 61.1%, 11.0% 50.0%, 1.3% 38.9%, 14.9% 33.1%, 10.9% 18.8%, 25.7% 19.5%, 28.3% 5.0%, 41.3% 12.0%); }
+  .burst.pink { background: var(--pink); }
+  /* misregistered print: a red plate that didn't line up */
+  .misreg { text-shadow: .035em .025em 0 rgba(229,54,31,.8); }
+  /* magazine kicker above a heading */
+  .kicker { flex-basis: 100%; font: 700 12px/1 var(--type); letter-spacing: .16em; text-transform: uppercase; }
+  .kicker::before { content: ''; display: inline-block; width: 28px; height: 3px; margin: 0 10px 3px 0; background: var(--red); vertical-align: middle; }
+
+  /* top bar */
+  .bar { position: sticky; top: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 24px; background: #000; border-bottom: 1px solid rgba(236,229,211,.2); font-size: 13px; }
+  .bar nav { display: flex; gap: 20px; }
+  .bar a { text-decoration: none; }
+  .bar nav a { background: linear-gradient(var(--red), var(--red)) left 92% / 0 2px no-repeat; transition: background-size 250ms var(--ease-out); }
+  .lang button { background: none; border: 0; font: inherit; padding: 1px 4px; }
+  .lang button.on { background: var(--on-bg); color: var(--ink); }
+
+  /* magazine masthead */
+  .issue { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 7px 0 6px; border-top: 4px solid currentColor; border-bottom: 1px solid currentColor;
+    font: 700 12px/1.2 var(--type); letter-spacing: .14em; text-transform: uppercase; }
+  .barcode { display: inline-block; margin-top: 30px; padding: 8px 10px 5px; background: #fff; rotate: -2deg; box-shadow: 0 6px 12px -8px rgba(15,14,13,.6); }
+  .barcode svg { display: block; width: 150px; height: 44px; }
+  .barcode span { display: block; margin-top: 3px; font: 11px/1 var(--type); letter-spacing: .22em; text-align: center; }
+
+  /* hero */
+  .hero { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; gap: 24px; align-items: center; padding: 20px 24px 16px; min-height: min(86vh, 860px); }
+  .ransom { display: flex; gap: .06em; font-size: clamp(64px, 11vw, 176px); line-height: 1; margin-bottom: .08em; }
+  .ransom span { display: inline-block; padding: .04em .1em .02em; transition: transform 300ms var(--ease-out); box-shadow: 0 6px 14px -8px rgba(28,26,23,.55); }
+  .ransom span:nth-child(1) { background: var(--ink); color: var(--paper-2); font: 900 1em/1 var(--display); font-stretch: 70%; rotate: -4deg; }
+  .ransom span:nth-child(2) { background: var(--paper-2); font: 1.04em/1 var(--serif); rotate: 3deg; translate: 0 .06em; }
+  .ransom span:nth-child(3) { background: var(--red); color: var(--paper-2); font: 800 .96em/1 var(--display); font-stretch: 125%; rotate: -2deg; }
+  .ransom span:nth-child(4) { background: var(--kraft); font: 700 .98em/1 var(--type); rotate: 5deg; translate: 0 -.04em; }
+  .hero h1 .rest { display: block; font: 900 clamp(48px, 8.2vw, 132px)/.86 var(--display); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
+  .roles { margin-top: 22px; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.5; max-width: 50ch; }
+  .roles p + p { margin-top: .8em; }
+  /* circled in red marker */
+  .roles mark { color: inherit; padding: .2em .4em; margin: -.2em -.15em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M38 9 C 96 -1 192 5 195 28 C 198 52 84 59 32 52 C 2 47 3 15 60 6' fill='none' stroke='%23E5361F' stroke-width='2.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
+
+  /* Greg: the cutout rig from TheWorkingDead, assembled from its atlas */
+  .rig-wrap { position: relative; justify-self: center; width: min(100%, 500px); }
+  /* positions in body-crop pixels (body 451×598) over a 630×660 stage; arms hang from the shoulder pins */
+  .rig { position: relative; width: 100%; aspect-ratio: 630 / 660; filter: drop-shadow(0 14px 14px rgba(28,26,23,.3)); }
+  .rig img { position: absolute; user-select: none; -webkit-user-drag: none; }
+  .rig .body { left: 14.286%; top: 0; width: 71.587%; }
+  .rig .stache { left: 39.812%; top: 44.46%; width: 24.762%; z-index: 4; transform-origin: 50% 20%; }
+  .rig .arm-l { left: 0.154%; top: 49.761%; width: 39.841%; transform-origin: 83.67% 16.32%; rotate: -30deg; z-index: 3; }
+  .rig .arm-r { left: 60.744%; top: 50.441%; width: 37.619%; transform-origin: 15.19% 15.87%; rotate: 30deg; z-index: 3; }
+  /* the "GRRG" sign from the game menu, shown on click */
+  .rig .grr { left: 54%; top: 36%; width: 48%; z-index: 5; opacity: 0; pointer-events: none; }
+  .rig { cursor: pointer; }
+  .note { position: absolute; font: 700 26px/1.05 var(--hand); color: var(--red); white-space: nowrap; }
+  .note svg { display: block; }
+  .note path { fill: none; stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .rig-wrap .note { right: -10px; bottom: -64px; rotate: -4deg; text-align: right; }
+
+  .sticker { position: absolute; filter: var(--sticker); pointer-events: none; }
+
+  /* masking-tape ribbon */
+  .ribbon { position: relative; z-index: 4; margin: 36px -20px; rotate: -1.6deg; padding: 10px 0; color: var(--paper-2);
+    background: linear-gradient(180deg, rgba(255,255,255,.1), transparent 45%), repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px), #232120; overflow: hidden; white-space: nowrap; box-shadow: 0 2px 6px rgba(28,26,23,.12); }
+  .ribbon span { display: inline-block; font: 700 30px/1 var(--hand); animation: run 40s linear infinite; }
+  @keyframes run { to { transform: translateX(-50%); } }
+
+  /* reel */
+  .reel-sec { position: relative; padding: 24px 24px 0; }
+  .reel { position: relative; display: block; padding: 14px 14px 46px; rotate: -.8deg; text-decoration: none; transition: rotate 300ms var(--ease-out); }
+  .reel video { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--ink); display: block; }
+  .reel .cap { position: absolute; left: 18px; bottom: 10px; font: 700 28px/1 var(--hand); }
+
+  /* section headings: torn strip + handwritten aside */
+  section { position: relative; padding: 96px 24px 24px; }
+  .head { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 36px; }
+  .head h2 { display: inline-block; background: var(--ink); color: var(--paper-2); padding: 6px 18px 2px; font: 900 clamp(44px, 7vw, 104px)/.95 var(--display); font-stretch: 62%; text-transform: uppercase; rotate: -1.5deg; }
+  .head .aside { font: 700 clamp(22px, 2vw, 28px)/1.1 var(--hand); color: var(--red); rotate: -3deg; padding-bottom: 10px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6 C 40 2, 80 9, 120 5 S 180 3, 198 6' fill='none' stroke='%23E5361F' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") left bottom / 100% 10px no-repeat; }
+  /* ransom-note headings: every letter cut from a different page (built by JS) */
+  .ransomed { display: inline-flex !important; flex-wrap: wrap; gap: .1em .3em; background: none !important; color: var(--ink) !important; padding: 0 !important; }
+  .r-ink, .ransom span:nth-child(1) { outline: 1px solid rgba(236,229,211,.25); }
+  .ransomed .r-word { display: inline-flex; gap: .05em; white-space: nowrap; }
+  .ransomed .r-word > span { display: inline-block; padding: .06em .09em 0; line-height: .92; box-shadow: 0 6px 12px -8px rgba(15,14,13,.65); }
+  .r-ink { background: var(--ink); color: var(--paper-2); font-family: var(--display); font-weight: 900; font-stretch: 62%; }
+  .r-paper { background: var(--paper-2); font-family: var(--serif); font-weight: 400; text-transform: lowercase; }
+  .r-red { background: var(--red); color: var(--paper-2); font-family: var(--display); font-weight: 800; font-stretch: 125%; font-size: .82em; }
+  .r-kraft { background: var(--kraft); font-family: var(--type); font-weight: 700; font-size: .86em; }
+  .r-neon { background: var(--neon); font-family: var(--display); font-weight: 900; font-stretch: 100%; }
+  .r-news { background: #fff; font-family: var(--serif); font-style: italic; text-transform: lowercase; outline: 2px solid var(--ink); outline-offset: -5px; }
+
+  /* work: cards pinned on the desk */
+  .desk { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px 48px; }
+  .card { position: relative; display: block; padding: 12px 12px 18px; text-decoration: none; transition: rotate 300ms var(--ease-out), translate 300ms var(--ease-out), box-shadow 300ms var(--ease-out); }
+  .card:nth-child(1) { rotate: -2deg; }
+  .card:nth-child(2) { rotate: 1.6deg; translate: 0 40px; }
+  .card:nth-child(3) { rotate: 1.2deg; }
+  .card:nth-child(4) { rotate: -2.4deg; translate: 0 40px; }
+  .card .shot { position: relative; aspect-ratio: 16/10; background: var(--ink); overflow: hidden; }
+  .card .shot img, .card .shot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  /* cheap colour print: punchy ink and a halftone screen; the screen lifts on hover */
+  .card .shot img { filter: contrast(1.3) saturate(1.45); transition: filter 300ms ease; }
+  .card .shot::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; mix-blend-mode: multiply; transition: opacity 300ms ease;
+    background: radial-gradient(circle, rgba(15,14,13,.6) .9px, transparent 1.5px) 0 0 / 4px 4px; }
+  .card.playing .shot::after { opacity: 0; }
+  .card .shot video { opacity: 0; transition: opacity 250ms ease; }
+  .card.playing .shot video { opacity: 1; }
+  .card h3 { margin-top: 14px; font: 900 clamp(34px, 4.4vw, 64px)/.9 var(--display); font-stretch: 62%; text-transform: uppercase; }
+  .card .meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; }
+  .card .label { display: inline-block; background: var(--ink); color: var(--paper-2); padding: 2px 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+  .card .sticker { z-index: 4; transition: transform 350ms var(--ease-out); }
+
+  /* awards: printed like the ads in a magazine */
+  .ads { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 40px; align-items: start; }
+  .ad { position: relative; padding: 22px 22px 18px; box-shadow: 0 14px 22px -14px rgba(0,0,0,.7); }
+  .ad-tag { position: absolute; top: -9px; left: 16px; padding: 2px 7px; background: var(--paper-2); color: var(--ink); font: 700 10px/1.2 var(--type); letter-spacing: .18em; text-transform: uppercase; }
+  .ad .big { display: block; font: 900 clamp(84px, 9vw, 132px)/.8 var(--display); font-stretch: 62%; }
+  .ad .head-l { display: block; margin-top: 10px; font: 900 clamp(26px, 2.6vw, 36px)/.95 var(--display); font-stretch: 70%; text-transform: uppercase; }
+  .ad .small { display: block; margin-top: 12px; padding-top: 10px; border-top: 2px solid currentColor; font: 700 12px/1.4 var(--type); letter-spacing: .1em; text-transform: uppercase; }
+  /* 1: black display ad with fluorescent figure */
+  .ad-1 { background: var(--ink); color: var(--paper-2); rotate: -1.5deg; outline: 1px solid rgba(236,229,211,.25); }
+  .ad-1 .big { color: var(--neon); }
+  /* 2: cut-out coupon */
+  .ad-2 { background: var(--paper-tex); background-blend-mode: soft-light, normal; color: var(--ink); rotate: 1.2deg; margin-top: 36px; outline: 3px dashed var(--ink); outline-offset: -10px; padding: 28px; }
+  .ad-2 .big { font-family: var(--serif); font-weight: 400; font-stretch: 100%; color: var(--red); }
+  .ad-2 .cut { position: absolute; top: -2px; right: 26px; font: 22px/1 var(--type); color: var(--ink); background: var(--paper-2); padding: 0 4px; }
+  /* 3: red ad with a starburst */
+  .ad-3 { background: var(--red); color: var(--paper-2); rotate: -.8deg; margin-top: 12px; }
+  .ad-3 .burst { top: -40px; right: -22px; width: 96px; font-size: 26px; }
+
+  /* Crayon Hand: the handwriting on the notebook page */
+  @font-face { font-family: 'Crayon Hand'; src: url('../assets/fonts/CrayonHand.ttf') format('truetype'); font-display: swap; }
+  .notebook { --kid: 'Crayon Hand', var(--hand); }
+  /* career: a page torn out of a spiral notebook, written by hand (the script cuts the holes and rips into a mask) */
+  .notebook-wrap { position: relative; max-width: 920px; rotate: -.8deg; filter: drop-shadow(0 12px 14px rgba(0,0,0,.45)); }
+  .notebook { position: relative; padding: 70px 32px 56px 96px; color: #22306A;
+    background:
+      radial-gradient(circle at 84% 74%, rgba(120,72,24,.05) 0 50px, rgba(120,72,24,.2) 53px, rgba(120,72,24,.07) 57px, transparent 60px),
+      radial-gradient(circle at 87% 71%, transparent 0 47px, rgba(120,72,24,.1) 49px, transparent 52px),
+      repeating-linear-gradient(transparent 0 39px, rgba(60,110,170,.34) 39px 40px) 0 66px / 100% 100%,
+      var(--paper-tex);
+    background-blend-mode: normal, normal, normal, soft-light, normal; }
+  .notebook::before { content: ''; position: absolute; top: 0; bottom: 0; left: 74px; width: 2px; background: rgba(217,65,43,.5); }
+  .notebook li { list-style: none; display: grid; grid-template-columns: 150px 1fr auto; gap: 16px; align-items: baseline; min-height: 40px; line-height: 40px; }
+  .notebook .d { font: 400 22px/40px var(--kid); white-space: nowrap; }
+  .notebook b { font: 400 clamp(26px, 2.8vw, 34px)/40px var(--kid); color: #17171A; }
+  .notebook .hand { font: 400 23px/40px var(--kid); color: var(--red); }
+  /* note scribbled in the margin */
+  .notebook .note { position: absolute; left: -86px; font: 400 22px/1 var(--kid); color: var(--red); rotate: -9deg; translate: 0 -2px; }
+  .notebook li { position: relative; }
+  .notebook .note::after { content: ''; position: absolute; inset: -6px -8px; border: 2px solid currentColor; border-radius: 50% 45% 55% 40%; rotate: 4deg; }
+  .notebook-wrap > .tape { z-index: 3; }
+
+  /* contact */
+  .contact { position: relative; margin-top: 120px; background: var(--ink); color: var(--paper-2); padding: 96px 24px 28px; }
+  .contact .kicker { display: block; margin-bottom: 18px; color: var(--paper-2); }
+  .contact h2 { font: 900 clamp(72px, 16vw, 260px)/.82 var(--display); font-stretch: 62%; text-transform: uppercase; }
+  .contact .mail { position: relative; display: inline-block; margin-top: 28px; font: 700 clamp(30px, 3.6vw, 52px)/1 var(--hand); color: var(--paper-2); text-decoration: none; }
+  .contact .mail svg { position: absolute; left: -2%; bottom: -14px; width: 104%; height: 18px; overflow: visible; }
+  .contact .mail path { fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 400ms var(--ease-in-out); }
+  .contact .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 72px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+
+  /* modal */
+  .modal { position: fixed; inset: 0; z-index: 70; background: rgba(28,26,23,.94); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 0s 180ms; }
+  .modal.on { opacity: 1; visibility: visible; transition: opacity 250ms ease; }
+  .modal video { width: min(1280px, 100%); max-height: 86vh; background: #000; transform: scale(.96); transition: transform 180ms var(--ease-out); }
+  .modal.on video { transform: scale(1); transition-duration: 300ms; }
+  .modal .x { position: absolute; top: 16px; right: 24px; color: var(--paper-2); background: none; border: 0; font: 700 26px/1 var(--hand); padding: 6px; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .bar nav a:hover { background-size: 100% 2px; }
+    .lang button:hover { background: var(--on-bg); color: var(--ink); }
+    .ransom span:hover { transform: translateY(-6px) rotate(3deg); }
+    .reel:hover { rotate: 0deg; }
+    .card:hover { rotate: 0deg; translate: 0 -8px; box-shadow: 0 2px 0 rgba(28,26,23,.06), 0 30px 40px -18px rgba(28,26,23,.55); }
+    .card:hover .sticker { transform: translate(6px, -10px) rotate(-6deg); }
+    .card:hover .shot img { filter: none; }
+    .card:hover .shot::after { opacity: 0; }
+    .contact .mail:hover path { stroke-dashoffset: 1; }
+  }
+
+  @media (max-width: 820px) {
+    .bar nav { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: 0; }
+    .rig-wrap { width: min(82%, 380px); margin-bottom: 40px; }
+    .desk { grid-template-columns: 1fr; gap: 48px; }
+    .ads { grid-template-columns: 1fr; gap: 44px; }
+    .ad-2, .ad-3 { margin-top: 0; }
+    .card:nth-child(n) { translate: 0 0; }
+    .notebook { padding: 66px 20px 64px 58px; }
+    .notebook::before { left: 42px; }
+    .notebook li { grid-template-columns: 1fr; gap: 0; line-height: 40px; }
+    .notebook li + li { margin-top: 40px; }
+    .notebook .note { left: -50px; }
+    .contact { padding-top: 120px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ribbon span { animation: none; }
+    .ransom span:hover, .card:hover, .card:hover .sticker { transform: none; translate: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="ink"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 .85 1"/></feComponentTransfer></filter>
+</svg>
+
+<header class="bar">
+  <a href="#" class="press"><b>Toni Díaz Plaza</b> — portfolio</a>
+  <nav>
+    <a href="#trabajo" data-i18n="nav_work">trabajo</a>
+    <a href="#premios" data-i18n="nav_awards">premios</a>
+    <a href="#recorrido" data-i18n="nav_career">recorrido</a>
+    <a href="#contacto" data-i18n="nav_contact">contacto</a>
+  </nav>
+  <span class="lang"><button class="on press" data-lang="es">ES</button>/<button class="press" data-lang="en">EN</button></span>
+</header>
+
+<div class="hero">
+  <div class="issue"><span data-i18n="issue_no">Nº 01</span><span data-i18n="issue_date">Portfolio · Noviembre 2026</span><span data-i18n="issue_ed">Edición ES / EN</span></div>
+  <div>
+    <h1 aria-label="Toni Díaz Plaza">
+      <span class="ransom" aria-hidden="true"><span>T</span><span>o</span><span>N</span><span>i</span></span>
+      <span class="rest misreg" aria-hidden="true">Díaz Plaza</span>
+    </h1>
+    <div class="roles" data-i18n="roles"><p>Siempre me ha gustado el arte. Empecé dibujando y produciendo música, y estudiando el ciclo superior de Animaciones 3D, Juegos y Entornos Interactivos me di cuenta de que podía vivir de esto. Dejó de ser un sueño lejano y se convirtió en mi objetivo.</p><p>Mi perfil es generalista: animación 2D y 3D, VFX, tech art y programación en Unity. Rindo mejor en <mark>equipos pequeños</mark>, donde paso de lo técnico a lo artístico según lo que pidan el proyecto y sus plazos.</p></div>
+    <div class="barcode" aria-hidden="true"><svg id="barcode" viewBox="0 0 95 40" preserveAspectRatio="none"></svg><span>8 412026 110012</span></div>
+  </div>
+
+  <div class="rig-wrap">
+    <div class="rig" id="rig" aria-label="Greg, rig cutout de TheWorkingDead" role="img">
+      <img class="body" src="../assets/mixed/greg_body.png" alt="">
+      <img class="stache" src="../assets/mixed/greg_stache.png" alt="">
+      <img class="arm-l" src="../assets/mixed/greg_arm_l.png" alt="">
+      <img class="arm-r" src="../assets/mixed/greg_arm_r.png" alt="">
+      <img class="grr" src="../assets/mixed/greg_grr.png" alt="">
+    </div>
+    <p class="note" data-i18n="rig_note">mi rig cutout de Greg ↑<br>(TheWorkingDead)</p>
+  </div>
+
+</div>
+
+<div class="ribbon" aria-hidden="true"><span>
+  animación 2D ✶ VFX ✶ technical art ✶ Unity ✶ animación 3D ✶ shaders ✶ rigging ✶ C# ✶
+  animación 2D ✶ VFX ✶ technical art ✶ Unity ✶ animación 3D ✶ shaders ✶ rigging ✶ C# ✶&nbsp;
+</span></div>
+
+<div class="reel-sec">
+  <a class="reel paper torn" href="#reel" id="reelBtn" aria-label="Ver el demo reel con sonido">
+    <span class="tape tl"></span><span class="tape tr"></span>
+    <video id="reelLoop" src="../assets/reel/reel_loop_540.mp4" poster="../assets/reel/poster_reel.jpg" autoplay muted loop playsinline></video>
+    <span class="cap" data-i18n="reel_cap">demo reel · 1:47</span>
+  </a>
+</div>
+
+<section id="trabajo">
+  <div class="head"><span class="kicker" data-i18n="k1">Sección 01 · Reportajes</span><h2 class="torn-h" data-i18n="work">Trabajo</h2><span class="aside" data-i18n="work_aside">pasa por encima para verlos moverse →</span></div>
+  <div class="desk">
+    <a class="card paper torn" href="leafblade.html" data-video="../assets/reel/hover_leafblade.mp4">
+      <span class="tape masking tl"></span>
+      <div class="shot"><img src="../assets/monsterfarm/video/poster_mf_trailer_1080.jpg" alt="Leafblade" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <h3 class="misreg">Leafblade</h3>
+      <span class="burst">Bosses</span>
+      <div class="meta"><span class="label">Anim 2D · VFX · Bosses</span><span>Wayward Games · 2026</span></div>
+    </a>
+    <a class="card paper torn" href="twd.html" data-video="../assets/reel/hover_twd.mp4">
+      <span class="pin tc"></span>
+      <div class="shot"><img src="../assets/twd/cutout/portada_cinematica.jpg" alt="TheWorkingDead" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <h3 class="misreg">TheWorkingDead</h3>
+      <span class="burst" data-i18n="b_twd">×2 premios</span>
+      <div class="meta"><span class="label">Art dir · Anim · Código</span><span>Fizh Studio · 2026</span></div>
+      <img class="sticker" src="../assets/mixed/zombie_sticker.png" alt="" style="left:-44px; top:-36px; width:110px; rotate:-10deg">
+    </a>
+    <a class="card paper torn" href="webi.html" data-video="../assets/webi/video/webi_turn_sculpt.mp4">
+      <span class="clip red tl"></span>
+      <div class="shot"><img src="../assets/webi/img/sculpt_front.jpg" alt="Webi" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <h3 class="misreg">Webi</h3>
+      <span class="burst pink">3D</span>
+      <div class="meta"><span class="label">Concept → Rig → Anim</span><span><span data-i18n="personal">Proyecto personal</span> · 2025</span></div>
+    </a>
+    <a class="card paper torn" href="visuales.html" data-video="../assets/visuales/loops/movil/caras.mp4">
+      <span class="staple tc"></span>
+      <div class="shot"><img src="../assets/visuales/loops/portada/caras.jpg" alt="" loading="lazy"><video muted loop playsinline preload="none"></video></div>
+      <h3 class="misreg" data-i18n="vis">Visuales</h3>
+      <span class="burst" data-i18n="b_vis">Música propia</span>
+      <div class="meta"><span class="label">VJ loops · VirtualDJ</span><span data-i18n="personal">Proyecto personal</span></div>
+    </a>
+  </div>
+</section>
+
+<section id="premios">
+  <div class="head"><span class="kicker" data-i18n="k2">Sección 02 · Palmarés</span><h2 data-i18n="awards">Premios</h2><span class="aside" data-i18n="awards_aside">espacio publicitario</span></div>
+  <div class="ads">
+    <article class="ad ad-1">
+      <span class="pin tr y"></span>
+      <span class="ad-tag" data-i18n="ad_tag">Publicidad</span>
+      <span class="big">×2</span>
+      <span class="head-l" data-i18n="ad1">Premios a mejor proyecto</span>
+      <span class="small">TheWorkingDead · Fizh Studio · 2026</span>
+    </article>
+    <article class="ad ad-2">
+      <span class="staple tc"></span>
+      <span class="ad-tag" data-i18n="ad_tag2">Publicidad</span>
+      <span class="cut" aria-hidden="true">✂</span>
+      <span class="big">Nº1</span>
+      <span class="head-l" data-i18n="ad2">Mejor trayectoria académica</span>
+      <span class="small">Florida Universitària</span>
+    </article>
+    <article class="ad ad-3">
+      <span class="tape tc"></span>
+      <span class="ad-tag" data-i18n="ad_tag3">Publicidad</span>
+      <span class="burst" aria-hidden="true">★</span>
+      <span class="big" data-i18n="ad3big">Premio</span>
+      <span class="head-l">Animation Talent Show</span>
+      <span class="small">Florida Universitària</span>
+    </article>
+  </div>
+</section>
+
+<section id="recorrido">
+  <div class="head"><span class="kicker" data-i18n="k3">Sección 03 · Trayectoria</span><h2 data-i18n="career">Recorrido</h2></div>
+  <div class="notebook-wrap">
+    <span class="tape masking tr"></span>
+    <ul class="notebook">
+      <li><span class="d">2025 – 2026</span><b>Leafblade</b><span class="hand" data-i18n="c1">anim 2D · VFX</span></li>
+      <li><span class="note" aria-hidden="true">×2 ★</span><span class="d">2025 – 2026</span><b>TheWorkingDead</b><span class="hand" data-i18n="c2">dirección de arte · código</span></li>
+      <li><span class="d">2026</span><b>Oniria</b><span class="hand" data-i18n="c3">modelado 3D</span></li>
+      <li><span class="d">2026</span><b>Everflame</b><span class="hand" data-i18n="c3">modelado 3D</span></li>
+      <li><span class="d">2026</span><b>Hunting Souls</b><span class="hand">concept art</span></li>
+      <li><span class="d">2024 – 2026</span><b>Florida Universitària</b><span class="hand" data-i18n="c5">formación</span></li>
+    </ul>
+  </div>
+</section>
+
+<footer class="contact torn-top" id="contacto">
+  <span class="kicker" data-i18n="k4">Sección 04 · Contacto</span>
+  <h2 class="misreg" data-i18n="talk">Hablemos</h2>
+  <a class="mail" href="mailto:andipl2323@gmail.com">andipl2323@gmail.com<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 6 C 20 2, 40 9, 60 5 S 90 3, 99 6"/></svg></a>
+  <div class="foot"><span>The Rookies · itch.io · LinkedIn</span><span>© 2026 Toni Díaz Plaza</span></div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Demo reel">
+  <button class="x press" id="closeModal" data-i18n="close">cerrar ✕</button>
+  <video id="fullReel" controls preload="none" src="../assets/reel/reel_720.mp4" poster="../assets/reel/poster_reel.jpg"></video>
+</div>
+
+<script>
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // torn edges: a jagged polygon per element, different every time like real paper
+  const jag = (n, side) => Array.from({ length: n + 1 }, (_, i) => {
+    const t = (i / n) * 100, d = (Math.random() * 5 + 1).toFixed(1);
+    return side === 'top' ? `${t}% ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${t}%`
+         : side === 'bottom' ? `${100 - t}% calc(100% - ${d}px)` : `${d}px ${100 - t}%`;
+  });
+  document.querySelectorAll('.torn').forEach(el => {
+    el.style.clipPath = `polygon(${[...jag(40, 'top'), ...jag(24, 'right'), ...jag(40, 'bottom'), ...jag(24, 'left')].join(',')})`;
+  });
+  document.querySelectorAll('.torn-top').forEach(el => {
+    const top = Array.from({ length: 61 }, (_, i) => `${(i / 60) * 100}% ${(Math.random() * 14).toFixed(1)}px`);
+    el.style.clipPath = `polygon(${top.join(',')}, 100% 100%, 0 100%)`;
+  });
+  // the clip-path cuts off stickers/tape that hang outside cards, so tear an inner layer instead
+  // notebook page: spiral holes (some ripped open), a ragged top edge and a torn-off corner, cut as a mask
+  const nb = document.querySelector('.notebook');
+  if (nb) {
+    const cut = () => {
+      let seed = 11; const R = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const w = nb.offsetWidth, h = nb.offsetHeight, pts = [];
+      for (let x = 0; x <= w; x += 7) pts.push([x, 2 + R() * 7]);
+      pts.push([w, 12]);
+      const cy = h - 58 - R() * 20, cx = w - 70 - R() * 40;
+      for (let y = 12; y < cy; y += 40) pts.push([w - R() * 1.5, y]);
+      for (let i = 0; i <= 12; i++) { const t = i / 12; pts.push([w + (cx - w) * t + (R() - .5) * 7, cy + (h - cy) * t + (R() - .5) * 7]); }
+      for (let x = cx; x > 0; x -= 30) pts.push([x, h - R() * 2]);
+      pts.push([0, h]);
+      const r = n => n.toFixed(1);
+      let holes = '';
+      for (let x = 30; x < w - 20; x += 34) {
+        holes += `<circle cx='${x}' cy='27' r='7'/>`;
+        // some holes ripped through to the edge when the page was pulled out
+        if (R() < .32) holes += `<path d='M${r(x - 6.5)} 27 L${r(x - 4 - R() * 3)} ${r(14 + R() * 4)} L${r(x - 6 - R() * 3)} 0 L${r(x + 6 + R() * 3)} 0 L${r(x + 4 + R() * 3)} ${r(13 + R() * 5)} L${r(x + 6.5)} 27Z'/>`;
+      }
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><mask id='m'><rect width='100%' height='100%' fill='white'/><g fill='black'>${holes}</g></mask><path mask='url(#m)' fill='white' d='M${pts.map(([x, y]) => r(x) + ' ' + r(y)).join('L')}Z'/></svg>`;
+      nb.style.webkitMaskImage = nb.style.maskImage = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+      nb.style.webkitMaskSize = nb.style.maskSize = '100% 100%';
+    };
+    new ResizeObserver(cut).observe(nb);
+    // each line written slightly crooked
+    nb.querySelectorAll('li').forEach((li, i) => { li.style.rotate = `${[-.5, .3, -.2, .6, -.4, .2][i % 6]}deg`; li.style.translate = `${[0, 4, -2, 3, 1, -3][i % 6]}px 0`; });
+  }
+
+  document.querySelectorAll('.card, .reel').forEach(el => {
+    const cp = el.style.clipPath; el.style.clipPath = '';
+    const layer = document.createElement('span');
+    layer.style.cssText = `position:absolute;inset:0;z-index:-1;background:var(--paper-tex);background-blend-mode:soft-light,normal;clip-path:${cp}`;
+    el.style.background = 'none'; el.style.isolation = 'isolate'; el.prepend(layer);
+  });
+
+  // Greg assembles from the atlas layout into the rig, then follows the pointer on his pins
+  const rig = document.getElementById('rig');
+  // `from` = where each piece sits in the original atlas, relative to its place on the rig
+  const parts = {
+    stache: { el: rig.querySelector('.stache'), from: '-10.3% -519%', r0: 0, r1: 0 },
+    armL: { el: rig.querySelector('.arm-l'), from: '-73.3% 37.2%', r0: 0, r1: -30 },
+    armR: { el: rig.querySelector('.arm-r'), from: '82.3% 41.3%', r0: 0, r1: 30 }
+  };
+  // mixed.html?edit lets you pose Greg by hand
+  const editing = new URLSearchParams(location.search).has('edit');
+  let swing = false, swingAt = 0;
+  if (!reduce && !editing) {
+    const anims = Object.values(parts).map((p, i) => p.el.animate(
+      [{ translate: p.from, rotate: `${p.r0}deg` }, { translate: '0 0', rotate: `${p.r1}deg` }],
+      { duration: 900, delay: 350 + i * 90, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', fill: 'backwards' }));
+    Promise.all(anims.map(a => a.finished)).then(() => {
+      // a small settle on the pins once they snap together
+      [parts.armL, parts.armR].forEach((p, i) => p.el.animate(
+        [{ rotate: `${p.r1 + (i ? -7 : 7)}deg` }, { rotate: `${p.r1}deg` }], { duration: 500, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' }));
+      setTimeout(() => { swing = true; swingAt = performance.now(); }, 500);
+    });
+  }
+  if (!reduce && !editing) {
+    let target = 0, cur = 0, t0 = performance.now();
+    addEventListener('pointermove', e => {
+      const r = rig.getBoundingClientRect();
+      target = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (innerWidth / 2)));
+    });
+    (function loop(now) {
+      cur += (target - cur) * .08;
+      if (swing) {
+        // the swing fades in over a second and starts at zero, so the arms leave the rest pose smoothly
+        const t = now - swingAt, k = Math.min(1, t / 1200) ** 2;
+        const idle = Math.sin(t / 900) * 2.5;
+        parts.armL.el.style.rotate = `${parts.armL.r1 + k * (cur * 6 + idle)}deg`;
+        parts.armR.el.style.rotate = `${parts.armR.r1 + k * (cur * 6 - idle)}deg`;
+        parts.stache.el.style.rotate = `${parts.stache.r1 + k * Math.sin(t / 650) * 3}deg`;
+      }
+      requestAnimationFrame(loop);
+    })(t0);
+  }
+  // edit mode: drag a piece to move it, scroll over it to rotate (shift = 5°); the pose is saved in localStorage
+  if (editing) {
+    let pose = {};
+    try { pose = JSON.parse(localStorage.getItem('gregPose')) || {}; } catch {}
+    const panel = document.createElement('pre');
+    panel.style.cssText = 'position:fixed;left:16px;bottom:16px;z-index:100;margin:0;padding:12px 14px;background:var(--ink);color:var(--paper-2);font:12px/1.6 var(--mono, monospace)';
+    document.body.append(panel);
+    const apply = (k, p) => { p.el.style.left = pose[k].left + '%'; p.el.style.top = pose[k].top + '%'; p.el.style.rotate = pose[k].rotate + 'deg'; };
+    const show = () => {
+      panel.textContent = 'arrastra para mover · rueda para girar (shift = 5°)\n' +
+        Object.entries(pose).map(([k, v]) => `${k}: left ${v.left}% · top ${v.top}% · rotate ${v.rotate}°`).join('\n') + '\nse guarda solo';
+      try { localStorage.setItem('gregPose', JSON.stringify(pose)); } catch {}
+    };
+    Object.entries(parts).forEach(([k, p]) => {
+      if (!pose[k]) {
+        const cs = getComputedStyle(p.el);
+        pose[k] = { left: +(parseFloat(cs.left) / rig.offsetWidth * 100).toFixed(3), top: +(parseFloat(cs.top) / rig.offsetHeight * 100).toFixed(3), rotate: p.r1 };
+      }
+      apply(k, p);
+      p.el.style.cursor = 'grab'; p.el.style.touchAction = 'none';
+      p.el.addEventListener('pointerdown', e => {
+        e.preventDefault(); p.el.setPointerCapture(e.pointerId);
+        const x0 = e.clientX, y0 = e.clientY, { left, top } = pose[k];
+        const move = ev => {
+          pose[k].left = +(left + (ev.clientX - x0) / rig.offsetWidth * 100).toFixed(3);
+          pose[k].top = +(top + (ev.clientY - y0) / rig.offsetHeight * 100).toFixed(3);
+          apply(k, p); show();
+        };
+        p.el.addEventListener('pointermove', move);
+        p.el.addEventListener('pointerup', () => p.el.removeEventListener('pointermove', move), { once: true });
+      });
+      p.el.addEventListener('wheel', e => {
+        e.preventDefault();
+        pose[k].rotate += Math.sign(e.deltaY) * (e.shiftKey ? 5 : 1);
+        apply(k, p); show();
+      }, { passive: false });
+    });
+    show();
+  }
+  // click: Greg growls like in the game menu (Anim_PaperGreg_Grr + the GRRG sign, 0.5 s)
+  const grr = rig.querySelector('.grr');
+  rig.addEventListener('click', () => {
+    if (reduce || editing) return;
+    // arms snap up with a little overshoot, tremble while he growls, then ease back to where the idle swing has them
+    const raise = (p, d) => {
+      const rest = parseFloat(p.el.style.rotate) || p.r1;
+      p.el.getAnimations().forEach(a => a.cancel());
+      p.el.animate([
+        { rotate: `${rest}deg`, easing: 'cubic-bezier(0.34, 1.4, 0.64, 1)' },
+        { rotate: `${p.r1 + d}deg`, offset: .25 },
+        { rotate: `${p.r1 + d * .94}deg`, offset: .4 },
+        { rotate: `${p.r1 + d}deg`, offset: .55, easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+        { rotate: `${rest}deg` }
+      ], { duration: 650 });
+    };
+    raise(parts.armL, 66); raise(parts.armR, -64);
+    // the moustache bristles up and twitches
+    const st = parts.stache.r1;
+    parts.stache.el.animate([
+      { rotate: `${st}deg`, translate: '0 0' },
+      { rotate: `${st + 12}deg`, translate: '0 -14%', offset: .2 },
+      { rotate: `${st - 10}deg`, translate: '0 -14%', offset: .35 },
+      { rotate: `${st + 10}deg`, translate: '0 -14%', offset: .5 },
+      { rotate: `${st - 8}deg`, translate: '0 -14%', offset: .65 },
+      { rotate: `${st + 6}deg`, translate: '0 -12%', offset: .8 },
+      { rotate: `${st}deg`, translate: '0 0' }
+    ], { duration: 500, easing: 'ease-in-out' });
+    // pop in, then a small shake every 83 ms
+    grr.animate([
+      { opacity: 1, scale: .43, rotate: '0deg', translate: '-25% 25%', easing: 'ease-out' },
+      { opacity: 1, scale: 1, rotate: '7deg', translate: '0 0', offset: .25, easing: 'steps(1, end)' },
+      { opacity: 1, scale: 1, rotate: '-4deg', translate: '0 0', offset: .46, easing: 'steps(1, end)' },
+      { opacity: 1, scale: 1, rotate: '7deg', translate: '0 0', offset: .67, easing: 'steps(1, end)' },
+      { opacity: 1, scale: 1, rotate: '-4deg', translate: '0 0', offset: .88, easing: 'steps(1, end)' },
+      { opacity: 1, scale: 1, rotate: '7deg', translate: '0 0' }
+    ], { duration: 400 });
+  });
+
+  // project cards play their clip on hover
+  if (fine) document.querySelectorAll('.card').forEach(c => {
+    const v = c.querySelector('video');
+    c.addEventListener('pointerenter', () => { if (!v.getAttribute('src')) v.src = c.dataset.video; v.play().then(() => c.classList.add('playing')).catch(() => {}); });
+    c.addEventListener('pointerleave', () => { c.classList.remove('playing'); v.pause(); });
+  });
+
+  const loopV = document.getElementById('reelLoop');
+  new IntersectionObserver(([e]) => e.isIntersecting ? loopV.play().catch(() => {}) : loopV.pause()).observe(loopV);
+
+  const modal = document.getElementById('modal'), full = document.getElementById('fullReel');
+  const reelBtn = document.getElementById('reelBtn'), closeBtn = document.getElementById('closeModal');
+  reelBtn.addEventListener('click', e => { e.preventDefault(); modal.classList.add('on'); loopV.pause(); full.play(); closeBtn.focus(); });
+  const close = () => {
+    if (!modal.classList.contains('on')) return;
+    modal.classList.remove('on'); full.pause(); loopV.play().catch(() => {}); reelBtn.focus({ preventScroll: true });
+  };
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  const en = {
+    personal: 'Personal project',
+    issue_no: 'No. 01', issue_date: 'Portfolio · November 2026', issue_ed: 'ES / EN edition',
+    k1: 'Section 01 · Features', k2: 'Section 02 · Honours', k3: 'Section 03 · Track record', k4: 'Section 04 · Contact',
+    b_twd: '×2 awards', b_vis: 'Own music',
+    nav_work: 'work', nav_awards: 'awards', nav_career: 'career', nav_contact: 'contact',
+    roles: '<p>I&rsquo;ve always loved art. I started out drawing and producing music, and while studying the Higher Diploma in 3D Animation, Games and Interactive Environments I realised I could actually make a living from it. It stopped being a distant dream and became my goal.</p><p>My profile is generalist: 2D and 3D animation, VFX, tech art and Unity programming. I do my best work in <mark>small teams</mark>, where I move between the technical and the artistic side depending on what the project and its deadlines need.</p>',
+    rig_note: 'my cutout rig of Greg ↑<br>(TheWorkingDead)', reel_cap: 'demo reel · 1:47',
+    work: 'Work', work_aside: 'hover to see them move →', char3d: '3D character', vis: 'Visuals',
+    awards: 'Awards', awards_aside: 'advertising space', ad_tag: 'Advertisement', ad_tag2: 'Advertisement', ad_tag3: 'Advertisement',
+    ad1: 'Best project awards', ad2: 'Best academic record', ad3big: 'Award',
+    career: 'Career', c1: '2D anim · VFX', c2: 'art direction · code', c3: '3D modelling', c5: 'education',
+    talk: "Let's talk", close: 'close ✕'
+  };
+  const es = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => es[el.dataset.i18n] = el.innerHTML);
+
+  // ransom-note headings: each letter gets a different cut-out, picked from the word so it stays put between visits
+  const CUTS = ['r-ink', 'r-paper', 'r-red', 'r-kraft', 'r-neon', 'r-news'];
+  const ransom = el => {
+    const text = el.textContent.trim();
+    let h = [...text].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 9973, 7), prev = -1;
+    el.setAttribute('aria-label', text);
+    el.classList.add('ransomed');
+    // letters are grouped per word so a word never breaks across lines
+    el.innerHTML = text.split(/\s+/).map(word => '<span class="r-word" aria-hidden="true">' + [...word].map(ch => {
+      h = (h * 7919 + 104729) % 9973;
+      let c = h % CUTS.length; if (c === prev) c = (c + 1) % CUTS.length; prev = c;
+      return `<span class="${CUTS[c]}" style="rotate:${((h >> 3) % 11 - 5) * .8}deg;translate:0 ${((h >> 5) % 5 - 2) * .02}em">${ch}</span>`;
+    }).join('') + '</span>').join('');
+  };
+  const ransomHeads = () => document.querySelectorAll('.head h2').forEach(ransom);
+  ransomHeads();
+
+  // barcode on the cover
+  const bc = document.getElementById('barcode');
+  let x = 0, bars = '';
+  while (x < 93) { const w = [1, 1, 2, 3][Math.floor(Math.random() * 4)]; if (Math.random() > .45) bars += `<rect x="${x}" width="${w}" height="40"/>`; x += w; }
+  bc.innerHTML = bars;
+  // the choice is shared with the project pages
+  const setLang = l => {
+    const dict = l === 'en' ? en : es;
+    document.querySelectorAll('[data-i18n]').forEach(el => { if (dict[el.dataset.i18n]) el.innerHTML = dict[el.dataset.i18n]; });
+    ransomHeads();
+    document.documentElement.lang = l;
+    document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x.dataset.lang === l));
+    try { localStorage.setItem('lang', l); } catch {}
+  };
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch {}
+  if (saved === 'en') setLang('en');
+</script>
+</body>
+</html>

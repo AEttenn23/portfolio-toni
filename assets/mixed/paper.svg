@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480">
+  <filter id="paper" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <!-- crumple: low-frequency folds -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="5" seed="11" stitchTiles="stitch" result="crumple"/>
+    <!-- fibres: long horizontal strands -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.7 0.035" numOctaves="2" seed="4" stitchTiles="stitch" result="fibres"/>
+    <!-- tooth: fine grain -->
+    <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="9" stitchTiles="stitch" result="tooth"/>
+    <feComposite in="crumple" in2="fibres" operator="arithmetic" k2="1" k3="0.16" result="h1"/>
+    <feComposite in="h1" in2="tooth" operator="arithmetic" k2="1" k3="0.12" result="height"/>
+    <feDiffuseLighting in="height" surfaceScale="3.2" diffuseConstant="1" lighting-color="#fff" result="lit">
+      <feDistantLight azimuth="225" elevation="55"/>
+    </feDiffuseLighting>
+    <!-- warm paper: light areas cream, shaded folds a little darker and browner -->
+    <feColorMatrix in="lit" type="matrix" result="tinted" values="
+      0.22 0 0 0 0.76
+      0.22 0 0 0 0.72
+      0.20 0 0 0 0.64
+      0    0 0 0 1"/>
+    <!-- age blotches: very soft, large -->
+    <feTurbulence type="fractalNoise" baseFrequency="0.004" numOctaves="2" seed="21" stitchTiles="stitch" result="blot"/>
+    <feColorMatrix in="blot" type="matrix" result="blotA" values="
+      0 0 0 0 0.62
+      0 0 0 0 0.48
+      0 0 0 0 0.30
+      0 0 0 -1.6 0.95"/>
+    <feComponentTransfer in="blotA" result="blotSoft"><feFuncA type="linear" slope="0.28"/></feComponentTransfer>
+    <feMerge><feMergeNode in="tinted"/><feMergeNode in="blotSoft"/></feMerge>
+  </filter>
+  <rect width="480" height="480" filter="url(#paper)"/>
+</svg>

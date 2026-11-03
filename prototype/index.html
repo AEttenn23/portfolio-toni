@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toni Díaz Plaza — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;800;900&family=Silkscreen&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8DF;
+    --ink: #1B1B1B;
+    --pink: #FF5C8A;
+    --display: 'Unbounded', sans-serif;
+    --pixel: 'Silkscreen', monospace;
+    --body: 'Space Grotesk', sans-serif;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--cream); overflow-x: clip; scrollbar-color: var(--ink) var(--cream); }
+  body { background: var(--cream); color: var(--ink); font-family: var(--body); overflow-x: clip; caret-color: var(--pink); }
+  a, button { color: inherit; }
+  ::selection { background: var(--pink); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--pink); outline-offset: 3px; }
+  .pixel { font-family: var(--pixel); font-size: 12px; letter-spacing: .02em; text-transform: uppercase; }
+
+  /* pressable feedback */
+  .press { transition: transform 160ms var(--ease-out); }
+  .press:active { transform: scale(0.97); }
+
+  /* system bar */
+  .sys { position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 24px; background: var(--cream); border-bottom: 2px solid var(--ink); }
+  .sys nav { display: flex; gap: 22px; }
+  .sys nav a, .lang button { text-decoration: none; padding: 1px 3px; transition: background-color 150ms ease, color 150ms ease, transform 160ms var(--ease-out); }
+  .lang button { background: none; border: 0; font: inherit; }
+  .lang button.on { background: var(--ink); color: var(--cream); }
+
+  /* marquee: constant motion, linear */
+  .marquee { background: var(--ink); color: var(--cream); overflow: hidden; white-space: nowrap; padding: 7px 0; }
+  .marquee span { display: inline-block; animation: run 28s linear infinite; }
+  @keyframes run { to { transform: translateX(-50%); } }
+
+  /* hero: the one authored moment — lines wipe up into place */
+  .hero { position: relative; padding: 48px 24px 32px; }
+  .hero h1 { font-family: var(--display); font-weight: 900; font-size: clamp(56px, 13vw, 220px); line-height: .86; letter-spacing: -.03em; text-transform: uppercase; }
+  .hero h1 .line { display: block; overflow: hidden; padding: .14em 0 .04em; margin-top: -.14em; }
+  .hero h1 .line > span { display: block; animation: rise 900ms var(--ease-out) both; }
+  .hero h1 .line:nth-child(2) > span { animation-delay: 70ms; }
+  .hero h1 .line:nth-child(3) > span { animation-delay: 140ms; }
+  @keyframes rise { from { transform: translateY(105%); } }
+  .hero .row { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+  .hero .roles { font-family: var(--display); font-weight: 400; font-size: clamp(16px, 1.6vw, 24px); max-width: 40ch; line-height: 1.35; text-wrap: balance; }
+  .doodle { position: absolute; pointer-events: none; }
+  .doodle path { fill: none; stroke: var(--pink); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw 1100ms 650ms var(--ease-in-out) forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* reel */
+  .reel { position: relative; margin: 0 24px; border: 2px solid var(--ink); background: var(--ink); aspect-ratio: 16/9; max-height: 78vh; width: calc(100% - 48px); overflow: hidden; display: block; transition: transform 160ms var(--ease-out); }
+  .reel:active { transform: scale(0.99); }
+  .reel video { width: 100%; height: 100%; object-fit: cover; opacity: .8; transition: opacity 250ms ease; }
+  .reel .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 900; font-size: clamp(28px, 6vw, 96px); color: var(--cream); text-transform: uppercase; letter-spacing: -.02em; mix-blend-mode: difference; }
+  .reel .tag { position: absolute; left: 12px; bottom: 10px; color: var(--cream); }
+
+  /* sections */
+  section { padding: 88px 24px 24px; }
+  .label { display: flex; gap: 12px; margin-bottom: 18px; overflow: hidden; white-space: nowrap; }
+
+  /* work list: ink wipes in from the left, exits faster than it enters */
+  .work { border-top: 2px solid var(--ink); }
+  .work a { position: relative; isolation: isolate; display: grid; grid-template-columns: 70px 1fr auto; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 2px solid var(--ink); text-decoration: none; transition: color 200ms ease; }
+  .work a::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--ink); clip-path: inset(0 100% 0 0); transition: clip-path 200ms var(--ease-out); }
+  .work a > * { transition: transform 200ms var(--ease-out); }
+  .work a:focus-visible { color: var(--cream); }
+  .work a:focus-visible::before { clip-path: inset(0 0 0 0); }
+  .work h2 { font-family: var(--display); font-weight: 900; font-size: clamp(26px, 5.6vw, 100px); line-height: .95; text-transform: uppercase; letter-spacing: -.03em; }
+  .work .meta { text-align: right; line-height: 1.6; }
+
+  /* hover preview: JS moves the frame with lag + tilt, CSS handles enter/exit */
+  .preview { position: fixed; left: 0; top: 0; z-index: 30; width: 340px; aspect-ratio: 16/9; pointer-events: none; will-change: transform; }
+  .preview-in { width: 100%; height: 100%; border: 2px solid var(--ink); background: var(--ink); box-shadow: 0 18px 40px -12px rgba(27,27,27,.45); opacity: 0; transform: scale(.92); transition: opacity 150ms ease, transform 150ms var(--ease-out); }
+  .preview.on .preview-in { opacity: 1; transform: scale(1); transition-duration: 220ms, 320ms; }
+  .preview video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* awards */
+  .awards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .award { border: 2px solid var(--ink); padding: 18px; box-shadow: 6px 6px 0 var(--ink); background: var(--cream); transition: transform 200ms var(--ease-out), box-shadow 200ms var(--ease-out); }
+  .award .n { font-family: var(--display); font-weight: 900; font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .award p { font-family: var(--display); font-weight: 800; font-size: 18px; margin-top: 8px; text-transform: uppercase; }
+
+  /* career */
+  .career li { list-style: none; display: grid; grid-template-columns: 140px 1fr auto; gap: 16px; padding: 12px 0; border-bottom: 2px dashed var(--ink); align-items: baseline; }
+  .career b { font-family: var(--display); font-weight: 800; font-size: clamp(18px, 2.2vw, 30px); text-transform: uppercase; }
+
+  /* contact */
+  .contact { background: var(--ink); color: var(--cream); margin-top: 88px; padding: 72px 24px 24px; }
+  .contact ::selection { background: var(--pink); color: var(--ink); }
+  .contact h2 { font-family: var(--display); font-weight: 900; font-size: clamp(56px, 14vw, 240px); line-height: .85; text-transform: uppercase; letter-spacing: -.03em; }
+  .contact a.mail { display: inline-block; margin-top: 24px; font-family: var(--display); font-size: clamp(18px, 2.5vw, 36px); text-decoration: none; background: linear-gradient(var(--pink), var(--pink)) left bottom / 100% 3px no-repeat; transition: background-size 250ms var(--ease-out), color 200ms ease, transform 160ms var(--ease-out); }
+  .contact .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 64px; }
+
+  /* custom cursor — only for a real mouse */
+  .cursor { display: none; }
+
+  /* reel modal: fades + settles from 0.96, stays centered */
+  .modal { position: fixed; inset: 0; z-index: 40; background: rgba(27,27,27,.94); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; visibility: hidden; transition: opacity 180ms ease, visibility 0s 180ms; }
+  .modal.on { opacity: 1; visibility: visible; transition: opacity 250ms ease; }
+  .modal video { width: min(1280px, 100%); max-height: 86vh; border: 2px solid var(--cream); transform: scale(.96); transition: transform 180ms var(--ease-out); }
+  .modal.on video { transform: scale(1); transition-duration: 300ms; }
+  .modal .x { position: absolute; top: 16px; right: 24px; color: var(--cream); background: none; border: 0; font-family: var(--pixel); font-size: 14px; padding: 6px; }
+
+  @media (hover: hover) and (pointer: fine) {
+    body, a, button { cursor: none; }
+    .sys nav a:hover, .lang button:hover { background: var(--ink); color: var(--cream); }
+    .reel:hover video { opacity: 1; }
+    .work a:hover { color: var(--cream); transition-duration: 300ms; }
+    .work a:hover::before { clip-path: inset(0 0 0 0); transition-duration: 420ms; }
+    .work a:hover > * { transform: translateX(16px); transition-duration: 420ms; }
+    .work a:hover > .meta { transform: translateX(-16px); }
+    .award:hover { transform: translate(-3px, -3px) rotate(-1deg); box-shadow: 9px 9px 0 var(--pink); }
+    .contact a.mail:hover { background-size: 100% 100%; color: var(--ink); }
+
+    .cursor { display: block; position: fixed; left: 0; top: 0; z-index: 50; pointer-events: none; mix-blend-mode: difference; will-change: transform; }
+    .cursor-dot { width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; transform: scale(.22); transition: transform 250ms var(--ease-out); }
+    .cursor-dot span { font-family: var(--pixel); font-size: 12px; color: var(--ink); opacity: 0; transition: opacity 120ms ease; }
+    .cursor.big .cursor-dot { transform: scale(1); }
+    .cursor.big .cursor-dot span { opacity: 1; transition-delay: 80ms; }
+    .cursor.down .cursor-dot { transform: scale(.18); }
+    .cursor.big.down .cursor-dot { transform: scale(.9); }
+  }
+
+  @media (max-width: 720px) {
+    .preview { display: none; }
+    .sys nav { display: none; }
+    .work a { grid-template-columns: 40px 1fr; }
+    .work h2 { font-size: 7vw; }
+    .work a > * { min-width: 0; }
+    .work .meta { grid-column: 2; text-align: left; }
+    .career li { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* reduced motion: keep fades and colour, drop travel */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee span { animation: none; }
+    .hero h1 .line > span { animation: fade 400ms ease both; }
+    .doodle path { animation: none; stroke-dashoffset: 0; }
+    .work a > *, .work a:hover > *, .work a:hover > .meta { transform: none; }
+    .award:hover { transform: none; }
+    .preview-in, .modal video { transform: none !important; }
+  }
+  @keyframes fade { from { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<header class="sys pixel">
+  <span>TONI.SYS // PORTFOLIO 2026 · <span id="clock">--:--</span></span>
+  <nav>
+    <a class="press" href="#trabajo" data-i18n="nav_work">Trabajo</a>
+    <a class="press" href="#premios" data-i18n="nav_awards">Premios</a>
+    <a class="press" href="#recorrido" data-i18n="nav_career">Recorrido</a>
+    <a class="press" href="#contacto" data-i18n="nav_contact">Contacto</a>
+  </nav>
+  <span class="lang"><button class="on press" data-lang="es">ES</button>/<button class="press" data-lang="en">EN</button></span>
+</header>
+
+<div class="marquee pixel" aria-hidden="true"><span>
+  ANIMACIÓN 2D &gt;&gt;&gt; VFX &gt;&gt;&gt; TECHNICAL ART &gt;&gt;&gt; UNITY &gt;&gt;&gt; ANIMACIÓN 3D &gt;&gt;&gt; SHADERS &gt;&gt;&gt; RIGGING &gt;&gt;&gt; C# &gt;&gt;&gt;
+  ANIMACIÓN 2D &gt;&gt;&gt; VFX &gt;&gt;&gt; TECHNICAL ART &gt;&gt;&gt; UNITY &gt;&gt;&gt; ANIMACIÓN 3D &gt;&gt;&gt; SHADERS &gt;&gt;&gt; RIGGING &gt;&gt;&gt; C# &gt;&gt;&gt;&nbsp;
+</span></div>
+
+<div class="hero">
+  <svg class="doodle" style="right:4vw; top:28px; width:180px" viewBox="0 0 180 120" aria-hidden="true"><path d="M10 90 C 40 20, 80 20, 90 60 S 140 110, 170 30 M150 34 L170 30 L168 52"/></svg>
+  <h1 aria-label="Toni Díaz Plaza"><span class="line"><span>Toni</span></span><span class="line"><span>Díaz</span></span><span class="line"><span>Plaza</span></span></h1>
+  <div class="row">
+    <p class="roles" data-i18n="roles">Artista generalista: animación 2D y 3D, VFX, tech art y programación en Unity. Rindo mejor en equipos pequeños, donde paso de lo técnico a lo artístico según lo que pidan el proyecto y sus plazos.</p>
+    <p class="pixel" data-i18n="location">Valencia, ES · Disponible 2026</p>
+  </div>
+</div>
+
+<a class="reel" href="#reel" data-cursor="PLAY" id="reelBtn" aria-label="Ver el demo reel con sonido">
+  <video id="reelLoop" src="../assets/reel/reel_loop_540.mp4" poster="../assets/reel/poster_reel.jpg" autoplay muted loop playsinline></video>
+  <span class="play">Play the reel</span>
+  <span class="tag pixel">DEMO REEL // 01:47</span>
+</a>
+
+<section id="trabajo">
+  <div class="label pixel"><span>001 // <span data-i18n="work">Trabajo</span></span><span aria-hidden="true">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></div>
+  <div class="work">
+    <a href="#" data-cursor="VER" data-video="../assets/reel/hover_leafblade.mp4">
+      <span class="pixel">01</span><h2>Leafblade</h2>
+      <span class="meta pixel">Anim 2D · VFX · Bosses<br>Wayward Games · 2026</span>
+    </a>
+    <a href="#" data-cursor="VER" data-video="../assets/reel/hover_twd.mp4">
+      <span class="pixel">02</span><h2>TheWorkingDead</h2>
+      <span class="meta pixel">Art dir · Anim · Código<br>Fizh Studio · 2026</span>
+    </a>
+    <a href="#" data-cursor="VER" data-video="../assets/twd/anim3d/greg_idle_walk_grid.mp4">
+      <span class="pixel">03</span><h2 data-i18n="char3d">Personaje 3D</h2>
+      <span class="meta pixel">Concept → Rig → Anim<br>Blender · 2025</span>
+    </a>
+    <a href="#" data-cursor="VER" data-video="../assets/monsterfarm/frames/tornado_loop.mp4">
+      <span class="pixel">04</span><h2>Lab</h2>
+      <span class="meta pixel" data-i18n="lab_meta">Juegos, AR y pruebas<br>2024 – 2026</span>
+    </a>
+  </div>
+</section>
+
+<div class="preview" id="preview" aria-hidden="true"><div class="preview-in"><video muted loop playsinline preload="none"></video></div></div>
+
+<section id="premios">
+  <div class="label pixel"><span>002 // <span data-i18n="awards">Premios</span></span><span aria-hidden="true">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></div>
+  <div class="awards">
+    <div class="award"><span class="n">×2</span><p data-i18n="aw1">Mejor proyecto</p><span class="pixel">TheWorkingDead</span></div>
+    <div class="award"><span class="n">01</span><p data-i18n="aw2">Mejor trayectoria académica</p><span class="pixel">Florida Universitària</span></div>
+    <div class="award"><span class="n">01</span><p>Animation Talent Show</p><span class="pixel">Florida Universitària</span></div>
+  </div>
+</section>
+
+<section id="recorrido">
+  <div class="label pixel"><span>003 // <span data-i18n="career">Recorrido</span></span><span aria-hidden="true">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span></div>
+  <ul class="career">
+    <li><span class="pixel">2025 – 2026</span><b>Leafblade</b><span class="pixel" data-i18n="c1">Animación 2D · VFX</span></li>
+    <li><span class="pixel">2025 – 2026</span><b>TheWorkingDead</b><span class="pixel" data-i18n="c2">Dirección de arte · Código</span></li>
+    <li><span class="pixel">2026</span><b>Oniria</b><span class="pixel" data-i18n="c3">Modelado 3D</span></li>
+    <li><span class="pixel">2026</span><b>Everflame</b><span class="pixel" data-i18n="c3">Modelado 3D</span></li>
+    <li><span class="pixel">2026</span><b>Hunting Souls</b><span class="pixel">Concept art</span></li>
+    <li><span class="pixel">2024 – 2026</span><b>Florida Universitària</b><span class="pixel" data-i18n="c5">Formación</span></li>
+  </ul>
+</section>
+
+<footer class="contact" id="contacto">
+  <div class="label pixel"><span>004 // <span data-i18n="contact">Contacto</span></span></div>
+  <h2 data-i18n="talk">Hablemos</h2>
+  <a class="mail" href="mailto:andipl2323@gmail.com" data-cursor="MAIL">andipl2323@gmail.com</a>
+  <div class="foot pixel">
+    <span>THE ROOKIES · ITCH.IO · LINKEDIN</span>
+    <span>© 2026 TONI DÍAZ PLAZA</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Demo reel">
+  <button class="x press" id="closeModal">[ X ] <span data-i18n="close">Cerrar</span></button>
+  <video id="fullReel" controls preload="none" src="../assets/reel/reel_720.mp4" poster="../assets/reel/poster_reel.jpg"></video>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><div class="cursor-dot"><span id="cursorLabel"></span></div></div>
+
+<script>
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.getElementById('cursor');
+  const label = document.getElementById('cursorLabel');
+  const preview = document.getElementById('preview');
+  const pv = preview.querySelector('video');
+
+  if (fine) {
+    // cursor tracks 1:1; the preview trails with a lerp and tilts with horizontal speed
+    let mx = innerWidth / 2, my = innerHeight / 2, px = mx, py = my, tilt = 0;
+    addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; cursor.style.transform = `translate3d(${mx}px, ${my}px, 0)`; });
+    addEventListener('pointerdown', () => cursor.classList.add('down'));
+    addEventListener('pointerup', () => cursor.classList.remove('down'));
+    (function follow() {
+      const dx = mx - px;
+      px += dx * .14; py += (my - py) * .14;
+      tilt += ((reduce ? 0 : Math.max(-12, Math.min(12, dx * .08))) - tilt) * .12;
+      preview.style.transform = `translate3d(${px}px, ${py}px, 0) translate(-50%, -50%) rotate(${tilt - 3}deg)`;
+      requestAnimationFrame(follow);
+    })();
+
+    document.querySelectorAll('[data-cursor]').forEach(el => {
+      el.addEventListener('pointerenter', () => { cursor.classList.add('big'); label.textContent = el.dataset.cursor; });
+      el.addEventListener('pointerleave', () => cursor.classList.remove('big'));
+    });
+
+    document.querySelectorAll('.work a').forEach(a => {
+      a.addEventListener('pointerenter', () => {
+        if (!pv.src.endsWith(a.dataset.video.replace('..', ''))) pv.src = a.dataset.video;
+        pv.play().catch(() => {});
+        preview.classList.add('on');
+      });
+      a.addEventListener('pointerleave', () => { preview.classList.remove('on'); pv.pause(); });
+    });
+  }
+
+  // nonessential loop stops when offscreen
+  const loop = document.getElementById('reelLoop');
+  new IntersectionObserver(([e]) => e.isIntersecting ? loop.play().catch(() => {}) : loop.pause()).observe(loop);
+
+  const modal = document.getElementById('modal'), full = document.getElementById('fullReel');
+  const reelBtn = document.getElementById('reelBtn'), closeBtn = document.getElementById('closeModal');
+  reelBtn.addEventListener('click', e => { e.preventDefault(); modal.classList.add('on'); loop.pause(); full.play(); closeBtn.focus(); });
+  const close = () => {
+    if (!modal.classList.contains('on')) return;
+    modal.classList.remove('on'); full.pause(); loop.play().catch(() => {}); reelBtn.focus({ preventScroll: true });
+  };
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+
+  const tick = () => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' }) + ' VLC'; };
+  tick(); setInterval(tick, 30000);
+
+  const en = {
+    nav_work: 'Work', nav_awards: 'Awards', nav_career: 'Career', nav_contact: 'Contact',
+    roles: 'Generalist artist: 2D and 3D animation, VFX, tech art and Unity programming. I do my best work in small teams, where I move between the technical and the artistic side depending on what the project and its deadlines need.',
+    location: 'Valencia, ES · Available 2026', work: 'Work', char3d: '3D character',
+    lab_meta: 'Games, AR and tests<br>2024 – 2026', awards: 'Awards', aw1: 'Best project', aw2: 'Best academic record',
+    career: 'Career', c1: '2D animation · VFX', c2: 'Art direction · Code', c3: '3D modelling', c5: 'Education',
+    contact: 'Contact', talk: "Let's talk", close: 'Close'
+  };
+  const es = {};
+  document.querySelectorAll('[data-i18n]').forEach(el => es[el.dataset.i18n] = el.innerHTML);
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+    const dict = b.dataset.lang === 'en' ? en : es;
+    document.querySelectorAll('[data-i18n]').forEach(el => { if (dict[el.dataset.i18n]) el.innerHTML = dict[el.dataset.i18n]; });
+    document.documentElement.lang = b.dataset.lang;
+    document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x === b));
+  }));
+</script>
+</body>
+</html>

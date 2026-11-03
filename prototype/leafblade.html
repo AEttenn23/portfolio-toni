@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leafblade — Toni Díaz Plaza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@500;700&family=Courier+Prime:wght@400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="back press" href="mixed.html#trabajo"><span lang="es">← volver</span><span lang="en">← back</span></a>
+  <span>Toni Díaz Plaza — Leafblade</span>
+  <span class="lang"><button class="press" data-lang="es">ES</button>/<button class="press" data-lang="en">EN</button></span>
+</header>
+
+<div class="case-hero">
+  <h1>Leafblade</h1>
+  <p class="sub">
+    <span lang="es">Monster tamer 2D con granja · Unity 6 (URP 2D) · Wayward Games · mayo 2025 – octubre 2026</span>
+    <span lang="en">2D monster tamer with farming · Unity 6 (URP 2D) · Wayward Games · May 2025 – October 2026</span>
+  </p>
+  <div class="labels" lang="es"><span>Animador 2D</span><span>VFX</span><span>Technical artist</span><span>Programación de bosses</span><span>QA</span><span>Trailer y marketing</span></div>
+  <div class="labels" lang="en"><span>2D animator</span><span>VFX</span><span>Technical artist</span><span>Boss programming</span><span>QA</span><span>Trailer and marketing</span></div>
+</div>
+
+<figure class="hero-media torn">
+  <span class="tape masking tl"></span><span class="pin tr b"></span>
+  <video controls preload="none" playsinline poster="../assets/monsterfarm/video/poster_mf_trailer_1080.jpg" src="../assets/monsterfarm/video/mf_trailer_720.mp4"></video>
+  <figcaption class="cap"><span lang="es">trailer · lo monté yo</span><span lang="en">trailer · edited by me</span></figcaption>
+</figure>
+
+<div class="intro">
+  <div class="lead">
+    <div lang="es">
+      <p>Leafblade es un monster tamer con granja: el jugador explora, combate, captura monstruos y los pone a trabajar en su granja. Ya ha publicado varias demos, una de ellas para el Steam Next Fest, y su lanzamiento está previsto para pronto.</p>
+      <p>Mi trabajo se centró en dar vida a los monstruos: los rigs 2D, sus animaciones y los efectos de sus ataques. También diseñé y programé dos de los bosses, hice shaders y efectos para el escenario, me encargué de buena parte del debugging en la recta final y monté el trailer y el material para redes.</p>
+    </div>
+    <div lang="en">
+      <p>Leafblade is a monster tamer with farming: the player explores, fights, tames monsters and puts them to work on their farm. It has released several demos, including one for Steam Next Fest, and is due to launch soon.</p>
+      <p>My work focused on bringing the monsters to life: their 2D rigs, their animations and the effects of their attacks. I also designed and programmed two of the bosses, made shaders and environment effects, handled much of the debugging in the final stretch, and edited the trailer and social media content.</p>
+    </div>
+  </div>
+  <aside class="facts torn">
+    <span class="pin tc"></span>
+    <h3 lang="es">en cifras</h3><h3 lang="en">at a glance</h3>
+    <ul lang="es">
+      <li>+25 monstruos con sus evoluciones</li>
+      <li>5 bosses animados, 2 programados</li>
+      <li>238 animaciones · 123 rigs/PSB</li>
+      <li>21 VFX Graph · 7 shaders</li>
+      <li>171 commits en 17 meses</li>
+    </ul>
+    <ul lang="en">
+      <li>25+ monsters and their evolutions</li>
+      <li>5 bosses animated, 2 programmed</li>
+      <li>238 animations · 123 rigs/PSBs</li>
+      <li>21 VFX Graph effects · 7 shaders</li>
+      <li>171 commits over 17 months</li>
+    </ul>
+    <a class="link press" href="https://store.steampowered.com/app/2887740/Leafblade/" target="_blank" rel="noopener"><span lang="es">ver en Steam ↗</span><span lang="en">see it on Steam ↗</span></a>
+  </aside>
+</div>
+
+<!-- 1 -->
+<section class="chapter">
+  <header><h2 lang="es">Animación híbrida</h2><h2 lang="en">Hybrid animation</h2>
+    <span class="aside" lang="es">rig 2D + frames a mano</span><span class="aside" lang="en">2D rig + hand-drawn frames</span></header>
+  <div class="split">
+    <div class="text">
+      <div lang="es">
+        <p>Animé más de 25 monstruos con sus evoluciones, a partir de los diseños de Rocío Gutiérrez Cánovas. Cada uno tiene idle, movimiento, ataque, habilidad, captura y transiciones.</p>
+        <ul>
+          <li><b>Rig esqueletal 2D:</b> separé cada personaje en piezas en archivos PSB y lo rigué con el 2D Animation de Unity (SpriteSkin y Sprite Library).</li>
+          <li><b>Frames dibujados sobre el rig:</b> las partes orgánicas (humo, agua, fuego, hojas) se redibujan frame a frame y se cambian con Sprite Resolver. El movimiento conserva la fluidez del esqueletal y el carácter de la animación tradicional.</li>
+          <li><b>Lectura en combate:</b> ojos rojos en los enemigos, brillo nocturno, luces 2D y fundidos de ojos en el teletransporte.</li>
+        </ul>
+      </div>
+      <div lang="en">
+        <p>I animated more than 25 monsters and their evolutions, based on designs by Rocío Gutiérrez Cánovas. Each has idle, movement, attack, ability and taming animations plus transitions.</p>
+        <ul>
+          <li><b>2D skeletal rigs:</b> I split each character into pieces in PSB files and rigged them with Unity's 2D Animation package (SpriteSkin and Sprite Library).</li>
+          <li><b>Hand-drawn frames on the rig:</b> organic parts (smoke, water, fire, leaves) are redrawn frame by frame and swapped with Sprite Resolver. Movement keeps the smoothness of skeletal animation and the character of traditional animation.</li>
+          <li><b>Readability in combat:</b> red eyes on enemies, night glow, 2D lights and eye fades when teleporting.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="pair">
+        <figure class="fig torn r1"><span class="tape tc"></span>
+          <img src="../assets/monsterfarm/rigs/titan_skull_pieces.png" alt="Piezas del PSB del Titan Skull" loading="lazy" style="background:#F2EDE0">
+          <figcaption class="cap"><span lang="es">1 · un frame del PSB, en piezas</span><span lang="en">1 · one PSB frame, in pieces</span></figcaption></figure>
+        <figure class="fig torn r4"><span class="clip tc red"></span>
+          <video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/titan_skull_idle_loop.mp4" style="aspect-ratio:1;object-fit:contain;background:#FBF3D9"></video>
+          <figcaption class="cap red"><span lang="es">2 · los 8 frames en secuencia</span><span lang="en">2 · the 8 frames in sequence</span></figcaption></figure>
+      </div>
+      <div class="text">
+        <p lang="es"><b>Ejemplo: Titan Skull.</b> La calavera y las manos son las mismas piezas en todos los frames y se mueven con los huesos. En cada uno de sus 8 frames redibujé el cuerpo de agua, que se estira, se parte y suelta gotas, y en dos de ellos cambié los ojos para que parpadee. Así el boss flota con la suavidad del rig y el agua se mueve como animación tradicional.</p>
+        <p lang="en"><b>Example: Titan Skull.</b> The skull and the hands are the same pieces in every frame and move with the bones. In each of its 8 frames I redrew the water body, which stretches, splits and sheds drops, and in two of them I swapped the eyes so it blinks. The boss floats with the smoothness of the rig while the water moves like traditional animation.</p>
+      </div>
+    </div>
+  </div>
+
+  <figure class="strip torn"><span class="clip tl"></span>
+    <img src="../assets/monsterfarm/rigs/titan_skull_body_frames.jpg" alt="Los 8 cuerpos de agua dibujados del Titan Skull" loading="lazy">
+    <figcaption class="cap" style="position:absolute;left:14px;bottom:8px"><span lang="es">Titan Skull · el cuerpo de agua, redibujado en cada uno de los 8 frames</span><span lang="en">Titan Skull · the water body, redrawn in each of the 8 frames</span></figcaption>
+  </figure>
+
+  <div class="loops">
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/nightgloom_loop.mp4"></video><figcaption class="cap">Nightgloom</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/wispin_loop.mp4"></video><figcaption class="cap">Wispin</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/umbraukattack.mp4"></video><figcaption class="cap">Umbrawk · attack</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/crovixability.mp4"></video><figcaption class="cap">Crovix · ability</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/ladonability.mp4"></video><figcaption class="cap">Ladon · ability</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/avalunkattack.mp4"></video><figcaption class="cap">Avalunk · attack</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/nymerionattack.mp4"></video><figcaption class="cap">Nymerion · attack</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/flarelynx.mp4"></video><figcaption class="cap">Flarelynx</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/frostling_idle_loop.mp4"></video><figcaption class="cap">Frostling · idle</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/enokita_attack.mp4"></video><figcaption class="cap">Enokita · attack</figcaption></figure>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="chapter">
+  <header><h2>Bosses</h2><span class="aside" lang="es">5 animados · 2 programados</span><span class="aside" lang="en">5 animated · 2 programmed</span></header>
+  <div class="split flip">
+    <div class="text">
+      <div lang="es">
+        <p>Animé cinco bosses: Titan Amanita, Titan Golunk, Titan Skull, el boss final del pantano y Last Bearer. Dos de ellos los programé por completo sobre la clase base de bosses del proyecto:</p>
+        <ul>
+          <li><b>Titan Golunk</b> (502 líneas): elige entre cuatro ataques sin repetir el anterior y ajusta la distancia a cada uno. Al bajar del 50 % de vida entra en una fase especial, se vuelve invulnerable y pasa a poder capturarse. Incluye intro, cambio de cámara con Cinemachine, screenshake, diálogo final y secuencia de vínculo.</li>
+          <li><b>Last Bearer</b> (266 líneas): combate cuerpo a cuerpo con un combo de cuatro golpes, embestidas, invocación de enemigos y ondas de choque con VFX.</li>
+        </ul>
+      </div>
+      <div lang="en">
+        <p>I animated five bosses: Titan Amanita, Titan Golunk, Titan Skull, the swamp final boss and Last Bearer. I fully programmed two of them on top of the project's boss base class:</p>
+        <ul>
+          <li><b>Titan Golunk</b> (502 lines): picks from four attacks without repeating the last one and adjusts its range to each. Below 50% health it enters a special phase, becomes invulnerable and can be tamed. It includes the intro, a Cinemachine camera switch, screenshake, closing dialogue and bonding sequence.</li>
+          <li><b>Last Bearer</b> (266 lines): a melee fight with a four-hit combo, lunges, enemy summoning and VFX shockwaves.</li>
+        </ul>
+      </div>
+      <div class="code torn"><span class="binder tr"></span>
+        <span class="file">TitanGolunkBossBehaviour.cs</span>
+<pre><span class="k">public</span> TitanGolunkAttack ChoseNextAttack(TitanGolunkAttack lastAttack)
+{
+    <span class="k">var</span> values = Enum.GetValues(<span class="k">typeof</span>(TitanGolunkAttack));
+    <span class="k">int</span> random = Random.Range(1, values.Length - 1);
+    TitanGolunkAttack newAttack = (TitanGolunkAttack)values.GetValue(random);
+
+    <span class="c">// never the same attack twice in a row</span>
+    <span class="k">if</span> (newAttack == lastAttack)
+    {
+        random += 1;
+        <span class="k">if</span> (random >= values.Length - 1) random = 1;
+        newAttack = (TitanGolunkAttack)values.GetValue(random);
+    }
+    <span class="k">return</span> newAttack;
+}</pre>
+      </div>
+    </div>
+    <div class="stack">
+      <figure class="fig torn r3"><span class="pin tl y"></span>
+        <video controls preload="none" playsinline poster="../assets/monsterfarm/video/poster_mf_bossfight_titan_amanita_1080.jpg" src="../assets/monsterfarm/video/mf_bossfight_titan_amanita_720.mp4"></video>
+        <figcaption class="cap"><span lang="es">combate contra Titan Amanita</span><span lang="en">Titan Amanita fight</span></figcaption></figure>
+      <div class="pair">
+        <figure class="fig torn r1"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/titan_skull_intro_loop.mp4" style="aspect-ratio:1;object-fit:contain;background:#26231F"></video><figcaption class="cap">Titan Skull · intro</figcaption></figure>
+        <figure class="fig torn r2"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/last_bearer.mp4" style="aspect-ratio:1;object-fit:contain;background:#26231F"></video><figcaption class="cap">Last Bearer</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="chapter">
+  <header><h2>VFX &amp; shaders</h2><span class="aside" lang="es">frames a mano + partículas</span><span class="aside" lang="en">hand-drawn frames + particles</span></header>
+  <div class="split">
+    <div class="text">
+      <div lang="es">
+        <p>Los efectos combinan frames dibujados a mano con partículas de VFX Graph y shaders de Shader Graph:</p>
+        <ul>
+          <li><b>21 efectos con VFX Graph:</b> explosiones de fuego y agua, curación, géiser, plumas y estela del Air Slash, hielo y la magia de las ruinas.</li>
+          <li><b>7 shaders:</b> contorno de fuego, contorno SDF, partículas de fuego y estanque mágico.</li>
+          <li><b>Proceso:</b> cada efecto parte de un boceto o una referencia (en el géiser: foto → diseño → versión en el juego), se anima frame a frame y se combina con partículas.</li>
+          <li><b>Escenario:</b> aura de las ruinas y estatuas, cambios de agua y efectos de los bloqueos del mapa.</li>
+        </ul>
+      </div>
+      <div lang="en">
+        <p>Effects combine hand-drawn frames with VFX Graph particles and Shader Graph shaders:</p>
+        <ul>
+          <li><b>21 VFX Graph effects:</b> fire and water explosions, healing, a geyser, Air Slash feathers and trails, ice and the ruins' magic.</li>
+          <li><b>7 shaders:</b> fire outline, SDF outline, fire particles and a magic pool.</li>
+          <li><b>Process:</b> each effect starts from a sketch or reference (for the geyser: photo → design → in-game), is animated frame by frame and combined with particles.</li>
+          <li><b>Environment:</b> aura for the ruins and statues, water changes and effects for map blockers.</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="fig torn r2"><span class="staple tc"></span>
+      <img src="../assets/monsterfarm/vfx-process/geiser_concept_art.png" alt="Proceso del géiser: referencia, diseño y versión final" loading="lazy" style="background:#F2EDE0">
+      <figcaption class="cap red"><span lang="es">géiser: referencia → diseño → juego</span><span lang="en">geyser: reference → design → game</span></figcaption></figure>
+  </div>
+  <div class="loops">
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/water_heiser.mp4"></video><figcaption class="cap"><span lang="es">géiser</span><span lang="en">geyser</span></figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/water_explosion.mp4"></video><figcaption class="cap"><span lang="es">explosión de agua</span><span lang="en">water burst</span></figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/frames/tornado_loop.mp4"></video><figcaption class="cap">tornado</figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/fost_glow.mp4"></video><figcaption class="cap"><span lang="es">brillo nocturno</span><span lang="en">night glow</span></figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/estatuav7.mp4"></video><figcaption class="cap"><span lang="es">aura de las ruinas</span><span lang="en">ruins aura</span></figcaption></figure>
+    <figure class="fig torn"><video muted loop playsinline preload="none" data-src="../assets/monsterfarm/gifs/water_shader.mp4"></video><figcaption class="cap"><span lang="es">shader de agua</span><span lang="en">water shader</span></figcaption></figure>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="chapter">
+  <header><h2 lang="es">Debugging y QA</h2><h2 lang="en">Debugging &amp; QA</h2><span class="aside" lang="es">la recta final</span><span class="aside" lang="en">the final stretch</span></header>
+  <div class="split flip">
+    <div class="text">
+      <div lang="es">
+        <p>En la última fase me dediqué en buena parte a encontrar y corregir errores en la animación, los prefabs y el gameplay:</p>
+        <ul>
+          <li>Comportamiento de las mascotas: que encuentren enemigos, que trabajen al comer, sombras al cargarlas, el boomerang de Swirlbloom y Vinetoss.</li>
+          <li>UI y sistemas: la pantalla en negro al dormir (una suscripción a un evento que no se liberaba), la cocina, iconos que no desaparecían y un error de build en los tutoriales.</li>
+          <li>Transiciones, pivotes y colisiones de monstruos y escenario.</li>
+          <li>Vídeos de reporte con anotaciones para el equipo.</li>
+          <li>Traducción al español de los textos del juego.</li>
+        </ul>
+      </div>
+      <div lang="en">
+        <p>In the last phase I spent much of my time finding and fixing bugs in animation, prefabs and gameplay:</p>
+        <ul>
+          <li>Pet behaviour: finding enemies, working while eating, shadows while carried, the Swirlbloom and Vinetoss boomerang.</li>
+          <li>UI and systems: a black screen when sleeping (an event subscription that was never released), the kitchen, icons that never disappeared and a tutorial build error.</li>
+          <li>Transitions, pivots and collisions for monsters and environment.</li>
+          <li>Annotated bug report videos for the team.</li>
+          <li>Spanish translation of the game's text.</li>
+        </ul>
+      </div>
+    </div>
+    <figure class="fig torn r1"><span class="pin tl"></span><span class="pin tr y"></span>
+      <video controls preload="none" playsinline src="../assets/monsterfarm/video/qa_bug_report_720.mp4"></video>
+      <figcaption class="cap"><span lang="es">vídeo de reporte de bugs</span><span lang="en">bug report video</span></figcaption></figure>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="chapter">
+  <header><h2 lang="es">Trailer y redes</h2><h2 lang="en">Trailer &amp; social</h2><span class="aside">“Today's Monster”</span></header>
+  <div class="text">
+    <div lang="es">
+      <p>Monté el trailer del juego en horizontal y vertical, con varias iteraciones durante el desarrollo, y la serie de shorts “Today's Monster”: cada uno presenta un monstruo en unos 20 segundos (cómo se captura, cómo combate y cómo trabaja en la granja) y cierra con la llamada a la wishlist. También preparé carruseles para Instagram y TikTok en inglés y español.</p>
+    </div>
+    <div lang="en">
+      <p>I edited the game's trailer in landscape and vertical versions, iterating throughout development, and the “Today's Monster” shorts: each introduces one monster in about 20 seconds (how it is tamed, how it fights and how it works on the farm) and ends with a wishlist call to action. I also made Instagram and TikTok carousels in English and Spanish.</p>
+    </div>
+  </div>
+  <div class="verticals">
+    <figure class="fig torn r1"><video controls preload="none" playsinline poster="../assets/monsterfarm/video/poster_mf_trailer_vertical_720.jpg" src="../assets/monsterfarm/video/mf_trailer_vertical_720.mp4"></video><figcaption class="cap"><span lang="es">trailer vertical</span><span lang="en">vertical trailer</span></figcaption></figure>
+    <figure class="fig torn r2"><video controls preload="none" playsinline poster="../assets/monsterfarm/marketing/portada_cacatuar.jpg" src="../assets/monsterfarm/video/short_cactuarv3.mp4"></video><figcaption class="cap">Cactuar</figcaption></figure>
+    <figure class="fig torn r3"><video controls preload="none" playsinline src="../assets/monsterfarm/video/short_ladon_v2.mp4"></video><figcaption class="cap">Ladon</figcaption></figure>
+    <figure class="fig torn r4"><video controls preload="none" playsinline poster="../assets/monsterfarm/marketing/portada_geoquil.jpg" src="../assets/monsterfarm/video/short_geoquil_v1.mp4"></video><figcaption class="cap">Geoquil</figcaption></figure>
+  </div>
+  <div class="slides">
+    <img src="../assets/monsterfarm/marketing/carrousel_crops/01_cover_all_crops.jpg" alt="" loading="lazy">
+    <img src="../assets/monsterfarm/marketing/carrousel_crops/02_pumpkin.jpg" alt="" loading="lazy">
+    <img src="../assets/monsterfarm/marketing/carrousel_crops/03_saguaro.jpg" alt="" loading="lazy">
+    <img src="../assets/monsterfarm/marketing/carrousel_crops/04_mushroom.jpg" alt="" loading="lazy">
+    <img src="../assets/monsterfarm/marketing/carrousel_crops/05_strawberry.jpg" alt="" loading="lazy">
+  </div>
+</section>
+
+<section class="chapter">
+  <header><h2 lang="es">Equipo</h2><h2 lang="en">Team</h2></header>
+  <div class="team">
+    <div class="me"><b>Toni Díaz Plaza</b><span lang="es">animación 2D, VFX, technical art, bosses, QA, trailer</span><span lang="en">2D animation, VFX, technical art, bosses, QA, trailer</span></div>
+    <div><b>David Fernández</b><span lang="es">game design y programación principal</span><span lang="en">game design and lead programming</span></div>
+    <div><b>Rocío Gutiérrez Cánovas</b><span lang="es">diseño de los monstruos</span><span lang="en">monster design</span></div>
+  </div>
+  <p class="credit">Unity 6 (URP 2D) · 2D Animation · VFX Graph · Shader Graph · Cinemachine · C# · Photoshop · Git</p>
+</section>
+
+<a class="next torn-top" href="twd.html">
+  <img class="sticker" src="../assets/mixed/zombie_sticker.png" alt="" style="right:6%; top:40px; width:clamp(90px, 12vw, 170px); rotate:8deg">
+  <span class="k"><span lang="es">siguiente proyecto →</span><span lang="en">next project →</span></span>
+  <span class="t">TheWorkingDead</span>
+  <span class="foot"><span>andipl2323@gmail.com</span><span>© 2026 Toni Díaz Plaza</span></span>
+</a>
+
+<script src="case.js"></script>
+</body>
+</html>

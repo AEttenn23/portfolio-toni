@@ -1,0 +1,16 @@
+{
+  "project": "MonsterFarm",
+  "repo": "gitlab.com/Sedart/monsterfarm",
+  "toniAliases": ["andipl", "Toni"],
+  "totalCommits": 2494,
+  "toniCommits": 171,
+  "toniCommitsNoMerges": 155,
+  "toniFirstCommit": "2025-05-14",
+  "toniLastCommit": "2026-10-05",
+  "filesCreatedByToni": { "anim": 238, "psb": 123, "controller": 37, "vfx": 21, "shadergraph": 7, "cs": 8 },
+  "monstersAnimated": 25,
+  "bossesAnimated": ["Titan Skull", "Titan Golunk", "Titan Amanita", "FinalBoss (Swamp)", "Last Bearer"],
+  "scriptLinesByEmail": { "davidfmpixel": 30262, "asieravino": 6101, "x.alber.latt": 5910, "david.fernandez@digitalsungames": 4934, "davidandpixels": 2229, "andipl2323 (Toni)": 1747, "acortesmusic": 899 },
+  "linesNote": "git blame sobre Assets/Scripts. El código no es el foco de Toni en este proyecto: su trabajo está en animación, VFX y shaders.",
+  "toniCommitsPerWeek": { "2025-W20":4,"2025-W21":5,"2025-W22":1,"2025-W23":2,"2025-W24":7,"2025-W25":5,"2025-W26":13,"2025-W27":4,"2026-W19":1,"2026-W20":1,"2026-W21":1,"2026-W22":4,"2026-W23":5,"2026-W24":4,"2026-W25":1,"2026-W26":5,"2026-W27":8,"2026-W28":6,"2026-W29":7,"2026-W30":8,"2026-W31":19,"2026-W32":4,"2026-W34":5,"2026-W35":10,"2026-W36":4,"2026-W37":5,"2026-W38":1,"2026-W39":12,"2026-W40":2,"2026-W41":1 }
+}

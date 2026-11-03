@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Visuales — Toni Díaz Plaza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@500;700&family=Courier+Prime:wght@400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="case.css">
+<style>
+  /* ---------- mezclador de loops (adaptado de la web de loops para VDJ) ---------- */
+  .monitor { margin-top: 8px; }
+  /* every video is its own cut-out, like the cards on the home page (cut() in the script tears them) */
+  .vj .cut { position: relative; isolation: isolate; }
+  .vj .cut > .tear { position: absolute; inset: 0; z-index: -1; background: var(--paper-tex); background-blend-mode: soft-light, normal; filter: drop-shadow(0 10px 14px rgba(0,0,0,.45)); }
+  .vj {
+    --panel: var(--paper-2); --line: rgba(236,229,211,.3); --txt: var(--on-bg); --mute: rgba(236,229,211,.6);
+    --live: var(--red); --solo: #C98A1E; --ar: 16 / 9;
+    position: relative; color: var(--txt); font: 13px/1.55 var(--type);
+  }
+  .vj .stage-cut { margin: 0 auto; width: min(100%, calc(68svh * (var(--ar)) + 24px)); padding: 12px 12px 16px; rotate: -.6deg; }
+  .vj .stage {
+    position: relative; margin: 0 auto;
+    width: 100%;
+    aspect-ratio: var(--ar); overflow: hidden; isolation: isolate;
+  }
+  .vj .stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; }
+  .vj .stage video.live { opacity: 1; }
+  .vj .stage::after { content: ""; position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 2; }
+  .vj .stage.flash::after { animation: vj-flash .2s ease-out; }
+  @keyframes vj-flash { from { opacity: .16; } to { opacity: 0; } }
+  .vj .hud { color: #ece6da;
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    padding: clamp(10px, 2vw, 18px); display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  }
+  .vj .hud-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .vj .hud-row.bottom { align-items: flex-end; }
+  .vj .tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(10,10,11,.6); backdrop-filter: blur(6px); padding: 6px 10px; white-space: nowrap; }
+  .vj .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 10px var(--live); animation: vj-blink 1.2s steps(2, jump-none) infinite; }
+  .vj .stage.solo .dot { background: var(--solo); box-shadow: 0 0 10px var(--solo); animation: none; }
+  @keyframes vj-blink { 50% { opacity: .25; } }
+  .vj .tc { font-variant-numeric: tabular-nums; }
+  .vj .bignum { font: 900 clamp(54px, 10vw, 132px)/.78 var(--display); font-stretch: 62%; color: #fff; mix-blend-mode: difference; }
+  .vj .meter { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; z-index: 3; background: rgba(255,255,255,.12); }
+  .vj .meter i { display: block; height: 100%; background: var(--live); transform-origin: left; transform: scaleX(var(--p, 1)); }
+  .vj .stage.solo .meter i { background: var(--solo); }
+  .vj .stage.loading .meter { height: 5px; }
+  .vj .gate { position: absolute; inset: 0; z-index: 4; display: none; place-items: center; background: rgba(0,0,0,.55); border: 0; color: inherit; font: inherit; cursor: pointer; }
+  .vj .gate.show { display: grid; }
+  .vj .gate span { font: 900 32px var(--display); font-stretch: 62%; text-transform: uppercase; padding: 10px 22px; background: var(--live); color: #fff; }
+
+  .vj .deck { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: clamp(10px, 2vw, 22px); margin: clamp(20px, 3vw, 30px) auto 0; width: min(100%, 920px); }
+  .vj .ch { --txt: var(--ink); --mute: rgba(28,26,23,.55); appearance: none; border: 0; background: none; color: var(--txt); font: inherit; padding: 7px 7px 2px; cursor: pointer; text-align: left; transition: transform .15s cubic-bezier(0.23,1,0.32,1); -webkit-tap-highlight-color: transparent; }
+  .vj .ch:nth-child(4n+1) { rotate: -1.6deg; }
+  .vj .ch:nth-child(4n+2) { rotate: 1.2deg; translate: 0 6px; }
+  .vj .ch:nth-child(4n+3) { rotate: -.8deg; }
+  .vj .ch:nth-child(4n+4) { rotate: 1.8deg; translate: 0 4px; }
+  @media (hover: hover) and (pointer: fine) { .vj .ch:hover { transform: translateY(-3px); } .vj .ch:hover canvas { filter: grayscale(.4) brightness(.8); } }
+  .vj .ch:active { transform: scale(.97); }
+  .vj .ch.loading { pointer-events: none; }
+  .vj .ch .fill, .vj .ch .pct { position: absolute; left: 7px; right: 7px; top: 11px; aspect-ratio: var(--ar); pointer-events: none; transition: opacity .5s; }
+  .vj .ch .fill { --h: calc(var(--load, 0) * 100%); background: linear-gradient(to top, rgba(217,65,43,.5) calc(var(--h) - 2px), var(--live) calc(var(--h) - 2px) var(--h), rgba(0,0,0,.45) var(--h)); }
+  .vj .ch .pct { display: grid; place-items: center; font-size: 11px; font-weight: 700; text-shadow: 0 1px 6px #000; }
+  .vj .ch:not(.loading) .fill, .vj .ch:not(.loading) .pct { opacity: 0; }
+  .vj .ch:focus-visible { outline: 2px solid var(--txt); outline-offset: 3px; }
+  .vj .ch .tally { height: 4px; background: rgba(28,26,23,.14); transition: background .08s; }
+  .vj .ch canvas { display: block; width: 100%; aspect-ratio: var(--ar); filter: grayscale(.9) brightness(.8) contrast(.9); transition: filter .25s; }
+  .vj .ch.live canvas { filter: none; }
+  .vj .ch.live canvas { outline: 2px solid var(--live); outline-offset: -2px; }
+  .vj .ch.live .tally { background: var(--live); box-shadow: 0 0 16px 2px var(--live); }
+  .vj .ch.pinned canvas { outline: 2px solid var(--solo); outline-offset: -2px; }
+  .vj .ch.pinned .tally { background: var(--solo); box-shadow: 0 0 16px 2px var(--solo); }
+  .vj .ch .meta { padding: 5px 3px 4px; }
+  .vj .ch .n { font: 900 clamp(20px, 3vw, 30px)/1 var(--display); font-stretch: 62%; color: var(--mute); }
+  .vj .ch.live .n { color: var(--txt); }
+  .vj .ch .badge { position: absolute; top: 16px; right: 12px; font-size: 9px; font-weight: 700; letter-spacing: .14em; background: var(--solo); color: #000; padding: 2px 5px; opacity: 0; }
+  .vj .ch.pinned .badge { opacity: 1; }
+
+  .vj .controls { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; width: min(100%, 920px); margin: 14px auto 0; }
+  .vj .btn { appearance: none; font: 700 11px var(--type); letter-spacing: .16em; text-transform: uppercase; color: var(--txt); background: transparent; border: 1px solid var(--line); padding: 10px 14px; cursor: pointer; transition: transform .12s cubic-bezier(0.23,1,0.32,1); }
+  .vj .btn:active { transform: scale(.97); }
+  .vj .btn.on { background: var(--live); border-color: var(--live); color: #fff; }
+  .vj .hint { color: var(--mute); font-size: 11px; flex: 1 1 220px; text-align: center; }
+
+  .vj .stage.fake-fs { position: fixed; z-index: 100; top: 0; left: 0; width: 100dvw; height: 100dvh; margin: 0; aspect-ratio: auto; }
+  .vj .stage.fake-fs { background: #000; }
+  .vj .stage-cut:has(.fake-fs) { rotate: none; isolation: auto; }
+  .vj .stage.fake-fs video { object-fit: contain; }
+  @media (orientation: portrait) {
+    .vj .stage.fake-fs { top: 50%; left: 50%; width: 100dvh; height: 100dvw; transform: translate(-50%, -50%) rotate(90deg); }
+  }
+  body.fs-lock { overflow: hidden; }
+  .vj .fs-close { position: absolute; top: clamp(10px, 2vw, 18px); right: clamp(10px, 2vw, 18px); z-index: 5; display: none; place-items: center; width: 40px; height: 40px; border: 0; background: rgba(10,10,11,.6); color: #ece6da; font: inherit; font-size: 18px; cursor: pointer; }
+  .vj .stage.fake-fs .fs-close { display: grid; }
+
+  .hero-media .sound {
+    position: absolute; top: 28px; right: 28px; z-index: 2;
+    font: 700 13px var(--type); letter-spacing: .08em; text-transform: uppercase;
+    background: var(--red); color: #fff; border: 0; padding: 10px 14px; cursor: pointer;
+    rotate: 2deg; box-shadow: 0 6px 14px -6px rgba(28,26,23,.6);
+    transition: transform .15s cubic-bezier(0.23,1,0.32,1), opacity .2s;
+  }
+  .hero-media .sound:active { transform: scale(.97); }
+  .hero-media .sound[hidden] { display: none; }
+  .mixer-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 32px; flex-wrap: wrap; margin: 0 0 22px; }
+  .mixer-head .text { max-width: 52ch; }
+  .keys { margin-top: 18px; font: 13px/1.6 var(--type); color: rgba(236,229,211,.7); }
+  .keys kbd { font: 700 12px var(--type); border: 0; padding: 0 5px; background: var(--paper-2); color: var(--ink); }
+
+  @media (max-width: 560px) {
+    .vj .hud .hide-sm { display: none; }
+    .vj .hint { order: 3; text-align: left; }
+    .vj .stage-cut { padding: 8px 8px 12px; }
+    .vj .ch { padding: 4px 4px 0; }
+    .vj .ch .fill, .vj .ch .pct { left: 4px; right: 4px; top: 8px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vj .dot, .vj .stage.flash::after { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="back press" href="mixed.html#trabajo"><span lang="es">← volver</span><span lang="en">← back</span></a>
+  <span>Toni Díaz Plaza — <span lang="es">Visuales</span><span lang="en">Visuals</span></span>
+  <span class="lang"><button class="press" data-lang="es">ES</button>/<button class="press" data-lang="en">EN</button></span>
+</header>
+
+<div class="case-hero">
+  <h1 lang="es">Visuales</h1><h1 lang="en">Visuals</h1>
+  <p class="sub">
+    <span lang="es">Loops para VJ en VirtualDJ y pieza audiovisual con música propia · After Effects y Premiere</span>
+    <span lang="en">VJ loops for VirtualDJ and an audiovisual piece with my own music · After Effects and Premiere</span>
+  </p>
+  <div class="labels" lang="es"><span>Composición</span><span>Edición</span><span>Música</span><span>Programación web</span></div>
+  <div class="labels" lang="en"><span>Compositing</span><span>Editing</span><span>Music</span><span>Web programming</span></div>
+</div>
+
+<figure class="hero-media torn">
+  <span class="tape tl"></span><span class="pin tr b"></span>
+  <video id="pieza" controls loop preload="auto" playsinline poster="../assets/visuales/video/poster_pieza.jpg" data-light="../assets/visuales/video/visuales_pieza_movil.mp4" src="../assets/visuales/video/visuales_pieza.mp4"></video>
+  <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
+  <figcaption class="cap"><span lang="es">la pieza · última versión del montaje en Premiere · música mía</span><span lang="en">the piece · latest Premiere edit · music by me</span></figcaption>
+</figure>
+
+<div class="intro">
+  <div class="lead">
+    <div lang="es">
+      <p>Visuales en bucle pensados para proyectarse en directo mientras suena música: caras, peces, playa y texturas de vídeo analógico, todo con un tratamiento de señal degradada en azules.</p>
+      <p>Compuse el material en After Effects, hice la música de la pieza y preparé los visuales como loops que se pueden lanzar desde VirtualDJ. Para enseñarlo hice además un mezclador web que imita una sesión de VJ: corta entre clips al azar y deja fijar cualquiera de ellos.</p>
+    </div>
+    <div lang="en">
+      <p>Looping visuals designed to be projected live over music: faces, fish, a beach and analogue video textures, all with a degraded blue signal look.</p>
+      <p>I composited the footage in After Effects, made the music for the piece and prepared the visuals as loops that can be triggered from VirtualDJ. To show it I also built a web mixer that imitates a VJ set: it cuts between clips at random and lets you pin any of them.</p>
+    </div>
+  </div>
+  <aside class="facts torn">
+    <span class="binder tc"></span>
+    <h3 lang="es">en cifras</h3><h3 lang="en">at a glance</h3>
+    <ul lang="es">
+      <li>8 loops listos para VJ</li>
+      <li>1 pieza de 21,6 s con música propia</li>
+      <li>mezclador web propio</li>
+      <li>cortes de 0,15 a 4 s</li>
+    </ul>
+    <ul lang="en">
+      <li>8 VJ-ready loops</li>
+      <li>1 piece, 21.6 s, with my own music</li>
+      <li>custom web mixer</li>
+      <li>cuts from 0.15 to 4 s</li>
+    </ul>
+  </aside>
+</div>
+
+<!-- 1 -->
+<section class="chapter">
+  <header><h2 lang="es">Clips distintos</h2><h2 lang="en">Different clips</h2>
+    <span class="aside" lang="es">toca un clip para fijarlo</span><span class="aside" lang="en">tap a clip to pin it</span></header>
+  <div class="mixer-head">
+    <div class="text">
+      <p lang="es">Cinco loops independientes con cortes de 0,5 a 4 s. Cada corte salta a otro clip, que sigue desde donde se quedó. Solo se reproduce el visible, para no saturar el navegador.</p>
+      <p lang="en">Five independent loops with cuts from 0.5 to 4 s. Each cut jumps to another clip, which resumes where it left off. Only the visible one plays, so the browser isn't overloaded.</p>
+    </div>
+  </div>
+  <figure class="monitor"><span class="pin tl"></span><span class="pin tr y"></span>
+    <div class="vj" data-mixer="v1"></div>
+  </figure>
+</section>
+
+<!-- 2 -->
+<section class="chapter">
+  <header><h2 lang="es">Un vídeo, varios filtros</h2><h2 lang="en">One video, several looks</h2>
+    <span class="aside" lang="es">sincronizados al fotograma</span><span class="aside" lang="en">synced to the frame</span></header>
+  <div class="mixer-head">
+    <div class="text">
+      <p lang="es">El mismo clip con tres tratamientos y cortes muy rápidos, de 0,15 a 0,6 s, que de vez en cuando frenan y aguantan entre 1,5 y 3 s. Las tres versiones se reproducen a la vez y sincronizadas aunque no estén en pantalla, así que cada corte cambia el filtro sin perder el movimiento.</p>
+      <p lang="en">The same clip with three looks and very fast cuts, from 0.15 to 0.6 s, which now and then slow down and hold for 1.5 to 3 s. All three versions play at once and in sync even when hidden, so each cut swaps the look without losing the motion.</p>
+    </div>
+  </div>
+  <figure class="monitor"><span class="pin tc"></span>
+    <div class="vj" data-mixer="v2"></div>
+  </figure>
+  <p class="keys" lang="es">Atajos: <kbd>1</kbd>–<kbd>5</kbd> fijar clip · <kbd>0</kbd> aleatorio · <kbd>F</kbd> pantalla completa</p>
+  <p class="keys" lang="en">Shortcuts: <kbd>1</kbd>–<kbd>5</kbd> pin clip · <kbd>0</kbd> random · <kbd>F</kbd> fullscreen</p>
+</section>
+
+<section class="chapter">
+  <header><h2 lang="es">Cómo funciona</h2><h2 lang="en">How it works</h2><span class="aside">HTML · CSS · JS · ffmpeg</span></header>
+  <div class="text">
+    <div lang="es">
+      <ul>
+        <li><b>Clips ligeros:</b> un script en Python recodifica cada loop en dos versiones, una para ordenador y otra para móvil, con un tope de tasa de bits para que varios vídeos puedan sonar a la vez sin congelarse.</li>
+        <li><b>Descarga completa antes de usar:</b> cada clip se baja entero, de uno en uno y empezando por el mezclador que está en pantalla, así nunca se para a mitad de un corte. Las miniaturas se van llenando con el progreso.</li>
+        <li><b>Sincronía sin saltos:</b> en el mezclador de filtros, las versiones siguen a la primera ajustando un poco su velocidad; solo saltan si se desvían más de un segundo.</li>
+        <li><b>Pantalla completa en cualquier móvil:</b> si el teléfono está en vertical, la pantalla se gira para verse en horizontal.</li>
+      </ul>
+    </div>
+    <div lang="en">
+      <ul>
+        <li><b>Light clips:</b> a Python script re-encodes each loop in two versions, desktop and mobile, with a bitrate cap so several videos can play at once without freezing.</li>
+        <li><b>Full download before use:</b> each clip downloads completely, one at a time and starting with the mixer on screen, so it never stalls mid-cut. The thumbnails fill up with the progress.</li>
+        <li><b>Seamless sync:</b> in the looks mixer, the versions follow the first one by nudging their speed; they only jump if they drift more than a second.</li>
+        <li><b>Fullscreen on any phone:</b> if the phone is upright, the screen rotates to play in landscape.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<a class="next torn-top" href="leafblade.html">
+  <span class="k"><span lang="es">siguiente proyecto →</span><span lang="en">next project →</span></span>
+  <span class="t">Leafblade</span>
+  <span class="foot"><span>andipl2323@gmail.com</span><span>© 2026 Toni Díaz Plaza</span></span>
+</a>
+
+<script src="case.js"></script>
+<script>
+// Mezclador de loops: el mismo sistema que la web de loops para VDJ, adaptado a esta página.
+(() => {
+  const BASE = '../assets/visuales/loops/';
+  const PROPOSALS = {
+    v1: { srcs: ['cara video.mp4', 'caras.mp4', 'fondo.mp4', 'sombra.mp4', 'playa.mp4'] },
+    v2: {
+      sync: true,
+      minCut: 150, maxCut: 600,
+      // de vez en cuando frena: uno de cada seis cortes aguanta bastante más
+      holdChance: 1 / 6, minHold: 1500, maxHold: 3000,
+      srcs: ['v2/vasca 1.mp4', 'v2/vasca2.mp4', 'v2/vasca3.mp4'],
+    },
+  };
+  const SOFT_DRIFT = 0.03, HARD_DRIFT = 1;
+  const t = (es, en) => document.documentElement.lang === 'en' ? en : es;
+
+  // En móviles, las versiones ligeras (también para la pieza de arriba)
+  const LIGHT = matchMedia('(pointer: coarse)').matches;
+  if (LIGHT) document.querySelectorAll('video[data-light]').forEach(v => { v.src = v.dataset.light; });
+  const videoUrl = src => encodeURI(BASE + (LIGHT ? 'movil/' : '') + src);
+  const posterUrl = src => encodeURI(BASE + 'portada/' + src.replace(/\.mp4$/, '.jpg'));
+
+  // Cada clip se descarga entero antes de usarlo, de uno en uno, y primero los del
+  // mezclador que está en pantalla. Si la descarga falla, se reproduce del servidor.
+  const pending = [];
+  let busy = false, visibleKnown = false;
+  function fetchClip(src, isActive, onProgress) {
+    return new Promise(resolve => { pending.push({ src, isActive, onProgress, resolve }); pump(); });
+  }
+  function pump() {
+    if (busy || !visibleKnown || !pending.length) return;
+    const k = Math.max(0, pending.findIndex(job => job.isActive()));
+    const { src, onProgress, resolve } = pending.splice(k, 1)[0];
+    const url = videoUrl(src);
+    busy = true;
+    fetch(url)
+      .then(r => { if (!r.ok) throw new Error(r.status); return readWithProgress(r, onProgress); })
+      .then(b => URL.createObjectURL(b), () => url)
+      .then(resolve)
+      .finally(() => { busy = false; pump(); });
+  }
+  async function readWithProgress(r, onProgress) {
+    const total = Number(r.headers.get('Content-Length'));
+    if (!total || !r.body) return r.blob();
+    const reader = r.body.getReader();
+    const chunks = [];
+    let got = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      got += value.length;
+      onProgress(Math.min(1, got / total));
+    }
+    return new Blob(chunks, { type: r.headers.get('Content-Type') || 'video/mp4' });
+  }
+
+  const pad = n => String(n).padStart(2, '0');
+  // torn paper backing for each cut-out (same jagged edge as case.js)
+  const jag = (n, side) => Array.from({ length: n + 1 }, (_, i) => {
+    const t = (i / n) * 100, d = (Math.random() * 4 + 1).toFixed(1);
+    return side === 'top' ? `${t}% ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${t}%`
+         : side === 'bottom' ? `${100 - t}% calc(100% - ${d}px)` : `${d}px ${100 - t}%`;
+  });
+  const tearOut = (el, n = 24) => {
+    const layer = document.createElement('span');
+    layer.className = 'tear';
+    layer.style.clipPath = `polygon(${[...jag(n, 'top'), ...jag(n >> 1, 'right'), ...jag(n, 'bottom'), ...jag(n >> 1, 'left')].join(',')})`;
+    el.prepend(layer);
+  };
+
+  const TEMPLATE = `
+    <div class="cut stage-cut"><div class="stage">
+      <div class="hud">
+        <div class="hud-row">
+          <span class="tag"><span class="dot"></span><span data-el="mode"></span></span>
+          <span class="tag tc hide-sm" data-el="tc">00:00:00</span>
+        </div>
+        <div class="hud-row bottom">
+          <div class="bignum" data-el="bignum">01</div>
+          <span class="tag tc" data-el="next">—</span>
+        </div>
+      </div>
+      <div class="meter"><i data-el="meter"></i></div>
+      <button class="gate" data-el="gate" type="button"><span>▶ Play</span></button>
+    </div></div>
+    <div class="deck" role="group"></div>
+    <div class="controls">
+      <button class="btn on" data-el="auto" type="button"></button>
+      <span class="hint" data-el="hint"></span>
+      <button class="btn" data-el="fs" type="button"></button>
+    </div>`;
+
+  function createMixer(section, { srcs, sync = false, minCut = 500, maxCut = 4000, holdChance = 0, minHold = 0, maxHold = 0 }) {
+    section.insertAdjacentHTML('beforeend', TEMPLATE);
+    const el = name => section.querySelector(`[data-el="${name}"]`);
+    const stage = section.querySelector('.stage');
+    const deck = section.querySelector('.deck');
+    tearOut(section.querySelector('.stage-cut'), 40);
+    // the tape holds the big cut-out, not the whole figure
+    section.closest('figure')?.querySelectorAll(':scope > :is(.tape, .pin, .staple, .clip, .binder)').forEach(t => section.querySelector('.stage-cut').appendChild(t));
+    const ui = {
+      mode: el('mode'), tc: el('tc'), bignum: el('bignum'), next: el('next'), meter: el('meter'),
+      gate: el('gate'), auto: el('auto'), fs: el('fs'), hint: el('hint'),
+    };
+    deck.style.setProperty('--cols', srcs.length);
+
+    // Con clips distintos solo se reproduce el visible; con filtros (sync), todos a la vez.
+    const vids = srcs.map(src => {
+      const v = document.createElement('video');
+      v.poster = posterUrl(src);
+      v.muted = true; v.loop = true; v.playsInline = true;
+      v.preload = 'auto';
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      stage.prepend(v);
+      return v;
+    });
+    vids[0].addEventListener('loadedmetadata', () => {
+      const { videoWidth: w, videoHeight: h } = vids[0];
+      if (w && h) section.style.setProperty('--ar', `${w} / ${h}`);
+    }, { once: true });
+
+    const chans = srcs.map((_, i) => {
+      const b = document.createElement('button');
+      b.className = 'ch cut loading'; b.type = 'button';
+      b.setAttribute('aria-pressed', 'false');
+      b.setAttribute('aria-label', `Clip ${pad(i + 1)}`);
+      b.innerHTML = `<div class="tally"></div><canvas></canvas>
+        <div class="fill"></div><span class="pct">0 %</span><span class="badge">SOLO</span>
+        <div class="meta"><span class="n">${pad(i + 1)}</span></div>`;
+      tearOut(b, 12);
+      b.addEventListener('click', () => pin(i));
+      deck.appendChild(b);
+      return b;
+    });
+    const canvases = chans.map(c => c.querySelector('canvas'));
+    const pcts = chans.map(c => c.querySelector('.pct'));
+    const ctxs = canvases.map(c => c.getContext('2d'));
+    const posters = srcs.map(src => Object.assign(new Image(), { src: posterUrl(src) }));
+
+    // Al cambiar de tamaño el lienzo se borra, así que todas las miniaturas se repintan.
+    new ResizeObserver(() => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvases.forEach(c => {
+        c.width = Math.max(1, Math.round(c.clientWidth * dpr));
+        c.height = Math.max(1, Math.round(c.clientHeight * dpr));
+      });
+      vids.forEach(v => { v._thumb = null; });
+    }).observe(deck);
+
+    function drawCover(ctx, img, iw, ih) {
+      const { width: w, height: h } = ctx.canvas;
+      const s = Math.max(w / iw, h / ih), dw = iw * s, dh = ih * s;
+      ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
+    }
+    function drawThumb(k) {
+      const v = vids[k], p = posters[k];
+      if (v.videoWidth && v.readyState >= 2) {
+        if (v.paused && v._thumb === 'video') return;
+        v._thumb = 'video';
+        drawCover(ctxs[k], v, v.videoWidth, v.videoHeight);
+      } else if (!v._thumb && p.complete && p.naturalWidth) {
+        v._thumb = 'poster';
+        drawCover(ctxs[k], p, p.naturalWidth, p.naturalHeight);
+      }
+    }
+
+    // ---------- estado ----------
+    let cur = -1, pinned = null, nextAt = 0, segDur = 1;
+    let active = false, started = false, frame = 0;
+    const ready = srcs.map(() => false);
+    const loaded = srcs.map(() => 0);
+    const t0 = performance.now();
+
+    function progress(i, p) {
+      loaded[i] = p;
+      chans[i].style.setProperty('--load', p.toFixed(3));
+      pcts[i].textContent = `${Math.floor(p * 100)} %`;
+    }
+    function flash() {
+      stage.classList.remove('flash');
+      void stage.offsetWidth;
+      stage.classList.add('flash');
+    }
+    function cut(i) {
+      if (i === cur) return;
+      if (!sync && active) vids[i].play().catch(checkBlocked);
+      if (cur >= 0) {
+        vids[cur].classList.remove('live'); chans[cur].classList.remove('live');
+        if (!sync) vids[cur].pause();
+      }
+      cur = i;
+      vids[i].classList.add('live');
+      chans[i].classList.add('live');
+      ui.bignum.textContent = pad(i + 1);
+      flash();
+    }
+    function schedule(now) {
+      const hold = Math.random() < holdChance;
+      segDur = hold ? minHold + Math.random() * (maxHold - minHold)
+                    : minCut + Math.random() * (maxCut - minCut);
+      nextAt = now + segDur;
+    }
+    function randomOther() {
+      const options = srcs.map((_, k) => k).filter(k => ready[k] && k !== cur);
+      return options.length ? options[Math.floor(Math.random() * options.length)] : cur;
+    }
+    // Textos de la interfaz: se repintan cada fotograma para seguir al idioma elegido.
+    function renderText() {
+      const solo = pinned !== null;
+      ui.mode.textContent = solo ? t('Fijado', 'Pinned') : t('Aleatorio', 'Random');
+      ui.auto.textContent = t('↻ Aleatorio', '↻ Random');
+      ui.fs.textContent = t('⛶ Pantalla completa', '⛶ Fullscreen');
+      ui.hint.textContent = t('Toca un clip para fijarlo · vuelve a tocarlo para soltarlo', 'Tap a clip to pin it · tap again to release');
+    }
+    function renderMode() {
+      const solo = pinned !== null;
+      stage.classList.toggle('solo', solo);
+      ui.auto.classList.toggle('on', !solo);
+      chans.forEach((c, k) => {
+        c.classList.toggle('pinned', k === pinned);
+        c.setAttribute('aria-pressed', String(k === pinned));
+      });
+      renderText();
+    }
+    function pin(i) {
+      if (i < 0 || i >= srcs.length || !ready[i]) return;
+      if (pinned === i) return unpin();
+      pinned = i;
+      cut(i);
+      renderMode();
+    }
+    function unpin() {
+      if (pinned === null) return;
+      pinned = null;
+      schedule(performance.now());
+      renderMode();
+    }
+
+    // Todos siguen al primero; las desviaciones pequeñas se corrigen con la velocidad.
+    function syncVideos() {
+      const master = vids[0];
+      const d = master.duration;
+      if (!d || master.paused || master.readyState < 3) return;
+      const now = performance.now();
+      for (let k = 1; k < vids.length; k++) {
+        const v = vids[k];
+        if (v.readyState < 3 || v.seeking) continue;
+        let diff = v.currentTime - master.currentTime;
+        if (diff > d / 2) diff -= d;
+        else if (diff < -d / 2) diff += d;
+        if (Math.abs(diff) > HARD_DRIFT && now - (v._lastSeek || 0) > 3000) {
+          v._lastSeek = now;
+          v.playbackRate = 1;
+          v.currentTime = (master.currentTime + 0.2) % d;
+        } else if (Math.abs(diff) > SOFT_DRIFT) {
+          v.playbackRate = Math.min(1.15, Math.max(0.85, 1 - diff));
+        } else if (v.playbackRate !== 1) {
+          v.playbackRate = 1;
+        }
+      }
+    }
+
+    function tick(now) {
+      if (frame % 30 === 0) renderText();
+      if (!active) { frame++; return; }
+      if (!started) {
+        const p = sync ? loaded.reduce((a, b) => a + b, 0) / srcs.length : loaded[cur];
+        ui.meter.style.setProperty('--p', p.toFixed(3));
+        ui.next.textContent = `${t('Cargando', 'Loading')} ${Math.floor(p * 100)} %`;
+        vids.forEach((_, k) => drawThumb(k));
+        frame++;
+        return;
+      }
+      if (pinned === null && now >= nextAt) {
+        cut(randomOther());
+        schedule(now);
+      }
+      if (pinned === null) {
+        const left = Math.max(0, nextAt - now);
+        ui.meter.style.setProperty('--p', (left / segDur).toFixed(4));
+        const s = (left / 1000).toFixed(1);
+        ui.next.textContent = t(`Corte en ${s.replace('.', ',')} s`, `Cut in ${s} s`);
+      } else {
+        ui.meter.style.setProperty('--p', 1);
+        ui.next.textContent = t('Fijado', 'Pinned');
+      }
+      const ms = now - t0;
+      ui.tc.textContent = `${pad(Math.floor(ms / 60000))}:${pad(Math.floor(ms / 1000) % 60)}:${pad(Math.floor(ms / 40) % 25)}`;
+      if (frame++ % 2 === 0) vids.forEach((_, k) => drawThumb(k));
+      if (sync && frame % 15 === 0) syncVideos();
+    }
+
+    const playing = () => sync ? vids : cur >= 0 ? [vids[cur]] : [];
+    const playAll = () => Promise.all(playing().map(v => v.play()));
+    // Solo se pide un toque si el navegador ha bloqueado de verdad la reproducción.
+    function checkBlocked() {
+      setTimeout(() => {
+        ui.gate.classList.toggle('show', active && playing().some(v => v.paused));
+      }, 600);
+    }
+    vids.forEach(v => v.addEventListener('playing', checkBlocked));
+    ui.gate.addEventListener('click', () => { playAll().catch(() => {}).finally(checkBlocked); });
+
+    function setActive(on) {
+      if (on === active) return;
+      active = on;
+      if (on) {
+        if (started) playAll().catch(checkBlocked);
+        schedule(performance.now());
+      } else {
+        vids.forEach(v => v.pause());
+        ui.gate.classList.remove('show');
+      }
+    }
+
+    cut(sync ? Math.floor(Math.random() * srcs.length) : 0);
+    stage.classList.add('loading');
+    function start(i) {
+      started = true;
+      stage.classList.remove('loading');
+      if (!sync) cut(i);
+      schedule(performance.now());
+      if (active) playAll().catch(checkBlocked);
+    }
+    srcs.forEach((src, i) => fetchClip(src, () => active, p => progress(i, p)).then(url => {
+      vids[i].src = url;
+      ready[i] = true;
+      progress(i, 1);
+      chans[i].classList.remove('loading');
+      if (!started && (!sync || ready.every(Boolean))) start(i);
+    }));
+    renderMode();
+
+    ui.auto.addEventListener('click', unpin);
+
+    // Pantalla completa: se fija con CSS (girada si el móvil está en vertical) y además
+    // se pide la del navegador para esconder sus barras donde la conceden.
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'fs-close'; closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Salir de pantalla completa');
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', () => exitFs());
+    stage.appendChild(closeBtn);
+
+    const nativeFsEl = () => document.fullscreenElement || document.webkitFullscreenElement;
+    const isFakeFs = () => stage.classList.contains('fake-fs');
+    function fakeFs(on) {
+      stage.classList.toggle('fake-fs', on);
+      document.body.classList.toggle('fs-lock', on);
+    }
+    function enterFs() {
+      fakeFs(true);
+      const root = document.documentElement;
+      const req = root.requestFullscreen || root.webkitRequestFullscreen;
+      try {
+        const p = req && req.call(root);
+        if (p && p.then) p.then(() => screen.orientation?.lock?.('landscape').catch(() => {}), () => {});
+      } catch (_) {}
+    }
+    function exitFs() {
+      fakeFs(false);
+      if (nativeFsEl()) {
+        try { screen.orientation?.unlock?.(); } catch (_) {}
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      }
+    }
+    const onFsChange = () => { if (!nativeFsEl() && isFakeFs()) fakeFs(false); };
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+    const toggleFs = () => (isFakeFs() ? exitFs() : enterFs());
+    ui.fs.addEventListener('click', toggleFs);
+
+    return { section, stage, tick, setActive, pin, unpin, toggleFs, exitFs, isFakeFs };
+  }
+
+  const mixers = [...document.querySelectorAll('[data-mixer]')]
+    .map(sec => createMixer(sec, PROPOSALS[sec.dataset.mixer]));
+
+  // Solo se reproduce el mezclador que está a la vista; el más visible recibe los atajos.
+  let focused = mixers[0];
+  const ratios = new Map();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => ratios.set(e.target, e.isIntersecting ? e.intersectionRatio : 0));
+    let best = 0;
+    mixers.forEach(m => {
+      const r = ratios.get(m.stage) || 0;
+      m.setActive(r > 0);
+      if (r > best) { best = r; focused = m; }
+    });
+    if (!visibleKnown) { visibleKnown = true; pump(); }
+  }, { threshold: [0, .1, .25, .5, .75, 1] });
+  mixers.forEach(m => io.observe(m.stage));
+  mixers.forEach(m => m.section.addEventListener('pointerdown', () => { focused = m; }));
+
+  (function loop(now) {
+    mixers.forEach(m => m.tick(now));
+    requestAnimationFrame(loop);
+  })(performance.now());
+
+  document.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('video')) return;
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 9) focused.pin(n - 1);
+    else if (e.key === 'Escape' && mixers.some(m => m.isFakeFs())) mixers.forEach(m => m.exitFs());
+    else if (e.key === '0' || e.key === 'Escape') focused.unpin();
+    else if (e.key === 'f' || e.key === 'F') focused.toggleFs();
+  });
+})();
+
+// La pieza arranca sola con sonido. Si el navegador no deja sonar un vídeo sin que
+// el visitante haya tocado la página, arranca en silencio y el sonido entra con el
+// primer toque o tecla (o con el botón).
+(() => {
+  const v = document.getElementById('pieza'), btn = document.getElementById('sound');
+  const events = ['pointerdown', 'keydown', 'touchend'];
+  const unmute = () => {
+    v.muted = false;
+    v.play().catch(() => {});
+    btn.hidden = true;
+    events.forEach(ev => document.removeEventListener(ev, unmute, true));
+  };
+  v.muted = false;
+  v.play().catch(() => {
+    v.muted = true;
+    v.play().catch(() => {});
+    btn.hidden = false;
+    events.forEach(ev => document.addEventListener(ev, unmute, true));
+  });
+  btn.addEventListener('click', unmute);
+  v.addEventListener('volumechange', () => { if (!v.muted) btn.hidden = true; });
+})();
+</script>
+</body>
+</html>
