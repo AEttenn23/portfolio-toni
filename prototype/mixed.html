@@ -289,6 +289,12 @@
     .contact { padding-top: 120px; }
   }
 
+  /* switching language: text is typed back in behind a caret, cut-out letters get stuck on one by one */
+  .caret { display: inline-block; width: .55em; height: 1em; margin-left: .05em; vertical-align: -.12em; background: var(--red); animation: blink .45s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .ransomed.cut-in .r-word > span { animation: cut-in 380ms var(--ease-out) both; }
+  @keyframes cut-in { from { opacity: 0; scale: 2.2; rotate: 25deg; } 60% { opacity: 1; } }
+
   @media (prefers-reduced-motion: reduce) {
     .ribbon span { animation: none; }
     .ransom span:hover, .card:hover, .card:hover .sticker { transform: none; translate: none; }
@@ -694,15 +700,45 @@
   while (x < 93) { const w = [1, 1, 2, 3][Math.floor(Math.random() * 4)]; if (Math.random() > .45) bars += `<rect x="${x}" width="${w}" height="40"/>`; x += w; }
   bc.innerHTML = bars;
   // the choice is shared with the project pages
-  const setLang = l => {
+  const onScreen = el => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && r.width > 0; };
+  // retype an element's text nodes from nothing, with a caret riding along; long texts type faster so none takes over a second
+  const typeIn = el => {
+    const nodes = [], w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    while (w.nextNode()) if (w.currentNode.nodeValue.trim()) nodes.push([w.currentNode, w.currentNode.nodeValue]);
+    const total = nodes.reduce((a, [, s]) => a + s.length, 0);
+    if (!total) return;
+    // hold the final height so the page doesn't jump while it types
+    el.style.minHeight = el.offsetHeight + 'px';
+    nodes.forEach(([n]) => n.nodeValue = '');
+    const caret = document.createElement('span'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true');
+    const dur = Math.min(1000, 200 + total * 9), t0 = performance.now();
+    const step = t => {
+      let k = Math.round(total * Math.min(1, (t - t0) / dur));
+      for (const [n, s] of nodes) { const c = Math.min(k, s.length); n.nodeValue = s.slice(0, c); if (k > 0) n.after(caret); k -= c; }
+      if (t - t0 < dur) requestAnimationFrame(step); else setTimeout(() => { caret.remove(); el.style.minHeight = ''; }, 250);
+    };
+    requestAnimationFrame(step);
+  };
+  const setLang = (l, animate) => {
     const dict = l === 'en' ? en : es;
-    document.querySelectorAll('[data-i18n]').forEach(el => { if (dict[el.dataset.i18n]) el.innerHTML = dict[el.dataset.i18n]; });
+    const show = animate && !reduce;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const html = dict[el.dataset.i18n];
+      if (!html || html === el.innerHTML) return;
+      el.innerHTML = html;
+      if (show && !el.matches('.head h2') && onScreen(el)) typeIn(el);
+    });
     ransomHeads();
+    if (show) document.querySelectorAll('.head h2').forEach(h => {
+      if (!onScreen(h)) return;
+      h.querySelectorAll('.r-word > span').forEach((s, i) => s.style.animationDelay = i * 45 + 'ms');
+      h.classList.add('cut-in');
+    });
     document.documentElement.lang = l;
     document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x.dataset.lang === l));
     try { localStorage.setItem('lang', l); } catch {}
   };
-  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => { if (!b.classList.contains('on')) setLang(b.dataset.lang, true); }));
   let saved = null;
   try { saved = localStorage.getItem('lang'); } catch {}
   if (saved === 'en') setLang('en');
