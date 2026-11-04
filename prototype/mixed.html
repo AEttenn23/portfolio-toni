@@ -36,14 +36,10 @@
   html { background: var(--bg); overflow-x: clip; scrollbar-color: var(--on-bg) var(--bg); }
   /* crumpled paper: crease shading (soft-light) over the paper fibres */
   body { background: url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px fixed, var(--bg) url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px fixed; background-blend-mode: soft-light, normal; color: var(--on-bg); font-family: var(--type); overflow-x: clip; caret-color: var(--red); }
-  /* halftone print in the background: soft dots times a corner gradient, thresholded by contrast so the dots grow towards the corners */
+  /* halftone print in the background, growing from two corners: baked into images so scrolling stays cheap */
   body { position: relative; z-index: 0; }
-  body::before { content: ''; position: fixed; inset: -50%; z-index: -1; pointer-events: none; rotate: 15deg;
-    background: radial-gradient(circle, #fff 0, #000 72%) 0 0 / 12px 12px,
-      radial-gradient(circle at 72% 28%, #fff 0, #000 34%),
-      radial-gradient(circle at 30% 70%, #e0e0e0 0, #000 28%), #000;
-    background-blend-mode: multiply, screen, normal;
-    filter: contrast(28); mix-blend-mode: screen; opacity: .16; }
+  body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: url('../assets/mixed/halftone.png') top right / min(1100px, 90vmax) no-repeat, url('../assets/mixed/halftone_bl.png') bottom left / min(800px, 70vmax) no-repeat; }
   a, button { color: inherit; }
   img { display: block; max-width: 100%; }
   ::selection { background: var(--neon); color: var(--ink); }
