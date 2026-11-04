@@ -290,7 +290,9 @@
   }
 
   /* switching language: text is typed back in behind a caret, cut-out letters get stuck on one by one */
-  .caret { display: inline-block; width: .55em; height: 1em; margin-left: .05em; vertical-align: -.12em; background: var(--red); animation: blink .45s steps(1) infinite; }
+  /* the caret takes no room and the untyped rest stays in place, invisible, so nothing reflows while it types */
+  .ghost { visibility: hidden; }
+  .caret { display: inline-block; width: .55em; height: 1em; margin-right: -.55em; vertical-align: -.12em; background: var(--red); animation: blink .45s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
   .ransomed.cut-in .r-word > span { animation: cut-in 380ms var(--ease-out) both; }
   @keyframes cut-in { from { opacity: 0; scale: 2.2; rotate: 25deg; } 60% { opacity: 1; } }
@@ -707,15 +709,13 @@
     while (w.nextNode()) if (w.currentNode.nodeValue.trim()) nodes.push([w.currentNode, w.currentNode.nodeValue]);
     const total = nodes.reduce((a, [, s]) => a + s.length, 0);
     if (!total) return;
-    // hold the final height so the page doesn't jump while it types
-    el.style.minHeight = el.offsetHeight + 'px';
-    nodes.forEach(([n]) => n.nodeValue = '');
+    const ghosts = nodes.map(([n, s]) => { const g = document.createElement('span'); g.className = 'ghost'; g.textContent = s; n.nodeValue = ''; n.after(g); return g; });
     const caret = document.createElement('span'); caret.className = 'caret'; caret.setAttribute('aria-hidden', 'true');
     const dur = Math.min(1000, 200 + total * 9), t0 = performance.now();
     const step = t => {
       let k = Math.round(total * Math.min(1, (t - t0) / dur));
-      for (const [n, s] of nodes) { const c = Math.min(k, s.length); n.nodeValue = s.slice(0, c); if (k > 0) n.after(caret); k -= c; }
-      if (t - t0 < dur) requestAnimationFrame(step); else setTimeout(() => { caret.remove(); el.style.minHeight = ''; }, 250);
+      nodes.forEach(([n, s], i) => { const c = Math.min(k, s.length); n.nodeValue = s.slice(0, c); ghosts[i].textContent = s.slice(c); if (k > 0) n.after(caret); k -= c; });
+      if (t - t0 < dur) requestAnimationFrame(step); else { ghosts.forEach(g => g.remove()); setTimeout(() => caret.remove(), 250); }
     };
     requestAnimationFrame(step);
   };
@@ -725,8 +725,13 @@
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const html = dict[el.dataset.i18n];
       if (!html || html === el.innerHTML) return;
+      const typed = show && !el.matches('.head h2') && onScreen(el), h0 = el.offsetHeight;
       el.innerHTML = html;
-      if (show && !el.matches('.head h2') && onScreen(el)) typeIn(el);
+      if (!typed) return;
+      // the other language can take a line more or less: ease the height instead of jumping
+      const h1 = el.offsetHeight;
+      if (h1 !== h0 && getComputedStyle(el).display !== 'inline') el.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 450, easing: 'cubic-bezier(.23, 1, .32, 1)' });
+      typeIn(el);
     });
     ransomHeads();
     if (show) document.querySelectorAll('.head h2').forEach(h => {
