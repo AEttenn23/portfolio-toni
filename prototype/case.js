@@ -16,9 +16,11 @@
 
   // torn edges on a backing layer, so tape and stickers can hang outside the paper
   const jag = (n, side) => Array.from({ length: n + 1 }, (_, i) => {
-    const t = (i / n) * 100, d = (Math.random() * 5 + 1).toFixed(1);
-    return side === 'top' ? `${t}% ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${t}%`
-         : side === 'bottom' ? `${100 - t}% calc(100% - ${d}px)` : `${d}px ${100 - t}%`;
+    // the four corners are shared points, so the two edges that meet there can't cross and leave a spike
+    const t = (i / n) * 100, end = i === 0 || i === n, d = end ? 3 : (Math.random() * 5 + 1).toFixed(1);
+    const along = end ? (i ? 'calc(100% - 3px)' : '3px') : `${t}%`, back = end ? (i ? '3px' : 'calc(100% - 3px)') : `${100 - t}%`;
+    return side === 'top' ? `${along} ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${along}`
+         : side === 'bottom' ? `${back} calc(100% - ${d}px)` : `${d}px ${back}`;
   });
   document.querySelectorAll('.torn').forEach(el => {
     const layer = document.createElement('span');

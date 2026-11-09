@@ -330,7 +330,7 @@
       <span class="ransom" aria-hidden="true"><span>T</span><span>o</span><span>N</span><span>i</span></span>
       <span class="rest misreg" aria-hidden="true">Díaz Plaza</span>
     </h1>
-    <div class="roles" data-i18n="roles"><p>Siempre me ha gustado el arte. Empecé dibujando y produciendo música y, estudiando el ciclo superior de Animaciones 3D, Juegos y Entornos Interactivos, me di cuenta de que podía vivir de esto. Dejó de ser un sueño lejano y se convirtió en mi objetivo.</p><p>Mi perfil es generalista: animación 2D y 3D, VFX, tech art y programación en Unity. Rindo mejor en <mark>equipos pequeños</mark>, donde paso de lo técnico a lo artístico según lo que pidan el proyecto y sus plazos.</p></div>
+    <div class="roles" data-i18n="roles"><p>Siempre me ha gustado el arte. Empecé dibujando y produciendo música y, estudiando el ciclo superior de Animaciones 3D, Juegos y Entornos Interactivos, me di cuenta de que podía vivir de esto. Dejó de ser un sueño lejano y se convirtió en mi objetivo.</p><p>Mi perfil es generalista: animación 2D y 3D, VFX, tech art y programación en Unity. Soy más eficiente en <mark>equipos pequeños</mark>, donde paso de lo técnico a lo artístico según lo que pidan el proyecto y sus plazos.</p></div>
     <div class="barcode" aria-hidden="true"><svg id="barcode" viewBox="0 0 95 40" preserveAspectRatio="none"></svg><span>8 412026 110012</span></div>
   </div>
 
@@ -455,9 +455,11 @@
 
   // torn edges: a jagged polygon per element, different every time like real paper
   const jag = (n, side) => Array.from({ length: n + 1 }, (_, i) => {
-    const t = (i / n) * 100, d = (Math.random() * 5 + 1).toFixed(1);
-    return side === 'top' ? `${t}% ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${t}%`
-         : side === 'bottom' ? `${100 - t}% calc(100% - ${d}px)` : `${d}px ${100 - t}%`;
+    // the four corners are shared points, so the two edges that meet there can't cross and leave a spike
+    const t = (i / n) * 100, end = i === 0 || i === n, d = end ? 3 : (Math.random() * 5 + 1).toFixed(1);
+    const along = end ? (i ? 'calc(100% - 3px)' : '3px') : `${t}%`, back = end ? (i ? '3px' : 'calc(100% - 3px)') : `${100 - t}%`;
+    return side === 'top' ? `${along} ${d}px` : side === 'right' ? `calc(100% - ${d}px) ${along}`
+         : side === 'bottom' ? `${back} calc(100% - ${d}px)` : `${d}px ${back}`;
   });
   document.querySelectorAll('.torn').forEach(el => {
     el.style.clipPath = `polygon(${[...jag(40, 'top'), ...jag(24, 'right'), ...jag(40, 'bottom'), ...jag(24, 'left')].join(',')})`;
@@ -669,7 +671,7 @@
     k1: 'Section 01 · Features', k2: 'Section 02 · Honours', k3: 'Section 03 · Track record', k4: 'Section 04 · Contact',
     b_game: 'Videogame', b_webi: '3D and visuals', b_vis: 'Visuals', wip: 'In progress',
     nav_work: 'work', nav_awards: 'awards', nav_career: 'career', nav_contact: 'contact',
-    roles: '<p>I&rsquo;ve always loved art. I started out drawing and producing music, and while studying the Higher Diploma in 3D Animation, Games and Interactive Environments I realised I could actually make a living from it. It stopped being a distant dream and became my goal.</p><p>My profile is generalist: 2D and 3D animation, VFX, tech art and Unity programming. I do my best work in <mark>small teams</mark>, where I move between the technical and the artistic side depending on what the project and its deadlines need.</p>',
+    roles: '<p>I&rsquo;ve always loved art. I started out drawing and producing music, and while studying the Higher Diploma in 3D Animation, Games and Interactive Environments I realised I could actually make a living from it. It stopped being a distant dream and became my goal.</p><p>My profile is generalist: 2D and 3D animation, VFX, tech art and Unity programming. I am at my most efficient in <mark>small teams</mark>, where I move between the technical and the artistic side depending on what the project and its deadlines need.</p>',
     rig_note: 'click me! ↑<br>(Greg · TheWorkingDead)', reel_cap: 'demo reel · 1:47',
     work: 'Work', work_aside: 'hover to see them move →', char3d: '3D character', vis: 'Visuals',
     awards: 'Awards',
