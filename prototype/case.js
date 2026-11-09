@@ -56,13 +56,14 @@
     }).join('') + '</span>').join('');
   });
 
-  // looping clips load and play only while on screen
+  // looping clips load and play only while on screen; phones and tablets get the light version and less margin
+  const light = matchMedia('(hover: none), (pointer: coarse)').matches;
   const io = new IntersectionObserver(entries => entries.forEach(({ target: v, isIntersecting }) => {
     if (isIntersecting) {
-      if (!v.getAttribute('src')) v.src = v.dataset.src;
+      if (!v.getAttribute('src')) v.src = (light && v.dataset.light) || v.dataset.src;
       v.play().catch(() => {});
     } else v.pause();
-  }), { rootMargin: '200px 0px' });
+  }), { rootMargin: light ? '40px 0px' : '200px 0px' });
   document.querySelectorAll('video[data-src]').forEach(v => io.observe(v));
 
   // before/after slider: drag anywhere on the image; step buttons swap the "before" layer

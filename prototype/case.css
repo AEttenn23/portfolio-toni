@@ -257,5 +257,11 @@ html[lang="en"] .chapter > header::before { content: 'Chapter ' counter(ch, deci
   .next:hover .t { translate: none; }
 }
 
-/* phones and tablets: no grain blended over the whole page, it was the most expensive thing to scroll */
-@media (hover: none), (pointer: coarse) { body::after { display: none; } }
+/* phones and tablets: no grain or shadows filtered over the page, and the texture lives in one fixed layer that is painted once */
+@media (hover: none), (pointer: coarse) {
+  body { position: relative; z-index: 0; background: var(--bg); }
+  body::before { content: ''; position: fixed; inset: 0 0 auto; height: 100lvh; z-index: -1; pointer-events: none; transform: translateZ(0);
+    background: url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px, var(--bg) url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px; background-blend-mode: soft-light, normal; }
+  body::after { display: none; }
+  .torn > .tear, .tape.masking, .sticker { filter: none; }
+}

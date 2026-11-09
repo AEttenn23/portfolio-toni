@@ -115,6 +115,12 @@
     .vj .ch { padding: 4px 4px 0; }
     .vj .ch .fill, .vj .ch .pct { left: 4px; right: 4px; top: 8px; }
   }
+  /* móviles y tablets: nada de desenfoques, sombras ni mezclas encima de un vídeo en marcha */
+  @media (hover: none), (pointer: coarse) {
+    .vj .cut > .tear { filter: none; }
+    .vj .tag { backdrop-filter: none; background: rgba(10,10,11,.8); }
+    .vj .bignum { mix-blend-mode: normal; }
+  }
   @media (prefers-reduced-motion: reduce) {
     .vj .dot, .vj .stage.flash::after { animation: none; }
   }
@@ -140,7 +146,7 @@
 
 <figure class="hero-media torn">
   <span class="tape tl"></span><span class="pin tr b"></span>
-  <video id="pieza" controls loop preload="auto" playsinline poster="../assets/visuales/video/poster_pieza.jpg" data-light="../assets/visuales/video/visuales_pieza_movil.mp4" src="../assets/visuales/video/visuales_pieza.mp4"></video>
+  <video id="pieza" controls loop preload="auto" playsinline poster="../assets/visuales/video/poster_pieza.jpg" data-light="../assets/visuales/video/visuales_pieza_movil.mp4" data-full="../assets/visuales/video/visuales_pieza.mp4"></video>
   <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
   <figcaption class="cap"><span lang="es">la pieza · estilo videoclip · música mía</span><span lang="en">the piece · music-video style · music by me</span></figcaption>
 </figure>
@@ -203,8 +209,10 @@
   const t = (es, en) => document.documentElement.lang === 'en' ? en : es;
 
   // En móviles, las versiones ligeras (también para la pieza de arriba)
-  const LIGHT = matchMedia('(pointer: coarse)').matches;
-  if (LIGHT) document.querySelectorAll('video[data-light]').forEach(v => { v.src = v.dataset.light; });
+  const LIGHT = matchMedia('(hover: none), (pointer: coarse)').matches;
+  document.querySelectorAll('video[data-full]').forEach(v => { v.src = LIGHT ? v.dataset.light : v.dataset.full; });
+  // Un móvil no decodifica tres vídeos a la vez: solo corre el visible y, al cortar, sigue en el punto donde iba el anterior
+  if (LIGHT) Object.assign(PROPOSALS.v2, { sync: false, follow: true, minCut: 450, maxCut: 1200 });
   const videoUrl = src => encodeURI(BASE + (LIGHT ? 'movil/' : '') + src);
   const posterUrl = src => encodeURI(BASE + 'portada/' + src.replace(/\.mp4$/, '.jpg'));
 
@@ -217,8 +225,10 @@
   }
   function pump() {
     if (busy || !visibleKnown || !pending.length) return;
-    const k = Math.max(0, pending.findIndex(job => job.isActive()));
-    const { src, onProgress, resolve } = pending.splice(k, 1)[0];
+    const first = pending.findIndex(job => job.isActive());
+    // En móviles no se descarga nada de un mezclador hasta que se ve
+    if (LIGHT && first < 0) return;
+    const { src, onProgress, resolve } = pending.splice(Math.max(0, first), 1)[0];
     const url = videoUrl(src);
     busy = true;
     fetch(url)
@@ -279,7 +289,7 @@
       <button class="btn" data-el="fs" type="button"></button>
     </div>`;
 
-  function createMixer(section, { srcs, sync = false, minCut = 500, maxCut = 4000, holdChance = 0, minHold = 0, maxHold = 0 }) {
+  function createMixer(section, { srcs, sync = false, follow = false, minCut = 500, maxCut = 4000, holdChance = 0, minHold = 0, maxHold = 0 }) {
     section.insertAdjacentHTML('beforeend', TEMPLATE);
     const el = name => section.querySelector(`[data-el="${name}"]`);
     const stage = section.querySelector('.stage');
@@ -343,7 +353,7 @@
     }
     function drawThumb(k) {
       const v = vids[k], p = posters[k];
-      if (v.videoWidth && v.readyState >= 2) {
+      if (!LIGHT && v.videoWidth && v.readyState >= 2) {
         if (v.paused && v._thumb === 'video') return;
         v._thumb = 'video';
         drawCover(ctxs[k], v, v.videoWidth, v.videoHeight);
@@ -372,6 +382,7 @@
     }
     function cut(i) {
       if (i === cur) return;
+      if (follow && cur >= 0 && vids[i].duration) vids[i].currentTime = vids[cur].currentTime % vids[i].duration;
       if (!sync && active) vids[i].play().catch(checkBlocked);
       if (cur >= 0) {
         vids[cur].classList.remove('live'); chans[cur].classList.remove('live');
@@ -464,6 +475,8 @@
         cut(randomOther());
         schedule(now);
       }
+      // Los textos y la barra no necesitan ir a 60 fps en un móvil
+      if (LIGHT && frame++ % 6) return;
       if (pinned === null) {
         const left = Math.max(0, nextAt - now);
         ui.meter.style.setProperty('--p', (left / segDur).toFixed(4));
@@ -574,6 +587,7 @@
     mixers.forEach(m => {
       const r = ratios.get(m.stage) || 0;
       m.setActive(r > 0);
+      if (r > 0) pump();
       if (r > best) { best = r; focused = m; }
     });
     if (!visibleKnown) { visibleKnown = true; pump(); }
@@ -616,6 +630,14 @@
     events.forEach(ev => document.addEventListener(ev, unmute, true));
   });
   btn.addEventListener('click', unmute);
+  // En móviles la pieza se para al salir de pantalla, para no competir con los mezcladores, y sigue al volver
+  if (matchMedia('(hover: none), (pointer: coarse)').matches) {
+    let resume = false;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { if (resume) v.play().catch(() => {}); resume = false; }
+      else if (!v.paused) { resume = true; v.pause(); }
+    }).observe(v);
+  }
   v.addEventListener('volumechange', () => { if (!v.muted) btn.hidden = true; });
 })();
 </script>
