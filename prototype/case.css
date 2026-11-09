@@ -256,3 +256,6 @@ html[lang="en"] .chapter > header::before { content: 'Chapter ' counter(ch, deci
 @media (prefers-reduced-motion: reduce) {
   .next:hover .t { translate: none; }
 }
+
+/* phones and tablets: no grain blended over the whole page, it was the most expensive thing to scroll */
+@media (hover: none), (pointer: coarse) { body::after { display: none; } }

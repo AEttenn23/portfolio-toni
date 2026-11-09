@@ -143,7 +143,16 @@
   .note path { fill: none; stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
   .rig-wrap .note { right: -10px; bottom: -64px; rotate: -4deg; text-align: right; }
   /* the invitation to click only makes sense with a mouse */
-  @media (hover: none), (pointer: coarse) { .rig-wrap .note { display: none; } }
+  /* phones and tablets: no Greg (he reacts to the mouse), and the page texture lives in one fixed layer that is painted once, without the blend over everything */
+  @media (hover: none), (pointer: coarse) {
+    .rig-wrap { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: 0; }
+    body { background: var(--bg); }
+    body::before { inset: 0 0 auto; height: 100lvh; transform: translateZ(0);
+      background: url('../assets/mixed/halftone.png') top right / min(1100px, 40vw + 40vh) no-repeat, url('../assets/mixed/halftone_bl.png') bottom left / min(800px, 30vw + 30vh) no-repeat, url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px, var(--bg) url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px;
+      background-blend-mode: normal, normal, soft-light, normal; }
+    body::after { display: none; }
+  }
 
   .sticker { position: absolute; filter: var(--sticker); pointer-events: none; }
 
@@ -330,11 +339,11 @@
 
   <div class="rig-wrap">
     <div class="rig" id="rig" aria-label="Greg, rig cutout de TheWorkingDead" role="img">
-      <img class="body" src="../assets/mixed/greg_body.png" alt="">
-      <img class="stache" src="../assets/mixed/greg_stache.png" alt="">
-      <img class="arm-l" src="../assets/mixed/greg_arm_l.png" alt="">
-      <img class="arm-r" src="../assets/mixed/greg_arm_r.png" alt="">
-      <img class="grr" src="../assets/mixed/greg_grr.png" alt="">
+      <img class="body" src="../assets/mixed/greg_body.png" alt="" loading="lazy">
+      <img class="stache" src="../assets/mixed/greg_stache.png" alt="" loading="lazy">
+      <img class="arm-l" src="../assets/mixed/greg_arm_l.png" alt="" loading="lazy">
+      <img class="arm-r" src="../assets/mixed/greg_arm_r.png" alt="" loading="lazy">
+      <img class="grr" src="../assets/mixed/greg_grr.png" alt="" loading="lazy">
     </div>
     <p class="note" data-i18n="rig_note">¡clica en mí! ↑<br>(Greg · TheWorkingDead)</p>
   </div>
@@ -520,7 +529,7 @@
       setTimeout(() => { swing = true; swingAt = performance.now(); }, 500);
     });
   }
-  if (!reduce && !editing) {
+  if (!reduce && !editing && fine) {
     let target = 0, cur = 0, t0 = performance.now(), mouse = null;
     addEventListener('pointermove', e => {
       const r = rig.getBoundingClientRect();
