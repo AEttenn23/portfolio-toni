@@ -133,9 +133,15 @@
   .ransom { display: flex; gap: .06em; font-size: clamp(64px, 11vw, 176px); line-height: 1; margin-bottom: .08em; }
   .ransom span { display: inline-block; padding: .04em .1em .02em; transition: transform 300ms var(--ease-out); box-shadow: 0 6px 14px -8px rgba(28,26,23,.55); }
   .ransom span:nth-child(1) { background: var(--ink); color: var(--paper-2); font: 900 1em/1 var(--display); font-stretch: 70%; rotate: -4deg; }
-  .ransom span:nth-child(2) { background: var(--paper-2); font: 1.04em/1 var(--serif); rotate: 3deg; translate: 0 .06em; }
+  .ransom span:nth-child(2) { background: var(--paper-2); color: var(--ink); font: 700 1.04em/1 var(--serif); rotate: 3deg; translate: 0 .06em; }
   .ransom span:nth-child(3) { background: var(--red); color: var(--paper-2); font: 800 .96em/1 var(--display); font-stretch: 125%; rotate: -2deg; }
   .ransom span:nth-child(4) { background: var(--kraft); font: 700 .98em/1 var(--type); rotate: 5deg; translate: 0 -.04em; }
+  /* second word: same cut-outs, tilted the other way so the two rows do not look copied */
+  .ransom.r2 { margin-left: .3em; }
+  .ransom.r2 span:nth-child(1) { rotate: 3deg; }
+  .ransom.r2 span:nth-child(2) { rotate: -4deg; translate: 0 -.02em; }
+  .ransom.r2 span:nth-child(3) { rotate: 2deg; translate: 0 .05em; }
+  .ransom.r2 span:nth-child(4) { color: var(--ink); rotate: -5deg; translate: 0 .02em; }
   .hero h1 .rest { display: block; font: 900 clamp(48px, 8.2vw, 132px)/.86 var(--display); font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
   .roles { margin-top: 22px; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.5; max-width: 50ch; }
   .roles p + p { margin-top: .8em; }
@@ -347,7 +353,7 @@
   <div>
     <h1 aria-label="Rotu Roto · Toni Díaz Plaza">
       <span class="ransom" aria-hidden="true"><span>R</span><span>o</span><span>T</span><span>u</span></span>
-      <span class="rest misreg" aria-hidden="true">Roto</span>
+      <span class="ransom r2" aria-hidden="true"><span>R</span><span>o</span><span>T</span><span>o</span></span>
     </h1>
     <div class="roles" data-i18n="roles"><p>Siempre me ha gustado el arte. Empecé dibujando y produciendo música y, estudiando el ciclo superior de Animaciones 3D, Juegos y Entornos Interactivos, me di cuenta de que podía vivir de esto. Dejó de ser un sueño lejano y se convirtió en mi objetivo.</p><p>Mi perfil es generalista: animación 2D y 3D, VFX, tech art y programación en Unity. Soy más eficiente en <mark>equipos pequeños</mark>, donde paso de lo técnico a lo artístico según lo que pidan el proyecto y sus plazos.</p></div>
     <div class="barcode" aria-hidden="true"><svg id="barcode" viewBox="0 0 95 40" preserveAspectRatio="none"></svg><span>8 412026 110012</span></div>
