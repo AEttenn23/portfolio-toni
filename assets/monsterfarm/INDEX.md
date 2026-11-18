@@ -24,6 +24,7 @@ El juego se publica como **Leafblade**. Los alias de Toni en git son `andipl` y 
 ## frames/ (animación frame a frame sacada de los PSB del repo)
 Cada secuencia tiene carpeta con los frames en PNG transparente, `_strip.jpg` (tira) y `_loop.mp4` (bucle a 10 fps):
 titan_skull_idle (8), titan_skull_intro (7), nightgloom (9), wispin (9), frostling_idle (6), icestrike (6), tornado (4), ladon_water (6), cryothorn (7)
+titan_skull_fuego/ (6): solo la llama grande (izquierda) de la capa `eyes` de los PSB `Titan_skull_idle/swamp_final_boss_f1-f6.psb`, PNG transparentes con el mismo encuadre de 171x307, centrado + `titan_skull_fuego_sheet.png` en tira. En f7 y f8 la capa ya son ojos oscuros, sin fuego.
 Muchos PSB son hojas de piezas por frame: las partes del rig se mantienen y se redibujan los elementos orgánicos (humo, agua, fuego). Es la técnica híbrida.
 
 ## rigs/
