@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/mixed/favicon.png">
 <link rel="apple-touch-icon" href="assets/mixed/apple-touch-icon.png">
-<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Person", "name": "Toni Díaz Plaza", "alternateName": ["Toni Díaz", "Toni Diaz", "Toni Diaz Plaza", "Roturoto", "Rotu Roto"], "url": "https://roturoto.es/", "image": "https://roturoto.es/assets/mixed/og_portada.jpg", "jobTitle": "Animador 2D y 3D, VFX y technical artist", "knowsAbout": ["Animación 2D", "Animación 3D", "VFX", "Technical art", "Unity", "Rigging", "Shaders"], "sameAs": ["https://www.therookies.co/u/aettenn", "https://aettenn.itch.io"]}, {"@context": "https://schema.org", "@type": "WebSite", "name": "Roturoto", "alternateName": ["Rotu Roto", "roturoto.es", "Toni Díaz Plaza"], "url": "https://roturoto.es/"}]</script>
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "Person", "name": "Toni Díaz Plaza", "alternateName": ["Toni Díaz", "Toni Diaz", "Toni Diaz Plaza", "Roturoto", "Rotu Roto"], "url": "https://roturoto.es/", "image": "https://roturoto.es/assets/mixed/og_portada.jpg", "jobTitle": "Animador 2D y 3D, VFX y technical artist", "knowsAbout": ["Animación 2D", "Animación 3D", "VFX", "Technical art", "Unity", "Rigging", "Shaders"], "sameAs": ["https://www.instagram.com/rotu_roto/", "https://www.therookies.co/u/aettenn", "https://aettenn.itch.io"]}, {"@context": "https://schema.org", "@type": "WebSite", "name": "Roturoto", "alternateName": ["Rotu Roto", "roturoto.es", "Toni Díaz Plaza"], "url": "https://roturoto.es/"}]</script>
 <title>Toni Díaz Plaza · Roturoto — Animación, VFX y technical art</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Caveat:wght@500;700&family=Courier+Prime:wght@400;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -273,6 +273,9 @@
   .contact .mail { position: relative; display: inline-block; margin-top: 28px; font: 700 clamp(30px, 3.6vw, 52px)/1 var(--hand); color: var(--paper-2); text-decoration: none; }
   .contact .mail svg { position: absolute; left: -2%; bottom: -14px; width: 104%; height: 18px; overflow: visible; }
   .contact .mail path { fill: none; stroke: var(--red); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 400ms var(--ease-in-out); }
+  .contact .ig { display: inline-flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+  .contact .ig img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px var(--paper-2); transition: transform 200ms var(--ease-out, ease-out); }
+  @media (hover: hover) { .contact .ig:hover img { transform: rotate(-8deg) scale(1.06); } .contact .ig:hover { color: var(--paper-2); } }
   .contact .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 72px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
 
   /* modal */
@@ -457,7 +460,7 @@
   <span class="kicker" data-i18n="k4">Sección 04 · Contacto</span>
   <h2 class="misreg" data-i18n="talk">Hablemos</h2>
   <a class="mail" href="mailto:andipl2323@gmail.com">andipl2323@gmail.com<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1 6 C 20 2, 40 9, 60 5 S 90 3, 99 6"/></svg></a>
-  <div class="foot"><span>The Rookies · itch.io · LinkedIn</span><span>© 2026 Toni Díaz Plaza · roturoto</span></div>
+  <div class="foot"><a class="ig" href="https://www.instagram.com/rotu_roto/" target="_blank" rel="noopener me"><img src="assets/mixed/instagram_perfil.webp" alt="" width="36" height="36">Instagram · @rotu_roto</a><span>© 2026 Toni Díaz Plaza · roturoto</span></div>
 </footer>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Demo reel">
