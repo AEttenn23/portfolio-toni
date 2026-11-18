@@ -1,4 +1,4 @@
-/* Project pages — same paper world as mixed.html */
+/* Project pages — same paper world as the home page (index.html) */
 :root {
   --paper: #EEE6D3;
   /* the desk under the paper: dark grey, with light text on it */
@@ -6,7 +6,7 @@
   --on-bg: #ECE5D3;
   --paper-2: #F7F1E3;
   /* paper sheets: crease shading (soft-light) over cream paper fibres; scrolls with the sheet */
-  --paper-tex: url('../assets/mixed/crumple.jpg') 0 0 / 700px 700px, url('../assets/mixed/paper.svg') 0 0 / 480px 480px, var(--paper-2);
+  --paper-tex: url('assets/mixed/crumple.jpg') 0 0 / 700px 700px, url('assets/mixed/paper.svg') 0 0 / 480px 480px, var(--paper-2);
   --kraft: #C9A27A;
   --ink: #0F0E0D;
   --ink-2: #4A443C;
@@ -25,7 +25,7 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   /* crumpled paper: crease shading (soft-light) over the paper fibres */
-  --texture: url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px fixed, url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px fixed;
+  --texture: url('assets/mixed/crumple.jpg') 0 0 / 1024px 1024px fixed, url('assets/mixed/paper_dark.svg') 0 0 / 480px 480px fixed;
   --sticker: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 8px 10px rgba(28,26,23,.28));
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,7 +50,7 @@ html[lang="es"] [lang="en"], html[lang="en"] [lang="es"] { display: none !import
 .torn { position: relative; isolation: isolate; color: var(--ink); }
 .torn > .tear { position: absolute; inset: 0; z-index: -1; background: var(--paper-tex); background-blend-mode: soft-light, normal; filter: drop-shadow(0 10px 14px rgba(28,26,23,.22)); }
 /* tape strips: corner strips cross the corner diagonally, centre strips straddle the top edge */
-.tape { --tw: clamp(120px, 13vw, 170px); --th: clamp(32px, 3.2vw, 42px); position: absolute; z-index: 3; width: var(--tw); height: var(--th); background: url('../assets/mixed/tape.png') center / 100% 100% no-repeat; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.25)); }
+.tape { --tw: clamp(120px, 13vw, 170px); --th: clamp(32px, 3.2vw, 42px); position: absolute; z-index: 3; width: var(--tw); height: var(--th); background: url('assets/mixed/tape.png') center / 100% 100% no-repeat; filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.25)); }
 .tape.tl, .tape.tr { top: calc(var(--th) * -.5); }
 .tape.tl { left: 6%; rotate: -5deg; }
 .tape.tr { right: 6%; rotate: 4deg; }
@@ -58,10 +58,10 @@ html[lang="es"] [lang="en"], html[lang="en"] [lang="es"] { display: none !import
 
 /* other ways to hold a sheet: push pins, staples, paper clips */
 /* push pins are renders; the needle enters the paper at 50% 57% of the image */
-.pin { position: absolute; z-index: 4; width: 100px; height: 100px; margin: -57px 0 0 -50px; background: url('../assets/mixed/pin_red.png') center / contain no-repeat; pointer-events: none; }
-.pin.y { background-image: url('../assets/mixed/pin_yellow.png'); }
-.pin.b { background-image: url('../assets/mixed/pin_blue.png'); }
-.pin.brass { background-image: url('../assets/mixed/pin_brass.png'); }
+.pin { position: absolute; z-index: 4; width: 100px; height: 100px; margin: -57px 0 0 -50px; background: url('assets/mixed/pin_red.png') center / contain no-repeat; pointer-events: none; }
+.pin.y { background-image: url('assets/mixed/pin_yellow.png'); }
+.pin.b { background-image: url('assets/mixed/pin_blue.png'); }
+.pin.brass { background-image: url('assets/mixed/pin_brass.png'); }
 .pin.tl { top: 32px; left: 32px; } .pin.tr { top: 32px; left: calc(100% - 32px); } .pin.tc { top: 28px; left: 50%; }
 .staple { position: absolute; z-index: 4; width: 48px; height: 6px; border-radius: 2px; background: linear-gradient(#FFFFFF, #B5B2AC 40%, #6A6762); box-shadow: 0 2px 3px rgba(0,0,0,.55), 0 0 0 .5px rgba(0,0,0,.35); }
 .staple::before, .staple::after { content: ''; position: absolute; top: 1px; width: 4px; height: 4px; border-radius: 1px; background: rgba(0,0,0,.6); }
@@ -79,9 +79,9 @@ html[lang="es"] [lang="en"], html[lang="en"] [lang="es"] { display: none !import
 .clip.y::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23A87C00'/%3E%3Cstop offset='0.45' stop-color='%23FFE45C'/%3E%3Cstop offset='1' stop-color='%23BF9200'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M3 10 V53 a8 8 0 0 0 16 0 V20' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
 .clip.y::after { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 24 66'%3E%3Cdefs%3E%3ClinearGradient id='m' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23A87C00'/%3E%3Cstop offset='0.45' stop-color='%23FFE45C'/%3E%3Cstop offset='1' stop-color='%23BF9200'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7 22 V50 a4 4 0 0 0 8 0 V10 a6 6 0 0 0 -12 0' fill='none' stroke='url%28%23m%29' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
 /* masking tape: opaque crepe paper, torn by hand */
-.tape.masking { background-image: url('../assets/mixed/masking.png'); filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.3)); }
+.tape.masking { background-image: url('assets/mixed/masking.png'); filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.3)); }
 /* binder clip (a render): the sheet's top edge meets the image at 52% of its height */
-.binder { position: absolute; z-index: 4; width: 124px; height: 124px; top: -65px; background: url('../assets/mixed/binder.png') center / contain no-repeat; pointer-events: none; }
+.binder { position: absolute; z-index: 4; width: 124px; height: 124px; top: -65px; background: url('assets/mixed/binder.png') center / contain no-repeat; pointer-events: none; }
 .binder.tc { left: 50%; margin-left: -62px; } .binder.tl { left: 6px; } .binder.tr { right: 6px; }
 .code:has(> .binder) { padding-top: 60px; }
 
@@ -261,7 +261,7 @@ html[lang="en"] .chapter > header::before { content: 'Chapter ' counter(ch, deci
 @media (hover: none), (pointer: coarse) {
   body { position: relative; z-index: 0; background: var(--bg); }
   body::before { content: ''; position: fixed; inset: 0 0 auto; height: 100lvh; z-index: -1; pointer-events: none; transform: translateZ(0);
-    background: url('../assets/mixed/crumple.jpg') 0 0 / 1024px 1024px, var(--bg) url('../assets/mixed/paper_dark.svg') 0 0 / 480px 480px; background-blend-mode: soft-light, normal; }
+    background: url('assets/mixed/crumple.jpg') 0 0 / 1024px 1024px, var(--bg) url('assets/mixed/paper_dark.svg') 0 0 / 480px 480px; background-blend-mode: soft-light, normal; }
   body::after { display: none; }
   .torn > .tear, .tape.masking, .sticker { filter: none; }
 }

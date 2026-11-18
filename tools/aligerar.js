@@ -3,16 +3,16 @@
 // - Imágenes que usa la web: mismos codificadores que Squoosh (MozJPEG; PNG con paleta). Mismo nombre y formato; una imagen ya tratada no se vuelve a comprimir.
 // - Bucles de vídeo (<video data-src>): crea x_movil.mp4 a 640 px y 24 fps como máximo, y añade data-light al HTML. case.js la usa en móviles y tablets.
 const fs = require('fs'), path = require('path'), crypto = require('crypto'), { execFileSync } = require('child_process'), sharp = require('sharp');
-const root = path.join(__dirname, '..'), proto = path.join(root, 'prototype'), ledgerFile = path.join(__dirname, 'aligerado.json');
+const root = path.join(__dirname, '..'), ledgerFile = path.join(__dirname, 'aligerado.json');
 const FFMPEG = process.env.FFMPEG || 'ffmpeg';
 const ledger = fs.existsSync(ledgerFile) ? JSON.parse(fs.readFileSync(ledgerFile, 'utf8')) : {};
 const sha = b => crypto.createHash('sha1').update(b).digest('hex');
-const pages = fs.readdirSync(proto).filter(f => /\.(html|css|js)$/.test(f));
+const pages = fs.readdirSync(root).filter(f => /\.(html|css|js)$/.test(f));
 const mb = n => (n / 1048576).toFixed(2) + ' MB';
 
 async function images() {
   const set = new Set();
-  for (const f of pages) for (const m of fs.readFileSync(path.join(proto, f), 'utf8').matchAll(/assets\/[^"'\)`<>]*?\.(png|jpe?g)/gi)) {
+  for (const f of pages) for (const m of fs.readFileSync(path.join(root, f), 'utf8').matchAll(/assets\/[^"'\)`<>]*?\.(png|jpe?g)/gi)) {
     const p = path.join(root, decodeURIComponent(m[0])); if (fs.existsSync(p)) set.add(p);
   }
   (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); e.isDirectory() ? walk(p) : /\.(png|jpe?g)$/i.test(p) && set.add(p); } })(path.join(root, 'assets/visuales'));
@@ -33,10 +33,10 @@ async function images() {
 function videos() {
   let made = 0, before = 0, after = 0;
   for (const f of pages.filter(x => x.endsWith('.html'))) {
-    const file = path.join(proto, f);
+    const file = path.join(root, f);
     let html = fs.readFileSync(file, 'utf8');
     const next = html.replace(/data-src="([^"]+\.mp4)"(?! data-light)/g, (all, src) => {
-      const input = path.resolve(proto, decodeURIComponent(src));
+      const input = path.resolve(root, decodeURIComponent(src));
       if (!fs.existsSync(input)) return all;
       const out = input.replace(/\.mp4$/, '_movil.mp4'), lightSrc = src.replace(/\.mp4$/, '_movil.mp4');
       if (!fs.existsSync(out)) execFileSync(FFMPEG, ['-y', '-v', 'error', '-i', input, '-vf', "scale='min(640,iw)':-2,fps='min(24,source_fps)'", '-c:v', 'libx264', '-crf', '28', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', '-an', out]);
