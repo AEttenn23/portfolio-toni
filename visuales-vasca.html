@@ -119,27 +119,9 @@
   }
   .hero-media .sound:active { transform: scale(.97); }
   .hero-media .sound[hidden] { display: none; }
-  /* the piece fits on screen with the loops peeking under it, so it is clear there is more below */
-  .hero-media { width: min(calc(100% - 48px), calc((100svh - 230px) * 16 / 9 + 28px)); margin-left: auto; margin-right: auto; }
-  .loops-peek { display: block; width: min(calc(100% - 48px), 980px); margin: 34px auto 0; color: inherit; text-decoration: none; }
-  .loops-peek .k { display: block; margin-bottom: 12px; font: 700 clamp(22px, 2vw, 28px)/1.1 var(--hand); color: var(--red); rotate: -1.5deg; }
-  .loops-peek .row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 18px); }
-  .loops-peek .cut { padding: 5px 5px 7px; background: var(--paper-2); box-shadow: 0 8px 14px -8px rgba(0,0,0,.6); transition: transform 200ms cubic-bezier(0.23,1,0.32,1); }
-  .loops-peek .cut:nth-child(odd) { rotate: -2deg; }
-  .loops-peek .cut:nth-child(even) { rotate: 1.6deg; translate: 0 6px; }
-  .loops-peek img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
-  @media (hover: hover) and (pointer: fine) { .loops-peek:hover .cut { transform: translateY(-4px); } }
-  .loops-peek:active .cut { transform: scale(.98); }
-  #loops { scroll-margin-top: 20px; }
-  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
-  @media (max-width: 560px) {
-    .hero-media { width: calc(100% - 32px); }
-    .loops-peek { width: calc(100% - 32px); margin-top: 26px; }
-    .loops-peek .row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .loops-peek .cut:nth-child(n+4) { display: none; }
-  }
-  .mixer-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 32px; flex-wrap: wrap; margin: 0 0 22px; }
-  .mixer-head .text { max-width: 52ch; }
+  .hero-media { width: min(calc(100% - 48px), calc((100svh - 140px) * 16 / 9 + 28px)); margin: 112px auto 0; }
+  @media (max-width: 560px) { .hero-media { width: calc(100% - 32px); } }
+  .case-hero + .chapter { padding-top: 48px; }
   .keys { margin-top: 18px; font: 13px/1.6 var(--type); color: rgba(236,229,211,.7); }
   .keys kbd { font: 700 12px var(--type); border: 0; padding: 0 5px; background: var(--paper-2); color: var(--ink); }
 
@@ -179,27 +161,12 @@
   <div class="labels" lang="en"><span>Compositing</span><span>Editing</span><span>Music</span></div>
 </div>
 
-<figure class="hero-media torn">
-  <span class="tape tl"></span><span class="pin tr b"></span>
-  <video id="pieza" controls loop preload="auto" playsinline poster="assets/visuales/video/poster_pieza.jpg" data-light="assets/visuales/video/visuales_pieza_movil.mp4" data-full="assets/visuales/video/visuales_pieza.mp4"></video>
-  <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
-  <figcaption class="cap"><span lang="es">la pieza · estilo videoclip · música mía</span><span lang="en">the piece · music-video style · music by me</span></figcaption>
-</figure>
-<a class="loops-peek" href="#loops">
-  <span class="k"><span lang="es">↓ y debajo, los loops para VJ: bájalos y mézclalos</span><span lang="en">↓ and below, the VJ loops: scroll down and mix them</span></span>
-  <span class="row" aria-hidden="true"><span class="cut"><img src="assets/visuales/loops/portada/cara%20video.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/caras.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/fondo.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/sombra.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/playa.jpg" alt="" loading="lazy" width="320" height="180"></span></span>
-</a>
+
 
 <!-- 1 -->
-<section class="chapter" id="loops">
+<section class="chapter">
   <header><h2 lang="es">Clips distintos</h2><h2 lang="en">Different clips</h2>
     <span class="aside" lang="es">toca un clip para fijarlo</span><span class="aside" lang="en">tap a clip to pin it</span></header>
-  <div class="mixer-head">
-    <div class="text">
-      <p lang="es">Cinco loops independientes con cortes de 0,5 a 4 s. Cada corte salta a otro clip, que sigue desde donde se quedó.</p>
-      <p lang="en">Five independent loops with cuts from 0.5 to 4 s. Each cut jumps to another clip, which resumes where it left off.</p>
-    </div>
-  </div>
   <figure class="monitor"><span class="pin tl"></span><span class="pin tr y"></span>
     <div class="vj" data-mixer="v1"></div>
   </figure>
@@ -209,12 +176,6 @@
 <section class="chapter">
   <header><h2 lang="es">Un vídeo, varios filtros</h2><h2 lang="en">One video, several looks</h2>
     <span class="aside" lang="es">sincronizados al fotograma</span><span class="aside" lang="en">synced to the frame</span></header>
-  <div class="mixer-head">
-    <div class="text">
-      <p lang="es">El mismo clip con tres tratamientos y cortes muy rápidos, de 0,15 a 0,6 s, que de vez en cuando frenan y aguantan entre 1,5 y 3 s. Las tres versiones se reproducen a la vez y sincronizadas aunque no estén en pantalla, así que cada corte cambia el filtro sin perder el movimiento.</p>
-      <p lang="en">The same clip with three looks and very fast cuts, from 0.15 to 0.6 s, which now and then slow down and hold for 1.5 to 3 s. All three versions play at once and in sync even when hidden, so each cut swaps the look without losing the motion.</p>
-    </div>
-  </div>
   <figure class="monitor"><span class="pin tc"></span>
     <div class="vj" data-mixer="v2"></div>
   </figure>
@@ -222,6 +183,13 @@
   <p class="keys" lang="en">Shortcuts: <kbd>1</kbd>–<kbd>5</kbd> pin clip · <kbd>0</kbd> random · <kbd>F</kbd> fullscreen</p>
 </section>
 
+
+<figure class="hero-media torn">
+  <span class="tape tl"></span><span class="pin tr b"></span>
+  <video id="pieza" controls loop preload="metadata" playsinline poster="assets/visuales/video/poster_pieza.jpg" data-light="assets/visuales/video/visuales_pieza_movil.mp4" data-full="assets/visuales/video/visuales_pieza.mp4"></video>
+  <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
+  <figcaption class="cap"><span lang="es">la pieza · estilo videoclip · música mía</span><span lang="en">the piece · music-video style · music by me</span></figcaption>
+</figure>
 
 <a class="next torn-top" href="leafblade.html">
   <span class="k"><span lang="es">siguiente proyecto →</span><span lang="en">next project →</span></span>
@@ -247,7 +215,7 @@
   const SOFT_DRIFT = 0.03, HARD_DRIFT = 1;
   const t = (es, en) => document.documentElement.lang === 'en' ? en : es;
 
-  // En móviles, las versiones ligeras (también para la pieza de arriba)
+  // En móviles, las versiones ligeras (también para la pieza del final)
   const LIGHT = matchMedia('(hover: none), (pointer: coarse)').matches;
   document.querySelectorAll('video[data-full]').forEach(v => { v.src = LIGHT ? v.dataset.light : v.dataset.full; });
   // Un móvil no decodifica tres vídeos a la vez: solo corre el visible y, al cortar, sigue en el punto donde iba el anterior
@@ -651,9 +619,9 @@
   });
 })();
 
-// La pieza arranca sola con sonido. Si el navegador no deja sonar un vídeo sin que
-// el visitante haya tocado la página, arranca en silencio y el sonido entra con el
-// primer toque o tecla (o con el botón).
+// La pieza está al final: arranca al llegar a ella, con sonido si el navegador lo deja
+// (si no, en silencio, y el sonido entra con el primer toque o tecla, o con el botón),
+// y se para al salir de pantalla para no sonar encima de los loops.
 (() => {
   const v = document.getElementById('pieza'), btn = document.getElementById('sound');
   const events = ['pointerdown', 'keydown', 'touchend'];
@@ -663,22 +631,21 @@
     btn.hidden = true;
     events.forEach(ev => document.removeEventListener(ev, unmute, true));
   };
-  v.muted = false;
-  v.play().catch(() => {
-    v.muted = true;
-    v.play().catch(() => {});
-    btn.hidden = false;
-    events.forEach(ev => document.addEventListener(ev, unmute, true));
-  });
+  const start = () => {
+    v.muted = false;
+    v.play().catch(() => {
+      v.muted = true;
+      v.play().catch(() => {});
+      btn.hidden = false;
+      events.forEach(ev => document.addEventListener(ev, unmute, true));
+    });
+  };
   btn.addEventListener('click', unmute);
-  // En móviles la pieza se para al salir de pantalla, para no competir con los mezcladores, y sigue al volver
-  if (matchMedia('(hover: none), (pointer: coarse)').matches) {
-    let resume = false;
-    new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { if (resume) v.play().catch(() => {}); resume = false; }
-      else if (!v.paused) { resume = true; v.pause(); }
-    }).observe(v);
-  }
+  let started = false;
+  new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { if (!started) { started = true; start(); } else v.play().catch(() => {}); }
+    else if (!v.paused) v.pause();
+  }, { threshold: .5 }).observe(v);
   v.addEventListener('volumechange', () => { if (!v.muted) btn.hidden = true; });
 })();
 </script>
