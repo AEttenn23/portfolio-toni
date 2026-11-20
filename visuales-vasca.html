@@ -119,6 +119,25 @@
   }
   .hero-media .sound:active { transform: scale(.97); }
   .hero-media .sound[hidden] { display: none; }
+  /* the piece fits on screen with the loops peeking under it, so it is clear there is more below */
+  .hero-media { width: min(calc(100% - 48px), calc((100svh - 230px) * 16 / 9 + 28px)); margin-left: auto; margin-right: auto; }
+  .loops-peek { display: block; width: min(calc(100% - 48px), 980px); margin: 34px auto 0; color: inherit; text-decoration: none; }
+  .loops-peek .k { display: block; margin-bottom: 12px; font: 700 clamp(22px, 2vw, 28px)/1.1 var(--hand); color: var(--red); rotate: -1.5deg; }
+  .loops-peek .row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 18px); }
+  .loops-peek .cut { padding: 5px 5px 7px; background: var(--paper-2); box-shadow: 0 8px 14px -8px rgba(0,0,0,.6); transition: transform 200ms cubic-bezier(0.23,1,0.32,1); }
+  .loops-peek .cut:nth-child(odd) { rotate: -2deg; }
+  .loops-peek .cut:nth-child(even) { rotate: 1.6deg; translate: 0 6px; }
+  .loops-peek img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  @media (hover: hover) and (pointer: fine) { .loops-peek:hover .cut { transform: translateY(-4px); } }
+  .loops-peek:active .cut { transform: scale(.98); }
+  #loops { scroll-margin-top: 20px; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  @media (max-width: 560px) {
+    .hero-media { width: calc(100% - 32px); }
+    .loops-peek { width: calc(100% - 32px); margin-top: 26px; }
+    .loops-peek .row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .loops-peek .cut:nth-child(n+4) { display: none; }
+  }
   .mixer-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px 32px; flex-wrap: wrap; margin: 0 0 22px; }
   .mixer-head .text { max-width: 52ch; }
   .keys { margin-top: 18px; font: 13px/1.6 var(--type); color: rgba(236,229,211,.7); }
@@ -166,9 +185,13 @@
   <button class="sound press" id="sound" type="button" hidden><span lang="es">🔊 activar sonido</span><span lang="en">🔊 sound on</span></button>
   <figcaption class="cap"><span lang="es">la pieza · estilo videoclip · música mía</span><span lang="en">the piece · music-video style · music by me</span></figcaption>
 </figure>
+<a class="loops-peek" href="#loops">
+  <span class="k"><span lang="es">↓ y debajo, los loops para VJ: bájalos y mézclalos</span><span lang="en">↓ and below, the VJ loops: scroll down and mix them</span></span>
+  <span class="row" aria-hidden="true"><span class="cut"><img src="assets/visuales/loops/portada/cara%20video.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/caras.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/fondo.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/sombra.jpg" alt="" loading="lazy" width="320" height="180"></span><span class="cut"><img src="assets/visuales/loops/portada/playa.jpg" alt="" loading="lazy" width="320" height="180"></span></span>
+</a>
 
 <!-- 1 -->
-<section class="chapter">
+<section class="chapter" id="loops">
   <header><h2 lang="es">Clips distintos</h2><h2 lang="en">Different clips</h2>
     <span class="aside" lang="es">toca un clip para fijarlo</span><span class="aside" lang="en">tap a clip to pin it</span></header>
   <div class="mixer-head">
